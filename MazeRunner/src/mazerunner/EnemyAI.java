@@ -3,6 +3,7 @@ package mazerunner;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * TEMP AI CLASS
@@ -19,6 +20,7 @@ public class EnemyAI{
 	private ArrayList<Point> memory;
 	private Enemy enemy;
 	private EnemyControl control;
+	private Random rnd;
 	
 	/**
 	 * In the EnemyAI constructor the enemies are initialised and the maze and player are set
@@ -30,6 +32,7 @@ public class EnemyAI{
 		this.maze = maze;
 		this.player = player;
 		this.memory = new ArrayList<Point>();
+		this.rnd = new Random();
 		
 		this.enemies = new ArrayList<Enemy>();
 		enemies.add(new Enemy(2, 0, 4, 180, 50,	null, "models/test.obj"));
@@ -52,10 +55,9 @@ public class EnemyAI{
 			// when the enemy hit a wall add an in between target//
 			if(enemy.hasHitWall() && control.targets.size() < 2) {
 				Location inBetweenTarget = 
-						maze.avoidWall(enemy, control.targets.get(control.targets.size()-1), 0.2);
+						avoidWall(enemy, control.targets.get(control.targets.size()-1), 0.2);
 				control.targets.add(0, inBetweenTarget);}
 			
-			//TODO activate derivePlayerVisible
 			boolean wasPlayerVisible = enemy.isPlayerVisible();
 			boolean isPlayerVisible = derivePlayerVisible();			
 			
@@ -76,7 +78,7 @@ public class EnemyAI{
 					enemy.setTimePassed(enemy.getTimePassed() + deltaTime);
 					//after a certain time set the next target (lose "aggro")
 					if (enemy.getTimePassed() >= 3000) {
-						maze.nextTarget(enemy, control, memory);
+						nextTarget(enemy, control, memory);
 						enemy.setTimePassed(0);
 						enemy.setMemory(maze.currentGridPoint(enemy));}}}
 			
@@ -88,7 +90,7 @@ public class EnemyAI{
 			
 			// if the target list is empty get a new target
 			if (control.targets.isEmpty()) {
-				maze.nextTarget(enemy, control, memory);
+				nextTarget(enemy, control, memory);
 				enemy.setMemory(maze.currentGridPoint(enemy));}
 			
 			// update the Enemy's control
@@ -117,6 +119,123 @@ public class EnemyAI{
 		// set and return
 		enemy.setPlayerVisible(playerVisible);
 		return playerVisible;
+	}
+	
+	/**
+	 * returns an in between location to avoid a wall in the way of an enemy's target
+	 */
+	public Location avoidWall(Enemy enemy, Location target, double objectSize) {
+		
+		double xSign = Math.signum(target.locationX - enemy.locationX);
+		double zSign = Math.signum(target.locationZ - enemy.locationZ);
+		
+		double x = enemy.locationX - objectSize*xSign*Maze.SQUARE_SIZE; 
+		double z = enemy.locationZ-objectSize*zSign*Maze.SQUARE_SIZE;
+		
+		// wall in the x direction
+		if (maze.isWall(x + xSign*Maze.SQUARE_SIZE, z, 0)) {
+			if(zSign > 0) z = (maze.convertToGridZ(z)+ 1.05 + objectSize)*Maze.SQUARE_SIZE;
+			else if (zSign < 0) z = (maze.convertToGridZ(z) - 0.05 - objectSize)*Maze.SQUARE_SIZE;
+			x = enemy.locationX;}
+		
+		// wall in the z direction
+		else if (maze.isWall(x, z + zSign*Maze.SQUARE_SIZE, 0)) {
+			if(xSign > 0) x = (maze.convertToGridX(x)+ 1.05 + objectSize)*Maze.SQUARE_SIZE;
+			else if (xSign < 0) x = (maze.convertToGridX(x) - 0.05 - objectSize)*Maze.SQUARE_SIZE;
+			z = enemy.locationZ;}
+		
+		return new Location(x, z);
+	}
+	
+	/**
+	 * Sets the next target for an enemy when the player is not visible
+	 * randomly
+	 */
+	public void nextTarget(Enemy enemy, EnemyControl control, ArrayList<Point> memory) {
+		
+		//TODO verwijder alle testprints over nextTarget
+		
+		// the possible locations list for the enemy
+		ArrayList<Point> possibleLocations = new ArrayList<Point>();
+		
+		// the grid location of the enemy
+		Point currentLocation = new Point(maze.convertToGridX(enemy.locationX), maze.convertToGridZ(enemy.locationZ));
+		int x = currentLocation.x;
+		int z = currentLocation.y;
+		
+//		System.out.println("----nextTarget----");
+//		System.out.println("currentLocation: " + currentLocation);
+//		System.out.println("memory: " + memory);
+		
+		// initialise the factors array [posX, negX, posZ, negZ] => [0, 1, 2, 3]
+		double[] factors = new double[4];
+		
+		for(int i=0; i<factors.length; i++) {
+			possibleLocations.add(null);}
+		
+		// add the possible locations
+		if (!maze.isWall(x+1, z)) {possibleLocations.set(0, new Point(x+1, z)); factors[0] = 1;}
+		if (!maze.isWall(x-1, z)) {possibleLocations.set(1, new Point(x-1, z)); factors[1] = 1;}
+		if (!maze.isWall(x, z+1)) {possibleLocations.set(2, new Point(x, z+1)); factors[2] = 1;}
+		if (!maze.isWall(x, z-1)) {possibleLocations.set(3, new Point(x, z-1)); factors[3] = 1;}
+		
+//		System.out.println("factors after wallcheck: " + Arrays.toString(factors));
+		
+		// count the number of possible locations
+		int numPl = 0;
+		for (int i=0; i<factors.length; i++) {
+			numPl += factors[i];}
+		
+//		System.out.println("number of possible locations: " + numPl);
+		
+		// set the previous location factor to zero if there are multiple locations
+		if (numPl > 1 && possibleLocations.contains(enemy.getMemory()))
+			factors[possibleLocations.indexOf(enemy.getMemory())] = 0;
+		
+//		System.out.println("factors after set previous to zero: " + Arrays.toString(factors));
+		
+		// double the factor for walking straight
+		Point straight = new Point(currentLocation); 
+		straight.translate(x - enemy.getMemory().x, z - enemy.getMemory().y);
+		if (possibleLocations.contains(straight))
+			factors[possibleLocations.indexOf(straight)] *= 2;
+		
+//		System.out.println("factors after walk straight: " + Arrays.toString(factors));
+		
+		// multiply the factor for a point contained in the memory by (1 + memoryIndex)/(MAZE_SIZE^2)
+		for (int i=0; i<possibleLocations.size(); i++) {
+			if (memory.contains(possibleLocations.get(i))) {
+				factors[i] *= (1 + memory.indexOf(possibleLocations.get(i)))/Math.pow(Maze.MAZE_SIZE, 2);}}
+		
+//		System.out.println("factors after memorycheck: " + Arrays.toString(factors));
+		
+		// make factors cumulative and normalize
+		for (int i=1; i<factors.length; i++) {
+			factors[i] += factors[i-1];}
+		for (int i=0; i<factors.length; i++) {
+			factors[i] /= factors[factors.length-1];}
+		
+//		System.out.println("factors after making cumulative and norm: " + Arrays.toString(factors));
+
+		
+		// pick randomly from the possible locations and set
+		double random = rnd.nextDouble();
+		
+//		System.out.println("random number: " + random);
+		
+		int nextLocationIndex = 0;
+		for (int i=0; i<factors.length; i++) {
+			if (random <= factors[i]) {
+				nextLocationIndex = i;
+				break;}}
+		
+//		System.out.println("nextLocationIndex: " + nextLocationIndex);
+		
+		Point nextLocation = possibleLocations.get(nextLocationIndex);
+		control.setTarget( 	((double) nextLocation.x + 0.5) * Maze.SQUARE_SIZE,
+							((double) nextLocation.y + 0.5) * Maze.SQUARE_SIZE);
+		
+//		System.out.println("----nextTarget----");
 	}
 	
 	public ArrayList<Enemy> getEnemies() {

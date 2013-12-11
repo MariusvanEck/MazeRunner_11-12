@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import javax.media.opengl.GL;
 
@@ -22,8 +21,6 @@ public class Maze implements VisibleObject {
 	private HashMap<String,Texture> textures;			// reference to the texture hashmap
 	private Texture currentTexture;						// specifies the current texture
 	private int currentLevel = 0;						// specifies the currentLevel
-	
-	private Random rnd = new Random();					// random generator
 
 	private ArrayList<int[][]> maze;
 	private int[][] level;
@@ -205,7 +202,7 @@ public class Maze implements VisibleObject {
 	 * @param x		the double x-coordinate
 	 * @return		the integer x-coordinate
 	 */
-	private int convertToGridX( double x )
+	public int convertToGridX( double x )
 	{
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
@@ -215,8 +212,7 @@ public class Maze implements VisibleObject {
 	 * @param y		the double y-coordinate
 	 * @return		the integer y-coordinate
 	 */
-	@SuppressWarnings("unused")
-	private int convertToGridY(double y){
+	public int convertToGridY(double y){
 		return (int)Math.floor( y / SQUARE_SIZE );
 	}
 	
@@ -225,7 +221,7 @@ public class Maze implements VisibleObject {
 	 * @param z		the double z-coordinate
 	 * @return		the integer z-coordinate
 	 */
-	private int convertToGridZ( double z )
+	public int convertToGridZ(double z)
 	{
 		return (int)Math.floor( z / SQUARE_SIZE );
 	}
@@ -246,123 +242,6 @@ public class Maze implements VisibleObject {
 	 */
 	public synchronized void editMaze(int x, int y,int z, boolean isWall) {
 		level[x][z] = isWall? 1 : 0;
-	}
-	
-	/**
-	 * Sets the next target for an enemy when the player is not visible
-	 * randomly
-	 */
-	public void nextTarget(Enemy enemy, EnemyControl control, ArrayList<Point> memory) {
-		
-		//TODO verwijder alle testprints over nextTarget
-		
-		// the possible locations list for the enemy
-		ArrayList<Point> possibleLocations = new ArrayList<Point>();
-		
-		// the grid location of the enemy
-		Point currentLocation = new Point(convertToGridX(enemy.locationX), convertToGridZ(enemy.locationZ));
-		int x = currentLocation.x;
-		int z = currentLocation.y;
-		
-//		System.out.println("----nextTarget----");
-//		System.out.println("currentLocation: " + currentLocation);
-//		System.out.println("memory: " + memory);
-		
-		// initialise the factors array [posX, negX, posZ, negZ] => [0, 1, 2, 3]
-		double[] factors = new double[4];
-		
-		for(int i=0; i<factors.length; i++) {
-			possibleLocations.add(null);}
-		
-		// add the possible locations
-		if (!isWall(x+1, z)) {possibleLocations.set(0, new Point(x+1, z)); factors[0] = 1;}
-		if (!isWall(x-1, z)) {possibleLocations.set(1, new Point(x-1, z)); factors[1] = 1;}
-		if (!isWall(x, z+1)) {possibleLocations.set(2, new Point(x, z+1)); factors[2] = 1;}
-		if (!isWall(x, z-1)) {possibleLocations.set(3, new Point(x, z-1)); factors[3] = 1;}
-		
-//		System.out.println("factors after wallcheck: " + Arrays.toString(factors));
-		
-		// count the number of possible locations
-		int numPl = 0;
-		for (int i=0; i<factors.length; i++) {
-			numPl += factors[i];}
-		
-//		System.out.println("number of possible locations: " + numPl);
-		
-		// set the previous location factor to zero if there are multiple locations
-		if (numPl > 1 && possibleLocations.contains(enemy.getMemory()))
-			factors[possibleLocations.indexOf(enemy.getMemory())] = 0;
-		
-//		System.out.println("factors after set previous to zero: " + Arrays.toString(factors));
-		
-		// double the factor for walking straight
-		Point straight = new Point(currentLocation); 
-		straight.translate(x - enemy.getMemory().x, z - enemy.getMemory().y);
-		if (possibleLocations.contains(straight))
-			factors[possibleLocations.indexOf(straight)] *= 2;
-		
-//		System.out.println("factors after walk straight: " + Arrays.toString(factors));
-		
-		// multiply the factor for a point contained in the memory by (1 + memoryIndex)/(MAZE_SIZE^2)
-		for (int i=0; i<possibleLocations.size(); i++) {
-			if (memory.contains(possibleLocations.get(i))) {
-				factors[i] *= (1 + memory.indexOf(possibleLocations.get(i)))/Math.pow(MAZE_SIZE, 2);}}
-		
-//		System.out.println("factors after memorycheck: " + Arrays.toString(factors));
-		
-		// make factors cumulative and normalize
-		for (int i=1; i<factors.length; i++) {
-			factors[i] += factors[i-1];}
-		for (int i=0; i<factors.length; i++) {
-			factors[i] /= factors[factors.length-1];}
-		
-//		System.out.println("factors after making cumulative and norm: " + Arrays.toString(factors));
-
-		
-		// pick randomly from the possible locations and set
-		double random = rnd.nextDouble();
-		
-//		System.out.println("random number: " + random);
-		
-		int nextLocationIndex = 0;
-		for (int i=0; i<factors.length; i++) {
-			if (random <= factors[i]) {
-				nextLocationIndex = i;
-				break;}}
-		
-//		System.out.println("nextLocationIndex: " + nextLocationIndex);
-		
-		Point nextLocation = possibleLocations.get(nextLocationIndex);
-		control.setTarget( 	((double) nextLocation.x + 0.5) * SQUARE_SIZE,
-							((double) nextLocation.y + 0.5) * SQUARE_SIZE);
-		
-//		System.out.println("----nextTarget----");
-	}
-	
-	/**
-	 * returns an in between location to avoid a wall in the way of an enemy's target
-	 */
-	public Location avoidWall(Enemy enemy, Location target, double objectSize) {
-		
-		double xSign = Math.signum(target.locationX - enemy.locationX);
-		double zSign = Math.signum(target.locationZ - enemy.locationZ);
-		
-		double x = enemy.locationX - objectSize*xSign*SQUARE_SIZE; 
-		double z = enemy.locationZ-objectSize*zSign*SQUARE_SIZE;
-		
-		// wall in the x direction
-		if (isWall(x + xSign*SQUARE_SIZE, z, 0)) {
-			if(zSign > 0) z = (convertToGridZ(z)+ 1.05 + objectSize)*SQUARE_SIZE;
-			else if (zSign < 0) z = (convertToGridZ(z) - 0.05 - objectSize)*SQUARE_SIZE;
-			x = enemy.locationX;}
-		
-		// wall in the z direction
-		else if (isWall(x, z + zSign*SQUARE_SIZE, 0)) {
-			if(xSign > 0) x = (convertToGridX(x)+ 1.05 + objectSize)*SQUARE_SIZE;
-			else if (xSign < 0) x = (convertToGridX(x) - 0.05 - objectSize)*SQUARE_SIZE;
-			z = enemy.locationZ;}
-		
-		return new Location(x, z);
 	}
 	
 	
@@ -495,6 +374,7 @@ public class Maze implements VisibleObject {
 	 */
 	public void setCurrentLevel(int currentLevel) {
 		this.currentLevel = currentLevel;
+		level = maze.get(currentLevel);
 	}
 	
 	/**
