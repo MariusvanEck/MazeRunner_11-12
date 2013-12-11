@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-/**
- * TEMP AI CLASS
- * @author Marius
- *
- */
 public class EnemyAI{
 	
 	private Maze maze;
@@ -35,8 +30,18 @@ public class EnemyAI{
 		this.rnd = new Random();
 		
 		this.enemies = new ArrayList<Enemy>();
-		enemies.add(new Enemy(2, 0, 4, 180, 50,	null, "models/test.obj"));
-		enemies.add(new Enemy(3, 0, 7, 180, 50,	null, "models/test.obj"));
+		
+		// add randomly initialised enemies 
+		int x, z;
+		for (int i=0; i<2; i++) {
+			// find a location
+			do {
+				x = rnd.nextInt((int) Maze.MAZE_SIZE); 
+				z = rnd.nextInt((int) Maze.MAZE_SIZE);
+			} while (maze.isWall(x, z));
+				
+			// add an enemy
+			enemies.add(new Enemy(x, 0, z, rnd.nextDouble()*360 - 180, 100, null, "models/test.obj"));}
 	}
 	
 	/**
@@ -163,10 +168,6 @@ public class EnemyAI{
 		int x = currentLocation.x;
 		int z = currentLocation.y;
 		
-//		System.out.println("----nextTarget----");
-//		System.out.println("currentLocation: " + currentLocation);
-//		System.out.println("memory: " + memory);
-		
 		// initialise the factors array [posX, negX, posZ, negZ] => [0, 1, 2, 3]
 		double[] factors = new double[4];
 		
@@ -179,20 +180,14 @@ public class EnemyAI{
 		if (!maze.isWall(x, z+1)) {possibleLocations.set(2, new Point(x, z+1)); factors[2] = 1;}
 		if (!maze.isWall(x, z-1)) {possibleLocations.set(3, new Point(x, z-1)); factors[3] = 1;}
 		
-//		System.out.println("factors after wallcheck: " + Arrays.toString(factors));
-		
 		// count the number of possible locations
 		int numPl = 0;
 		for (int i=0; i<factors.length; i++) {
 			numPl += factors[i];}
 		
-//		System.out.println("number of possible locations: " + numPl);
-		
 		// set the previous location factor to zero if there are multiple locations
 		if (numPl > 1 && possibleLocations.contains(enemy.getMemory()))
 			factors[possibleLocations.indexOf(enemy.getMemory())] = 0;
-		
-//		System.out.println("factors after set previous to zero: " + Arrays.toString(factors));
 		
 		// double the factor for walking straight
 		Point straight = new Point(currentLocation); 
@@ -200,14 +195,10 @@ public class EnemyAI{
 		if (possibleLocations.contains(straight))
 			factors[possibleLocations.indexOf(straight)] *= 2;
 		
-//		System.out.println("factors after walk straight: " + Arrays.toString(factors));
-		
 		// multiply the factor for a point contained in the memory by (1 + memoryIndex)/(MAZE_SIZE^2)
 		for (int i=0; i<possibleLocations.size(); i++) {
 			if (memory.contains(possibleLocations.get(i))) {
 				factors[i] *= (1 + memory.indexOf(possibleLocations.get(i)))/Math.pow(Maze.MAZE_SIZE, 2);}}
-		
-//		System.out.println("factors after memorycheck: " + Arrays.toString(factors));
 		
 		// make factors cumulative and normalize
 		for (int i=1; i<factors.length; i++) {
@@ -215,13 +206,8 @@ public class EnemyAI{
 		for (int i=0; i<factors.length; i++) {
 			factors[i] /= factors[factors.length-1];}
 		
-//		System.out.println("factors after making cumulative and norm: " + Arrays.toString(factors));
-
-		
 		// pick randomly from the possible locations and set
 		double random = rnd.nextDouble();
-		
-//		System.out.println("random number: " + random);
 		
 		int nextLocationIndex = 0;
 		for (int i=0; i<factors.length; i++) {
@@ -229,13 +215,9 @@ public class EnemyAI{
 				nextLocationIndex = i;
 				break;}}
 		
-//		System.out.println("nextLocationIndex: " + nextLocationIndex);
-		
 		Point nextLocation = possibleLocations.get(nextLocationIndex);
 		control.setTarget( 	((double) nextLocation.x + 0.5) * Maze.SQUARE_SIZE,
 							((double) nextLocation.y + 0.5) * Maze.SQUARE_SIZE);
-		
-//		System.out.println("----nextTarget----");
 	}
 	
 	public ArrayList<Enemy> getEnemies() {

@@ -266,7 +266,6 @@ public class MazeRunner {
 	private void updatePlayerMovement(int deltaTime) {
 		// save current coordinates
 		double previousX = player.getLocationX();
-		double previousY = player.getLocationY();
 		double previousZ = player.getLocationZ();
 		
 		// update
@@ -278,7 +277,6 @@ public class MazeRunner {
 		// set player back if a wall was hit
 		if (hitWall){
 			player.locationX = previousX;
-			player.locationY = previousY;
 			player.locationZ = previousZ;
 		}
 	}	
@@ -298,7 +296,6 @@ public class MazeRunner {
 			enemy = it.next();
 			
 			double previousX = enemy.getLocationX();
-			double previousY = enemy.getLocationY();
 			double previousZ = enemy.getLocationZ();
 			
 			// update
@@ -310,7 +307,6 @@ public class MazeRunner {
 			// set enemy back if a wall was hit
 			if (enemy.hasHitWall()){
 				enemy.locationX = previousX;
-				enemy.locationY = previousY;
 				enemy.locationZ = previousZ;}}
 	}
 	

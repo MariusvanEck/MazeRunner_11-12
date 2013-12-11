@@ -71,10 +71,13 @@ public class EnemyControl extends Control{
 	}
 	
 	/**
-	 * updates the current target
+	 * updates the main target
 	 */
 	public void updateMainTarget(double targetX, double targetZ) {
-		targets.set(targets.size()-1, new Location(targetX, targetZ));
+		if (targets.isEmpty()) 
+			targets.add(new Location(targetX, targetZ));
+		else
+			targets.set(targets.size()-1, new Location(targetX, targetZ));
 	}
 	
 	/**

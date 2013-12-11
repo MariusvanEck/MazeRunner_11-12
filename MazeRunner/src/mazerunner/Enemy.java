@@ -6,8 +6,6 @@ import javax.media.opengl.GL;
 
 import loot.Weapon;
 
-import com.sun.opengl.util.GLUT;
-
 /**
  * Enemy represents enemies in the game
  * 
@@ -46,7 +44,6 @@ public class Enemy extends Creature implements VisibleObject{
 				y*Maze.SQUARE_SIZE, 
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
 				hitpoints, weapon, modelFileLocation);
-		
 		
 		this.horAngle = horAngle;
 		maxSpeed = 0.005;
