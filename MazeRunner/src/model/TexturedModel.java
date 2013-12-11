@@ -152,7 +152,7 @@ public class TexturedModel {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glEnable(GL.GL_LIGHT0);
-		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.05f,0.05f,0.05f,1f}));
+		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, asFloatBuffer(new float[]{0.5f,0.5f,0.05f,1f}));
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, asFloatBuffer(new float[]{0,0,0,1f}));
 		gl.glEnable(GL.GL_CULL_FACE);
 		gl.glCullFace(GL.GL_BACK);
@@ -161,16 +161,15 @@ public class TexturedModel {
 		gl.glColor3f(0.4f,0.27f,0.17f);
 	}
 	
-	public void render(float x,float y,float z){
+	public void render(double x,double y,double z){
 		if(!m.isLoaded()) // there is nothing to render
 			return;
 		
 		// TODO: Add the VBO render code
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glTranslated(x, y, z);
 		gl.glUseProgram(shaderProgramHandle);
 		gl.glUniform1f(diffuseModifierUniform, 1.0f);
 		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);
-		gl.glLightfv(GL.GL_LIGHT0,GL.GL_POSITION, asFloatBuffer(x,y,z,1));
 		
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboVertexHandle[0]);
 		gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0L);

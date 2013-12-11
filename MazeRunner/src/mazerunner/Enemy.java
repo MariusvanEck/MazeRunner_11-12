@@ -72,7 +72,7 @@ public class Enemy extends Creature implements VisibleObject{
 	 */
 	@Override
 	public void display(GL gl) { // here needs the display() function of the model be called 
-		GLUT glut = new GLUT();
+/*		GLUT glut = new GLUT();
 		
         // push matrix
         gl.glPushMatrix();
@@ -114,15 +114,13 @@ public class Enemy extends Creature implements VisibleObject{
 		
 		// pop matrix
 		gl.glPopMatrix();
-
+*/
 		
-//		// TODO: al het bovenstaande uitzetten en het onderstaande aan om het model te zien
-//		
-//				if(texturedModel == null)
-//					System.out.println("null");
-//				else
-//				texturedModel.render((float)locationX,(float)locationY, (float)locationZ);
-//		
+		// TODO: al het bovenstaande uitzetten en het onderstaande aan om het model te zien
+				if(texturedModel == null)
+					System.out.println("null");
+				else
+				texturedModel.render(locationX,locationY,locationZ);		
 		
 	}
 
