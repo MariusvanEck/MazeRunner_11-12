@@ -1,5 +1,7 @@
 package mazerunner;
 import java.awt.Point;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,8 +16,8 @@ import com.sun.opengl.util.texture.Texture;
  */
 public class Maze implements VisibleObject {
 	
-	public final static double MAZE_SIZE = 10;
-	public final static double LEVEL_SIZE = 1;
+	public static double MAZE_SIZE = 10;
+	public static double LEVEL_SIZE = 1;
 	public final static double SQUARE_SIZE = 5;
 	
 	private HashMap<String,Texture> textures;			// reference to the texture hashmap
@@ -24,21 +26,26 @@ public class Maze implements VisibleObject {
 	
 	private Random rnd = new Random();					// random generator
 
-	private volatile int[][][] maze = 
-	{
-		{	
-			{  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 },
-			{  1,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
-			{  1,  0,  0,  0,  0,  0,  1,  1,  1,  1 },
-			{  1,  0,  1,  0,  0,  0,  1,  0,  0,  1 },
-			{  1,  0,  1,  0,  1,  0,  1,  0,  0,  1 },
-			{  1,  0,  1,  0,  1,  0,  1,  0,  0,  1 },
-			{  1,  0,  0,  0,  1,  0,  1,  0,  0,  1 },
-			{  1,  0,  0,  0,  1,  1,  1,  0,  0,  1 },
-			{  1,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
-			{  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 }
-		},
-	};
+	private ArrayList<int[][]> maze;
+	private int[][] level;
+	
+	public void load(String file){
+		try{     
+			FileInputStream fmaze = new FileInputStream(file);
+			ObjectInputStream omaze = new ObjectInputStream(fmaze);
+	      
+			LEVEL_SIZE = (int) omaze.readObject();
+			MAZE_SIZE = (int) omaze.readObject();
+	      
+			maze = new ArrayList<int[][]>();
+			for (int i=0; i<LEVEL_SIZE; i++) {
+				maze.add((int[][]) omaze.readObject());}
+	  
+			level = maze.get(currentLevel);
+			omaze.close();    
+		}
+        catch(Exception ex){ex.printStackTrace();}
+}
 	
 	
 	/*
@@ -57,10 +64,10 @@ public class Maze implements VisibleObject {
 	 * @param z		the z-coordinate of the location to check
 	 * @return		whether there is a wall at maze[x][z]
 	 */
-	public boolean isWall( int x, int y, int z )
+	public boolean isWall( int x, int z )
 	{
-		if( x >= 0 && x < MAZE_SIZE && y >= 0 && y < LEVEL_SIZE && z >= 0 && z < MAZE_SIZE )
-			return maze[y][x][z] == 1;
+		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
+			return level[x][z] == 1;
 		else
 			return false;
 	}
@@ -99,7 +106,7 @@ public class Maze implements VisibleObject {
 		
 		while (true) {
 			// if the current grid position is a wall, return true
-			if (isWall((int) currentXGrid, currentLevel, (int) currentZGrid)) return true;
+			if (isWall((int) currentXGrid, (int) currentZGrid)) return true;
 			
 			// if the current grid point is the same as the final grid position, break
 			if (currentXGrid == finalXGrid && currentZGrid == finalZGrid) break;
@@ -123,7 +130,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isStair(int x,int y,int z){
 		if(x >= 0 && x < MAZE_SIZE && y >= 0 && y < LEVEL_SIZE && z >= 0 && z < MAZE_SIZE)
-			return maze[y][x][z] == 2 || maze[y][x][z] == 3;
+			return level[x][z] == 11;
 		return false;
 	}
 	
@@ -146,10 +153,10 @@ public class Maze implements VisibleObject {
 		int gXmax = convertToGridX(x+objectSize*SQUARE_SIZE);
 		int gZmin = convertToGridZ(z-objectSize*SQUARE_SIZE);
 		int gZmax = convertToGridZ(z+objectSize*SQUARE_SIZE);
-		return 	isWall(gXmin, currentLevel, gZmin) || isWall(gXmax, currentLevel, gZmax) ||
-				isWall(gXmin, currentLevel, gZmax) || isWall(gXmax, currentLevel, gZmin) ||
-				isWall(gXmin, currentLevel, gZmin) || isWall(gXmax, currentLevel, gZmax) ||
-				isWall(gXmin, currentLevel, gZmax) || isWall(gXmax, currentLevel, gZmin);
+		return 	isWall(gXmin,gZmin) || isWall(gXmax, gZmax) ||
+				isWall(gXmin, gZmax) || isWall(gXmax, gZmin) ||
+				isWall(gXmin, gZmin) || isWall(gXmax, gZmax) ||
+				isWall(gXmin, gZmax) || isWall(gXmax, gZmin);
 	}
 	
 	/**
@@ -239,7 +246,7 @@ public class Maze implements VisibleObject {
 	 * @param isWall 	true for wall, false for no wall
 	 */
 	public synchronized void editMaze(int x, int y,int z, boolean isWall) {
-		maze[y][x][z] = isWall? 1 : 0;
+		level[x][z] = isWall? 1 : 0;
 	}
 	
 	/**
@@ -269,10 +276,10 @@ public class Maze implements VisibleObject {
 			possibleLocations.add(null);}
 		
 		// add the possible locations
-		if (!isWall(x+1, currentLevel, z)) {possibleLocations.set(0, new Point(x+1, z)); factors[0] = 1;}
-		if (!isWall(x-1, currentLevel, z)) {possibleLocations.set(1, new Point(x-1, z)); factors[1] = 1;}
-		if (!isWall(x, currentLevel, z+1)) {possibleLocations.set(2, new Point(x, z+1)); factors[2] = 1;}
-		if (!isWall(x, currentLevel, z-1)) {possibleLocations.set(3, new Point(x, z-1)); factors[3] = 1;}
+		if (!isWall(x+1, z)) {possibleLocations.set(0, new Point(x+1, z)); factors[0] = 1;}
+		if (!isWall(x-1, z)) {possibleLocations.set(1, new Point(x-1, z)); factors[1] = 1;}
+		if (!isWall(x, z+1)) {possibleLocations.set(2, new Point(x, z+1)); factors[2] = 1;}
+		if (!isWall(x, z-1)) {possibleLocations.set(3, new Point(x, z-1)); factors[3] = 1;}
 		
 //		System.out.println("factors after wallcheck: " + Arrays.toString(factors));
 		
@@ -383,7 +390,7 @@ public class Maze implements VisibleObject {
 	        	gl.glPushMatrix();	// go to the current maze location and push
 	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
 				
-	            if (isWall(i,0,j)) {
+	            if (isWall(i,j)) {
 			    	drawTexturedWall(gl, (float) SQUARE_SIZE);}
 	            
 	            gl.glPopMatrix();}} // pop
@@ -397,7 +404,7 @@ public class Maze implements VisibleObject {
 	        	gl.glPushMatrix();	// go to the current maze location and push
 	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
 				
-	            if (!isWall(i,0,j)) {
+	            if (!isWall(i,j)) {
 			    	drawTexturedFloor(gl, (float) SQUARE_SIZE);}
 	            
 	            gl.glPopMatrix();}} // pop
@@ -412,7 +419,7 @@ public class Maze implements VisibleObject {
 	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
 	            gl.glRotated(180, 0, 0, 1);
 	            
-	            if (!isWall(i,0,j)) {
+	            if (!isWall(i,j)) {
 			    	drawTexturedFloor(gl, (float) SQUARE_SIZE);}
 	            
 	            gl.glPopMatrix();}} // pop
