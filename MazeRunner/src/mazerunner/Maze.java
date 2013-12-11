@@ -3,7 +3,6 @@ import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -288,7 +287,7 @@ public class Maze implements VisibleObject {
 		for (int i=0; i<factors.length; i++) {
 			numPl += factors[i];}
 		
-		System.out.println("number of possible locations: " + numPl);
+//		System.out.println("number of possible locations: " + numPl);
 		
 		// set the previous location factor to zero if there are multiple locations
 		if (numPl > 1 && possibleLocations.contains(enemy.getMemory()))
@@ -331,7 +330,7 @@ public class Maze implements VisibleObject {
 				nextLocationIndex = i;
 				break;}}
 		
-		System.out.println("nextLocationIndex: " + nextLocationIndex);
+//		System.out.println("nextLocationIndex: " + nextLocationIndex);
 		
 		Point nextLocation = possibleLocations.get(nextLocationIndex);
 		control.setTarget( 	((double) nextLocation.x + 0.5) * SQUARE_SIZE,
