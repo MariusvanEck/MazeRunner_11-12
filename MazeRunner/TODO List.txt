@@ -1,7 +1,7 @@
 + GLOBAL
 	- [TODO] Resource management (unload CPU if nothing changes)
 	- [TODO] Fix when the window is not focused, that the mouse robot stops setting the mouse to a specified point
-	- [TODO] Add glEnable(GL_CULL_FACE) and glCulllFace(GL_BACK); So there will be no backsides drawn 
+	- [DONE] Add glEnable(GL_CULL_FACE) and glCulllFace(GL_BACK); So there will be no backsides drawn 
 	
 	+ File management
 		- [TODO] Set up a Database
@@ -17,8 +17,8 @@
 	+ Loader
 		- [DONE] Make a model loader
 		- [TODO] textures
-		- [TODO] lighting
-		- [InProgress] Shaders
+		- [DONE] lighting
+		- [DONE] Shaders
 
 + Loot
 	+ Food
