@@ -1,0 +1,49 @@
++ GLOBAL
+	- [TODO] Resource management (unload CPU if nothing changes)
+	- [TODO] Fix when the window is not focused, that the mouse robot stops setting the mouse to a specified point
+	- [TODO] Add glEnable(GL_CULL_FACE) and glCulllFace(GL_BACK); So there will be no backsides drawn 
+	
+	+ File management
+		- [TODO] Set up a Database
+		- [TODO] Store Levels, highscore, settings in database
+		-  
+
++ Models
+	+ Create different models
+		- [TODO] Enemy's
+		- [TODO] Loot
+		- 
+	
+	+ Loader
+		- [DONE] Make a model loader
+		- [TODO] textures
+		- [TODO] lighting
+		- [InProgress] Shaders
+
++ Loot
+	+ Food
+		- [TODO] create different kinds of food
+	+ Weapons
+		- [InProgress] Stick
+		- [TODO] Sword
+		- [TODO] Projectile weapon
+		- [TODO] More weapons
+	+ Other
+		- [TODO] Do we want other kind of loot?
+
++ Menu
+	+Option Menu
+		- [TODO] Make a GUI to manipulate the settings
+
++ Level
+	+ Stair
+		- [TODO] Draw the stair
+		- [TODO] Create a stair model/texture
+		-
++ Creature
+	- [DONE] Make MAX_HP "protected double" instead of "public static final double"
+			 so it can be different per type of player/enemy
+	- [DONE] Give Creature a weapon slot (private Weapon weapon)
+	- [DONE] Give Creature a model
+	- [TODO] Fix that a creature can't walk through an other creature
+
