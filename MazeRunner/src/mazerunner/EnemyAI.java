@@ -56,10 +56,8 @@ public class EnemyAI{
 				control.targets.add(0, inBetweenTarget);}
 			
 			//TODO activate derivePlayerVisible
-			
 			boolean wasPlayerVisible = enemy.isPlayerVisible();
-			boolean isPlayerVisible = false;
-			//derivePlayerVisible();			
+			boolean isPlayerVisible = derivePlayerVisible();			
 			
 			if (isPlayerVisible) {
 				// if the player is and was visible update the targets player location
