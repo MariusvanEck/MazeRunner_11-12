@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.vecmath.Vector3f;
 
+import mazerunner.Maze;
+
 // Need to use GL VBO for better performance
 public class Model {
 	protected List<Vector3f> vertices = new ArrayList<Vector3f>();
@@ -39,10 +41,18 @@ public class Model {
 		try{
 			Model temp = OBJLoader.loadModel(new File(file));
 			vertices = temp.vertices;
+			float min=0,max=0;
+			for(Vector3f vec3 : vertices){ // de scale moet afhangen van Maze.SQUERESIZE
+				if(min > vec3.y)
+					min = vec3.y;
+				else if(max < vec3.y)
+					max = vec3.y;
+			}
+			double scale = .75*Maze.SQUARE_SIZE/(max-min);
 			for(Vector3f vec3 : vertices){
-				vec3.x *= .25f;
-				vec3.y *= .25f;
-				vec3.z *= .25f;
+				vec3.x *= scale; 
+				vec3.y *= scale;
+				vec3.z *= scale;
 			}
 			normals = temp.normals;
 			faces = temp.faces;
