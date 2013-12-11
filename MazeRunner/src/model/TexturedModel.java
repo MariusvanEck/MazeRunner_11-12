@@ -158,15 +158,14 @@ public class TexturedModel {
 		gl.glCullFace(GL.GL_BACK);
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
-		gl.glColor3f(0.4f,0.27f,0.17f);
 	}
 	
-	public void render(double x,double y,double z){
+	public void render(double angle,double x,double y,double z){
 		if(!m.isLoaded()) // there is nothing to render
 			return;
 		
-		// TODO: Add the VBO render code
 		gl.glTranslated(x, y, z);
+		gl.glRotated(angle, 0, 1, 0);
 		gl.glUseProgram(shaderProgramHandle);
 		gl.glUniform1f(diffuseModifierUniform, 1.0f);
 		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);
@@ -179,8 +178,6 @@ public class TexturedModel {
 		
 		gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
-		
-		gl.glColor3f(0.4f, 0.27f, 0.17f); // Depicted
 		
 		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10f);
 		gl.glDrawArrays(GL.GL_TRIANGLES, 0, m.faces.size()*3);

@@ -39,6 +39,11 @@ public class Model {
 		try{
 			Model temp = OBJLoader.loadModel(new File(file));
 			vertices = temp.vertices;
+			for(Vector3f vec3 : vertices){
+				vec3.x *= .25f;
+				vec3.y *= .25f;
+				vec3.z *= .25f;
+			}
 			normals = temp.normals;
 			faces = temp.faces;
 			loaded = true;
