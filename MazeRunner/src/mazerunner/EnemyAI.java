@@ -33,6 +33,7 @@ public class EnemyAI{
 		
 		this.enemies = new ArrayList<Enemy>();
 		enemies.add(new Enemy(2, 0, 4, 180, 50,	null, "models/test.obj"));
+		enemies.add(new Enemy(3, 0, 7, 180, 50,	null, "models/test.obj"));
 	}
 	
 	/**
@@ -54,8 +55,11 @@ public class EnemyAI{
 						maze.avoidWall(enemy, control.targets.get(control.targets.size()-1), 0.2);
 				control.targets.add(0, inBetweenTarget);}
 			
+			//TODO activate derivePlayerVisible
+			
 			boolean wasPlayerVisible = enemy.isPlayerVisible();
-			boolean isPlayerVisible = derivePlayerVisible();			
+			boolean isPlayerVisible = false;
+			//derivePlayerVisible();			
 			
 			if (isPlayerVisible) {
 				// if the player is and was visible update the targets player location
