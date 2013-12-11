@@ -41,19 +41,19 @@ public class Model {
 		try{
 			Model temp = OBJLoader.loadModel(new File(file));
 			vertices = temp.vertices;
+			// Determine the height of the model
 			float min=0,max=0;
-			for(Vector3f vec3 : vertices){ // de scale moet afhangen van Maze.SQUERESIZE
+			for(Vector3f vec3 : vertices){
 				if(min > vec3.y)
 					min = vec3.y;
 				else if(max < vec3.y)
 					max = vec3.y;
 			}
+			// rescale the model
 			double scale = .75*Maze.SQUARE_SIZE/(max-min);
-			for(Vector3f vec3 : vertices){
-				vec3.x *= scale; 
-				vec3.y *= scale;
-				vec3.z *= scale;
-			}
+			for(Vector3f vec3 : vertices)
+				vec3.scale((float)scale);
+			
 			normals = temp.normals;
 			faces = temp.faces;
 			loaded = true;
