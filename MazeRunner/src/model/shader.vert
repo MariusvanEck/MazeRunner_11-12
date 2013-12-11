@@ -1,3 +1,5 @@
+#version 410 compatibility
+
 varying vec3 color;
 
 uniform float diffuseIntensityModifier;
@@ -21,14 +23,14 @@ void main(){
 	// the surface normal and the light direction vectors and stores the value in a scalar.
 	// If the value is lower than 0, the light is messed up and we don't want
 	// to show it
-	float diffuseLightIntensity = diffuseIntensityModifier*max(0,dot(surfaceNormal, lightDirection));
+	float diffuseLightIntensity = diffuseIntensityModifier * max(0,dot(surfaceNormal, lightDirection));
 	
 	// Sets the color (which is passed to the fragment program) to the concatenation
 	// of the material color and the diffuse light intensity.
 	color.rgb = diffuseLightIntensity * gl_Color.rgb;
 	
 	// Adds ambient color to the color so even the darkest part equals ambientColor.
-	//color += gl_LightModel.ambient.rgb;
+	color += gl_LightModel.ambient.rgb;
 	
 	
 	// Calculates the direction of the reflectionDirection by using the method reflect, wich takes
@@ -40,17 +42,17 @@ void main(){
 	
 	// Stores the dot=product of the surface normal and the direction of the reflection
 	// in a scalar. Also checks if the value is negative. If so, the scalar is set to 0
-	float specular = max(0.0,dot(surfaceNormal,reflectiondirection));
+	float specular = max(0.0,dot(surfaceNormal,reflectionDirection));
 	
 	if(diffuseLightIntensity != 0){
 		// Enhances the specular scalar value by raising it to the exponent of the shininess.
 		float fspecular = pow(specular,gl_FrontMaterial.shininess);
 		// Adds the specular value to the color.
-		color.rgb += vec3(fpecular,fspecular,fspecular);
+		color.rgb *= fspecular;
 	}
 	
 	// Retrieves the position of the vertex in clip space my multiplying it by the modelviw-
 	// projection matrix and stores it in the built-in output variable gl_Position.
-	gl_Position = gl_ModelviewProjectionMatrix * gl_vertex;
+	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 
 }
