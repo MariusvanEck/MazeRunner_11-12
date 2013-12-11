@@ -143,6 +143,7 @@ public class MazeRunner {
 		
 		try {
 			textures.put("wall", TextureIO.newTexture(new File("textures\\dungeon_wall.jpg"), false));
+			textures.put("stairL", TextureIO.newTexture(new File("textures\\dungeon_stairL.jpg"), false));
 			textures.put("floor", TextureIO.newTexture(new File("textures\\dungeon_floor.jpg"), false));}
 		catch (Exception e) {e.printStackTrace(); System.exit(0);}
 	}

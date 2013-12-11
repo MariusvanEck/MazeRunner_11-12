@@ -124,8 +124,8 @@ public class Maze implements VisibleObject {
 	 * @param z		the z-coordinate of the location to check
 	 * @return		whether there is a stair at maze[x][z][y]
 	 */
-	public boolean isStair(int x,int y,int z){
-		if(x >= 0 && x < MAZE_SIZE && y >= 0 && y < LEVEL_SIZE && z >= 0 && z < MAZE_SIZE)
+	public boolean isStair(int x ,int z){
+		if(x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE)
 			return level[x][z] == 11;
 		return false;
 	}
@@ -149,7 +149,7 @@ public class Maze implements VisibleObject {
 		int gXmax = convertToGridX(x+objectSize*SQUARE_SIZE);
 		int gZmin = convertToGridZ(z-objectSize*SQUARE_SIZE);
 		int gZmax = convertToGridZ(z+objectSize*SQUARE_SIZE);
-		return 	isWall(gXmin,gZmin) || isWall(gXmax, gZmax) ||
+		return 	isWall(gXmin, gZmin) || isWall(gXmax, gZmax) ||
 				isWall(gXmin, gZmax) || isWall(gXmax, gZmin) ||
 				isWall(gXmin, gZmin) || isWall(gXmax, gZmax) ||
 				isWall(gXmin, gZmax) || isWall(gXmax, gZmin);
@@ -167,19 +167,31 @@ public class Maze implements VisibleObject {
 	 * @param z		the z-coordinate of the location to check
 	 * @return		whether there is a stair at maze[x][z][y]
 	 */
-	public boolean isStair(double x,double y,double z){
+//	public boolean isStair(double x,double y,double z){
+//		int gXmin = convertToGridX(x-0.1*SQUARE_SIZE);
+//		int gXmax = convertToGridX(x+0.1*SQUARE_SIZE);
+//		int gYmin = convertToGridX(y-0.1*SQUARE_SIZE);
+//		int gYmax = convertToGridX(y+0.1*SQUARE_SIZE);
+//		int gZmin = convertToGridZ(z-0.1*SQUARE_SIZE);
+//		int gZmax = convertToGridZ(z+0.1*SQUARE_SIZE);
+//		
+//		return 	isStair(gXmin,gYmin,gZmin) || isStair(gXmax,gYmin,gZmax) ||
+//				isStair(gXmin,gYmin,gZmax) || isStair(gXmax,gYmin,gZmin) ||
+//				isStair(gXmin,gYmax,gZmin) || isStair(gXmax,gYmax,gZmax) ||
+//				isStair(gXmin,gYmax,gZmax) || isStair(gXmax,gYmax,gZmin);		
+//	}
+	//kan weg? ^
+	
+	public boolean isStair(double x, double z){
 		int gXmin = convertToGridX(x-0.1*SQUARE_SIZE);
 		int gXmax = convertToGridX(x+0.1*SQUARE_SIZE);
-		int gYmin = convertToGridX(y-0.1*SQUARE_SIZE);
-		int gYmax = convertToGridX(y+0.1*SQUARE_SIZE);
 		int gZmin = convertToGridZ(z-0.1*SQUARE_SIZE);
 		int gZmax = convertToGridZ(z+0.1*SQUARE_SIZE);
 		
-		return 	isStair(gXmin,gYmin,gZmin) || isStair(gXmax,gYmin,gZmax) ||
-				isStair(gXmin,gYmin,gZmax) || isStair(gXmax,gYmin,gZmin) ||
-				isStair(gXmin,gYmax,gZmin) || isStair(gXmax,gYmax,gZmax) ||
-				isStair(gXmin,gYmax,gZmax) || isStair(gXmax,gYmax,gZmin);
-				
+		return 	isStair(gXmin,gZmin) || isStair(gXmax,gZmax) ||
+				isStair(gXmin,gZmax) || isStair(gXmax,gZmin) ||
+				isStair(gXmin,gZmin) || isStair(gXmax,gZmax) ||
+				isStair(gXmin,gZmax) || isStair(gXmax,gZmin);			
 	}
 	
 	
@@ -302,6 +314,20 @@ public class Maze implements VisibleObject {
 	            
 	            gl.glPopMatrix();}} // pop
 		currentTexture.disable(); // disable roof texture
+		
+		//// stairsL ////
+		bindCurrentTexture("stairL"); // bind stairL texture
+		for(int i=0; i<MAZE_SIZE; i++) {
+	        for(int j=0; j<MAZE_SIZE; j++) {
+	        	
+	        	gl.glPushMatrix();	// go to the current maze location and push
+	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
+	            
+	            if (isStair(i,j)) {
+			    	drawTexturedStairL(gl, (float) SQUARE_SIZE);}
+	            
+	            gl.glPopMatrix();}} // pop
+		currentTexture.disable(); // disable stairL texture
 	}
 	
 	/**
@@ -352,6 +378,23 @@ public class Maze implements VisibleObject {
 		    gl.glTexCoord2f(1f, 0f); gl.glVertex3f( s,  -s,  s);  // Bottom Right Of The Texture and Quad
 		    gl.glTexCoord2f(1f, 1f); gl.glVertex3f( s,  -s, -s);  // Top Right Of The Texture and Quad
 	    gl.glEnd();
+	}
+	
+	/**
+	 * drawTexturedStairL(gl, size) draws the lower part of the stairs
+	 * around the current point, applying the enabled texture
+	 */
+	public static void drawTexturedStairL(GL gl, float size) {
+        float s = size/2;
+		
+        gl.glBegin(GL.GL_QUADS);
+	        // Top Face
+        	gl.glNormal3f(0, 0, 1);
+	        gl.glTexCoord2f(1, 1); gl.glVertex3f(-s, -s,  s);  // Bottom Left Of The Texture and Quad
+	        gl.glTexCoord2f(1, 0); gl.glVertex3f( s, -s,  s);  // Bottom Right Of The Texture and Quad
+	        gl.glTexCoord2f(0, 0); gl.glVertex3f( s,  0,  -s);  // Top Right Of The Texture and Quad
+	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -s,  0,  -s);  // Top Left Of The Texture and Quad
+        gl.glEnd();
 	}
 
 	
