@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import javax.media.opengl.GL;
+
 public class EnemyAI{
 	
 	private Maze maze;
@@ -23,7 +25,7 @@ public class EnemyAI{
 	 * @param player	the player
 	 * @param maze		the maze
 	 */
-	public EnemyAI(Player player, Maze maze) {
+	public EnemyAI(GL gl,Player player, Maze maze) {
 		this.maze = maze;
 		this.player = player;
 		this.memory = new ArrayList<Point>();
@@ -41,7 +43,7 @@ public class EnemyAI{
 			} while (maze.isWall(x, z));
 				
 			// add an enemy
-			enemies.add(new Enemy(x, 0, z, rnd.nextDouble()*360 - 180, 100, null, "models/test.obj"));}
+			enemies.add(new Enemy(gl,x, 0, z, rnd.nextDouble()*360 - 180, 100, null, "models/test.obj"));}
 	}
 	
 	/**

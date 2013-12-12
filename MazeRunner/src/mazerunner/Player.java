@@ -2,6 +2,8 @@ package mazerunner;
 
 import java.util.Iterator;
 
+import javax.media.opengl.GL;
+
 import loot.*;
 
 /**
@@ -39,8 +41,8 @@ public class Player extends Creature {
 	 * @param hitpoints	The hit points (HP) of the player
 	 * @param weapon	The weapon equipped by the player (null if not equipped)
 	 */
-	public Player(LootController lootController,double x,double y,double z,double h,double v,double hitpoints,Weapon weapon){
-		super(x,y,z,hitpoints,weapon,null);
+	public Player(GL gl,LootController lootController,double x,double y,double z,double h,double v,double hitpoints,Weapon weapon){
+		super(gl,x,y,z,hitpoints,weapon,null);
 		horAngle = h;
 		verAngle = v;
 		speed = 0.01;

@@ -1,7 +1,5 @@
 package model;
 
-import gamestate.GameStateManager;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,9 +22,10 @@ public class TexturedModel {
 	private int diffuseModifierUniform;
 	
 	private  Model m;
-	private GL gl = GameStateManager.getGl();
+	private GL gl;
 	
-	public TexturedModel(Model model){
+	public TexturedModel(GL gl,Model model){
+		this.gl = gl;
 		this.m = model;
 		this.setUpVBOs();
 		this.setupShaders();

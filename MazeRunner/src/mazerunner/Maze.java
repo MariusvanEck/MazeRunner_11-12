@@ -1,14 +1,11 @@
 package mazerunner;
-import gamestate.GameStateManager;
 
 import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.media.opengl.GL;
-
 import com.sun.opengl.util.texture.Texture;
 
 /**
@@ -27,6 +24,15 @@ public class Maze implements VisibleObject {
 	private ArrayList<int[][]> maze;
 	private int[][] level;
 	private ArrayList<Stair> stairs = new ArrayList<Stair>();
+	private GL gl; 
+	
+	public Maze(GL gl,String file,HashMap<String,Texture> textures){
+		this.gl = gl;
+		this.textures = textures;
+		
+		this.load(file);
+	}
+	
 	
 	public void load(String file){
 		try{     
@@ -45,19 +51,19 @@ public class Maze implements VisibleObject {
 						if(maze.get(i)[x][z] == 11){
 							//WEST
 							if (maze.get(i)[x+1][z] == 13){
-								stairs.add(new Stair(i,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+								stairs.add(new Stair(gl,i,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 							//EAST
 							else if (maze.get(i)[x-1][z] == 13){
-								stairs.add(new Stair(i,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+								stairs.add(new Stair(gl,i,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 							//SOUTH
 							else if (maze.get(i)[x][z-1] == 13){
-								stairs.add(new Stair(i,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+								stairs.add(new Stair(gl,i,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 							//North
 							else if (maze.get(i)[x][z+1] == 13){
-								stairs.add(new Stair(i,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+								stairs.add(new Stair(gl,i,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 						}
 					}
@@ -282,7 +288,6 @@ public class Maze implements VisibleObject {
 	 * maze display function
 	 */
 	public void display() {
-		GL gl = GameStateManager.gl;
 		// Set the materials
 		float colour[] = { 1f, 1f, 1f, 1f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, colour, 0);	

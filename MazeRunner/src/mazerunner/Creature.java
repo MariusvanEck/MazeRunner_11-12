@@ -1,5 +1,7 @@
 package mazerunner;
 
+import javax.media.opengl.GL;
+
 import loot.Weapon;
 import model.Model;
 import model.TexturedModel;
@@ -24,14 +26,14 @@ public abstract class Creature extends GameObject {
 	 * @param weapon			The weapon the creature has (null if no weapon)
 	 * @param modelFileLocation	The location of the model (.obj) file
 	 */
-	public Creature(double x, double y, double z,double hitpoints,Weapon weapon,String modelFileLocation){
+	public Creature(GL gl,double x, double y, double z,double hitpoints,Weapon weapon,String modelFileLocation){
 		super(x,y,z);
 		this.hitpoints = hitpoints;
 		this.weapon = weapon;
 		if(this.weapon != null) // if Creature has no weapon weapon will be null
 			this.weapon.setEquipped(true);
 		if(modelFileLocation != null) // if Creature has no model the string will be null
-			texturedModel = new TexturedModel(new Model(modelFileLocation,0.75f));
+			texturedModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f));
 	}
 	
 	/**

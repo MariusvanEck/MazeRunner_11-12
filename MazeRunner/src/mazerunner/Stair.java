@@ -1,5 +1,7 @@
 package mazerunner;
 
+import javax.media.opengl.GL;
+
 import model.Model;
 import model.TexturedModel;
 
@@ -10,14 +12,14 @@ public class Stair implements VisibleObject{
 	private double angle;
 	
 	
-	public Stair(double level,double lowerX,double lowerZ,double upperX,double upperZ,String modelLocation){
+	public Stair(GL gl,double level,double lowerX,double lowerZ,double upperX,double upperZ,String modelLocation){
 		this.lowerX = lowerX;
 		this.lowerY = level;
 		this.lowerZ = lowerZ;
 		
 		this.upperX = upperX;
 		this.upperZ = upperZ;
-		this.texturedModel = new TexturedModel(new Model(modelLocation,1f));
+		this.texturedModel = new TexturedModel(gl,new Model(modelLocation,1f));
 		
 		this.angle = 180; // North 0
 		if(lowerZ > upperZ)

@@ -49,4 +49,14 @@ public class DataBase {
 			super.finalize();
 		}
 	}
+	
+	private static boolean doesTableExists(String tableName,Connection conn) throws SQLException{
+		DatabaseMetaData dbmd = conn.getMetaData(); 
+		ResultSet rs = dbmd.getTables(null, null, tableName, null);
+		
+		if(rs.next())
+			return rs.getRow() == 1;
+		
+		return false;
+	}
 }

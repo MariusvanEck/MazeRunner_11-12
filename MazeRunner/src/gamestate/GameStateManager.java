@@ -52,7 +52,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	
 	private Cursor blankCursor;										// Cursor for ingame state
 	
-	public static GL gl;
+	public static GL gl; // This is temp untill Loot have models to render
 	
 	/**
 	 * Initialises the complete game.
@@ -301,7 +301,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	private void updateGameState(GL gl) {
 		// setup new game if required
 		if (input.isNewGame()) {
-			mazeRunner = new MazeRunner(input);
+			mazeRunner = new MazeRunner(gl,input);
 			input.setNewGame(false);}
 		
 		// gameState initialisation 
@@ -354,12 +354,12 @@ public class GameStateManager extends Frame implements GLEventListener{
 	}
 
 
-	public static GL getGl() {
+	public GL getGl() {
 		return gl;
 	}
 
 
 	public void setGl(GL gl) {
-		GameStateManager.gl = gl;
+		this.gl = gl;
 	}
 }

@@ -1,6 +1,9 @@
 package mazerunner;
 
 import java.awt.Point;
+
+import javax.media.opengl.GL;
+
 import loot.Weapon;
 
 /**
@@ -34,10 +37,10 @@ public class Enemy extends Creature implements VisibleObject{
 	 * @param weapon			The weapon of the Enemy
 	 * @param modelFileLocation The location of the model file
 	 */
-	public Enemy(int x, int y, int z, double horAngle, double hitpoints,
+	public Enemy(GL gl,int x, int y, int z, double horAngle, double hitpoints,
 			Weapon weapon, String modelFileLocation) {
 		// Set the initial position and viewing direction of the enemy.
-		super(	x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
+		super(gl,x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
 				y*Maze.SQUARE_SIZE, 
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
 				hitpoints, weapon, modelFileLocation);

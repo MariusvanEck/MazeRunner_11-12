@@ -56,7 +56,7 @@ public class MazeRunner {
 	/**
 	 * Initialises the the INGAME part of the game.
 	 */
-	public MazeRunner(UserInput input) {
+	public MazeRunner(GL gl,UserInput input) {
 		// set input
 		this.input = input;
 		
@@ -64,7 +64,7 @@ public class MazeRunner {
 		loadTextures();
 		
 		// Initialise all the objects
-		initObjects();
+		initObjects(gl);
 	}
 	
 	/**
@@ -82,15 +82,13 @@ public class MazeRunner {
 	 * visualObjects list of MazeRunner through the add method, so it will be displayed 
 	 * automagically. 
 	 */
-	private void initObjects()	{
+	private void initObjects(GL gl)	{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		maze = new Maze();
-		maze.load("mazes\\traptest2.maze");
-		maze.setTextures(textures);
+		maze = new Maze(gl,"mazes\\traptest2.maze",textures);
 		visibleObjects.add(maze);
 		
 		// Initialise the loot
@@ -99,7 +97,7 @@ public class MazeRunner {
 		
 		
 		// Initialise the player.
-		player = new Player(lootController,6 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x-position
+		player = new Player(gl,lootController,6 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x-position
 							Maze.SQUARE_SIZE / 2,							// y-position
 							5 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// z-position
 							90, 0, 100,										// horizontal, vertical angle and hitpoints
@@ -107,7 +105,7 @@ public class MazeRunner {
 		
 		
 		// initialise enemies and add
-		enemyAI = new EnemyAI(player, maze);
+		enemyAI = new EnemyAI(gl,player, maze);
 		for(Enemy enemy: enemyAI.getEnemies()) {
 			visibleObjects.add(enemy);
 		}
