@@ -131,7 +131,7 @@ public class HeadsUpDisplay {
 
 	public void drawHealthBar(GL gl)  {
 		 
-		double frac = player.hitpoints/Creature.MAX_HP;
+		double frac = player.hitpoints/player.maxHP;
 		int health = (int) Math.floor(((double) (2*sw/3-2))*frac);
 		    // draw health bar
 		    gl.glPushMatrix();

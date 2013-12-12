@@ -9,7 +9,7 @@ import model.TexturedModel;
  */
 public abstract class Creature extends GameObject {
 	protected double hitpoints;
-	protected static final double MAX_HP = 200;
+	protected double maxHP = 200; // can't be static final because not all the enemy's will have the same hp
 	
 	protected Weapon weapon;
 	protected TexturedModel texturedModel;			// the model of the Creature
@@ -46,12 +46,12 @@ public abstract class Creature extends GameObject {
 	 * @return true if addHP was successful false otherwise
 	 */
 	public boolean addHP(double add){
-		if(add <= 0 || hitpoints == MAX_HP)
+		if(add <= 0 || hitpoints == maxHP)
 			return false;
-		if(hitpoints + add <= MAX_HP)
+		if(hitpoints + add <= maxHP)
 			hitpoints += add;
 		else
-			hitpoints = MAX_HP;
+			hitpoints = maxHP;
 		return true;
 	}
 	

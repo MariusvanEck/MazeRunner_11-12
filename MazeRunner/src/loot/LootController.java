@@ -3,8 +3,6 @@ package loot;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.media.opengl.GL;
-
 import mazerunner.Maze;
 import mazerunner.Player;
 import mazerunner.VisibleObject;
@@ -32,9 +30,9 @@ public class LootController implements VisibleObject {
 	/**
 	 * The loot display function
 	 */
-	public void display(GL gl){
+	public void display(){
 		for(Iterator<Loot> it = lootList.iterator();it.hasNext();)
-			it.next().display(gl);
+			it.next().display();
 	}
 
 	/**

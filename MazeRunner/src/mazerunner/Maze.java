@@ -1,4 +1,6 @@
 package mazerunner;
+import gamestate.GameStateManager;
+
 import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -279,8 +281,8 @@ public class Maze implements VisibleObject {
 	/**
 	 * maze display function
 	 */
-	public void display(GL gl) {
-		
+	public void display() {
+		GL gl = GameStateManager.gl;
 		// Set the materials
 		float colour[] = { 1f, 1f, 1f, 1f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, colour, 0);	
@@ -344,7 +346,7 @@ public class Maze implements VisibleObject {
 */
 		for(Stair stair : stairs){
 			if(stair.getLowerY() == currentLevel)
-				stair.display(gl);
+				stair.display();
 		}
 	}
 	

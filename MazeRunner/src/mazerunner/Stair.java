@@ -1,7 +1,5 @@
 package mazerunner;
 
-import javax.media.opengl.GL;
-
 import model.Model;
 import model.TexturedModel;
 
@@ -44,7 +42,7 @@ public class Stair implements VisibleObject{
 	
 	
 	
-	public void display(GL gl){
+	public void display(){
 		
 		texturedModel.render(angle, lowerX, lowerY, lowerZ);
 	}

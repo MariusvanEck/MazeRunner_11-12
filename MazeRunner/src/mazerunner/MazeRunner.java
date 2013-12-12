@@ -208,7 +208,7 @@ public class MazeRunner {
 
         // Display all the visible objects of MazeRunner.
         for(Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
-        	it.next().display(gl);}
+        	it.next().display();}
         
         if(input.getGameState() == GameState.INGAME) {
 	        GameStateManager.switchTo2D(gl);

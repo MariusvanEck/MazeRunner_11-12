@@ -1,9 +1,6 @@
 package mazerunner;
 
 import java.awt.Point;
-
-import javax.media.opengl.GL;
-
 import loot.Weapon;
 
 /**
@@ -68,7 +65,7 @@ public class Enemy extends Creature implements VisibleObject{
 	 * draws the model of the enemy
 	 */
 	@Override
-	public void display(GL gl) { 
+	public void display() { 
 		if(texturedModel == null)
 			System.out.println("null");
 		else
