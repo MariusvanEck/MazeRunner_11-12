@@ -133,7 +133,9 @@ public class MazeRunner {
 		try {
 			textures.put("wall", TextureIO.newTexture(new File("textures\\dungeon_wall.jpg"), false));
 			textures.put("stairL", TextureIO.newTexture(new File("textures\\dungeon_stairL.jpg"), false));
-			textures.put("floor", TextureIO.newTexture(new File("textures\\dungeon_floor.jpg"), false));}
+			textures.put("floor", TextureIO.newTexture(new File("textures\\dungeon_floor.jpg"), false));
+			textures.put("roof", TextureIO.newTexture(new File("textures\\dungeon_roof.jpg"), false));}
+
 		catch (Exception e) {e.printStackTrace(); System.exit(0);}
 	}
 	
@@ -175,7 +177,7 @@ public class MazeRunner {
         
         // Set and enable the lighting.
         float lightPosition[] = { 5.0f, 10.0f, 5.0f, 1.0f }; 			// High up in the sky!
-        float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
+        float lightColour[] = { .6f, .6f, .6f, 1.0f };					// White light!
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
         gl.glEnable( GL.GL_LIGHTING );
