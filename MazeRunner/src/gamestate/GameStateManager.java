@@ -187,10 +187,10 @@ public class GameStateManager extends Frame implements GLEventListener{
 			switchTo3D(getGl());			// switch to 3D
 			break;
 		case PAUSE:
-			mazeRunner.display(getGl());			// display frozen mazerunner game
-			switchTo2D(getGl());					// switch to 2D
-			Pause.display(getGl(), screenWidth);	// display pause
-			switchTo3D(getGl());					// switch to 3D
+			mazeRunner.display(getGl());						// display frozen mazerunner game
+			switchTo2D(getGl());								// switch to 2D
+			Pause.display(getGl(), screenWidth, screenHeight);	// display pause
+			switchTo3D(getGl());								// switch to 3D
 			break;
 		default: 
 			System.out.println("default case display loop");

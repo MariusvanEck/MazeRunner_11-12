@@ -169,6 +169,10 @@ public class MazeRunner {
         // Enable Z-buffering.
         gl.glEnable( GL.GL_DEPTH_TEST );
         
+        // Enable alpha blending
+        gl.glEnable(GL.GL_BLEND);
+        gl.glBlendFunc(GL.GL_SRC_ALPHA,GL.GL_ONE_MINUS_SRC_ALPHA);
+        
         // Set and enable the lighting.
         float lightPosition[] = { 5.0f, 10.0f, 5.0f, 1.0f }; 			// High up in the sky!
         float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
