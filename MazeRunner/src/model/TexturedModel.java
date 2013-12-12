@@ -163,30 +163,33 @@ public class TexturedModel {
 	public void render(double angle,double x,double y,double z){
 		if(!m.isLoaded()) // there is nothing to render
 			return;
+		gl.glPushMatrix();
 		
-		gl.glTranslated(x, y, z);
-		gl.glRotated(angle, 0, 1, 0);
-		gl.glUseProgram(shaderProgramHandle);
-		gl.glUniform1f(diffuseModifierUniform, 1.0f);
-		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);
+			gl.glTranslated(x, y, z);
+			gl.glRotated(angle, 0, 1, 0);
+			gl.glUseProgram(shaderProgramHandle);
+			gl.glUniform1f(diffuseModifierUniform, 1.0f);
+			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);
+			
+			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboVertexHandle[0]);
+			gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0L);
+			
+			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboNormalHandle[0]);
+			gl.glNormalPointer(GL.GL_FLOAT, 0, 0L);
+			
+			gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
+			gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
 		
-		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboVertexHandle[0]);
-		gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0L);
-		
-		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboNormalHandle[0]);
-		gl.glNormalPointer(GL.GL_FLOAT, 0, 0L);
-		
-		gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
-		gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
-		
-		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10f);
-		gl.glDrawArrays(GL.GL_TRIANGLES, 0, m.faces.size()*3);
-		
-		
-		gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
-		gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
-		gl.glBindBuffer(GL.GL_ARRAY_BUFFER,0); // unbind the buffer
-		gl.glUseProgram(0); // unbind the program
+			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10f);
+			gl.glDrawArrays(GL.GL_TRIANGLES, 0, m.faces.size()*3);
+			
+			
+			gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
+			gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+			gl.glBindBuffer(GL.GL_ARRAY_BUFFER,0); // unbind the buffer
+			gl.glUseProgram(0); // unbind the program
+			
+		gl.glPopMatrix();
 		
 	}
 	
