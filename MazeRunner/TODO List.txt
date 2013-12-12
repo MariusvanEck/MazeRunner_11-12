@@ -4,7 +4,7 @@
 	- [DONE] Add glEnable(GL_CULL_FACE) and glCulllFace(GL_BACK); So there will be no backsides drawn 
 	
 	+ File management
-		- [TODO] Set up a Database
+		- [DONE] Set up a Database
 		- [TODO] Store Levels, highscore, settings in database
 		-  
 
@@ -12,7 +12,7 @@
 	+ Create different models
 		- [TODO] Enemy's
 		- [TODO] Loot
-		- 
+		- [TODO] Textures
 	
 	+ Loader
 		- [DONE] Make a model loader
@@ -28,12 +28,14 @@
 		- [TODO] Sword
 		- [TODO] Projectile weapon
 		- [TODO] More weapons
+		- [TODO] Models Load + render
 	+ Other
 		- [TODO] Do we want other kind of loot?
 
 + Menu
 	+Option Menu
 		- [TODO] Make a GUI to manipulate the settings
+		- [TODO] Pimp our menu
 
 + Level
 	+ Stair
@@ -47,3 +49,5 @@
 	- [DONE] Give Creature a model
 	- [TODO] Fix that a creature can't walk through an other creature
 
++ Sound
+	- [TODO] background music (in menu)
