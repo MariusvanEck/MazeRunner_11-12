@@ -24,6 +24,7 @@ public class Maze implements VisibleObject {
 
 	private ArrayList<int[][]> maze;
 	private int[][] level;
+	private ArrayList<Stair> stairs = new ArrayList<Stair>();
 	
 	public void load(String file){
 		try{     
@@ -35,10 +36,38 @@ public class Maze implements VisibleObject {
 	      
 			maze = new ArrayList<int[][]>();
 			for (int i=0; i<LEVEL_SIZE; i++) {
-				maze.add((int[][]) omaze.readObject());}
+				maze.add((int[][]) omaze.readObject());
+				for (int z = 0; z < MAZE_SIZE; z++){
+					for(int x = 0; x < MAZE_SIZE;x++){
+						//finding stairs and orientation
+						if(maze.get(i)[x][z] == 11){
+							//WEST
+							if (maze.get(i)[x+1][z] == 13){
+								stairs.add(new Stair(i,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+							}
+							//EAST
+							else if (maze.get(i)[x-1][z] == 13){
+								stairs.add(new Stair(i,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+							}
+							//SOUTH
+							else if (maze.get(i)[x][z-1] == 13){
+								stairs.add(new Stair(i,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+							}
+							//North
+							else if (maze.get(i)[x][z+1] == 13){
+								stairs.add(new Stair(i,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+							}
+						}
+					}
+				}
+			}
 	  
 			level = maze.get(currentLevel);
-			omaze.close();    
+			omaze.close();
+			
+			
+			
+			
 		}
         catch(Exception ex){ex.printStackTrace();}
 }
@@ -126,7 +155,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isStair(int x ,int z){
 		if(x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE)
-			return level[x][z] == 11;
+			return level[x][z] == 11 || level[x][z] == 13;
 		return false;
 	}
 	
@@ -160,28 +189,12 @@ public class Maze implements VisibleObject {
 	 * by converting the double values to integer coordinates.
 	 * <p>
 	 * This method first converts the x and z to values that correspond with the grid 
-	 * defined by maze[][]. Then it calls upon isStair(int, int, int) to check for a stair.
+	 * defined by maze[][]. Then it calls upon isStair(int, int) to check for a stair.
 	 * 
 	 * @param x		the x-coordinate of the location to check
-	 * @param y		the y-coordinate of the location to check
 	 * @param z		the z-coordinate of the location to check
 	 * @return		whether there is a stair at maze[x][z][y]
 	 */
-//	public boolean isStair(double x,double y,double z){
-//		int gXmin = convertToGridX(x-0.1*SQUARE_SIZE);
-//		int gXmax = convertToGridX(x+0.1*SQUARE_SIZE);
-//		int gYmin = convertToGridX(y-0.1*SQUARE_SIZE);
-//		int gYmax = convertToGridX(y+0.1*SQUARE_SIZE);
-//		int gZmin = convertToGridZ(z-0.1*SQUARE_SIZE);
-//		int gZmax = convertToGridZ(z+0.1*SQUARE_SIZE);
-//		
-//		return 	isStair(gXmin,gYmin,gZmin) || isStair(gXmax,gYmin,gZmax) ||
-//				isStair(gXmin,gYmin,gZmax) || isStair(gXmax,gYmin,gZmin) ||
-//				isStair(gXmin,gYmax,gZmin) || isStair(gXmax,gYmax,gZmax) ||
-//				isStair(gXmin,gYmax,gZmax) || isStair(gXmax,gYmax,gZmin);		
-//	}
-	//kan weg? ^
-	
 	public boolean isStair(double x, double z){
 		int gXmin = convertToGridX(x-0.1*SQUARE_SIZE);
 		int gXmax = convertToGridX(x+0.1*SQUARE_SIZE);
@@ -316,7 +329,7 @@ public class Maze implements VisibleObject {
 		currentTexture.disable(); // disable roof texture
 		
 		//// stairsL ////
-		bindCurrentTexture("stairL"); // bind stairL texture
+/*		bindCurrentTexture("stairL"); // bind stairL texture
 		for(int i=0; i<MAZE_SIZE; i++) {
 	        for(int j=0; j<MAZE_SIZE; j++) {
 	        	
@@ -328,6 +341,11 @@ public class Maze implements VisibleObject {
 	            
 	            gl.glPopMatrix();}} // pop
 		currentTexture.disable(); // disable stairL texture
+*/
+		for(Stair stair : stairs){
+			if(stair.getLowerY() == currentLevel)
+				stair.display(gl);
+		}
 	}
 	
 	/**

@@ -89,7 +89,7 @@ public class MazeRunner {
 		
 		// Add the maze that we will be using.
 		maze = new Maze();
-		maze.load("mazes\\traptest.maze");
+		maze.load("mazes\\traptest2.maze");
 		maze.setTextures(textures);
 		visibleObjects.add(maze);
 		

@@ -15,12 +15,14 @@ public class Model {
 	protected List<Vector3f> vertices = new ArrayList<Vector3f>();
 	protected List<Vector3f> normals = new ArrayList<Vector3f>();
 	protected List<Face> faces = new ArrayList<Face>();
+	private float scale = 0;
 	
 	private boolean loaded = false;
 	
 	public Model(){}
 	
-	public Model(String file){
+	public Model(String file,float scale){
+		this.scale = scale;
 		this.load(file);
 	}
 	
@@ -50,19 +52,19 @@ public class Model {
 					max = vec3.y;
 			}
 			// rescale the model
-			double scale = .75*Maze.SQUARE_SIZE/(max-min);
+			scale *= Maze.SQUARE_SIZE/(max-min);
 			for(Vector3f vec3 : vertices)
-				vec3.scale((float)scale);
+				vec3.scale(scale);
 			
 			normals = temp.normals;
 			faces = temp.faces;
 			loaded = true;
 		}catch(FileNotFoundException e){
 			loaded = false;
-			System.err.println("File not found!");
+			System.err.println("Model: File not found!");
 		}catch(IOException e){
 			loaded = false;
-			System.out.println("Read error!");
+			System.out.println("Model: Read error!");
 		}
 	}
 	

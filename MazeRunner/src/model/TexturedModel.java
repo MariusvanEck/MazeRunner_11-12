@@ -21,7 +21,7 @@ public class TexturedModel {
 	private int vboNormalHandle[] = new int [1];
 	private int vertexShaderHandle;
 	private int fragmentShaderHandle;
-	 private int diffuseModifierUniform;
+	private int diffuseModifierUniform;
 	
 	private  Model m;
 	private GL gl = GameStateManager.getGl();
@@ -44,7 +44,6 @@ public class TexturedModel {
 		gl.glGenBuffers(1,vboVertexHandle,0);
 		gl.glGenBuffers(1,vboNormalHandle,0);
 		
-		m.load("models/test.obj");
 		if(!m.isLoaded()) // draw nothing if there is no model loaded, so stop init VBO
 			return;
 		
