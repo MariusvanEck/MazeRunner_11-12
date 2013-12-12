@@ -1,4 +1,6 @@
 package mazerunner;
+import gamestate.GameState;
+import gamestate.GameStateManager;
 import gamestate.UserInput;
 
 import java.io.File;
@@ -38,6 +40,7 @@ public class MazeRunner {
 	private Camera camera;													// the camera
 	private Maze maze; 														// the maze
 	
+	private HeadsUpDisplay headsUpDisplay;									// the headsUpDisplay overlay
 	private UserInput input;												// user input object controls the game.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); 	// Used to calculate elapsed time.
 	
@@ -117,22 +120,8 @@ public class MazeRunner {
 		player.setControl(input);
 		
 		
-//		///// TESTING EDITMAZE /////
-//		Thread mazeUpdate = new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				while (true) {
-//					boolean isWall = true;
-//					try {
-//						Thread.sleep(1000);
-//						maze.editMaze(7, 2, isWall);
-//						isWall = !isWall;
-//					} 
-//					catch (InterruptedException e) {e.printStackTrace();}	
-//				}
-//			}
-//		});
-//		mazeUpdate.start();
+		// setup headsUpDisplay
+		headsUpDisplay = new HeadsUpDisplay(player);
 	}
 	
 	/**
@@ -214,10 +203,11 @@ public class MazeRunner {
         // Display all the visible objects of MazeRunner.
         for(Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
         	it.next().display(gl);}
-
-        gl.glLoadIdentity();
-        // Flush the OpenGL buffer.
-        gl.glFlush();
+        
+        if(input.getGameState() == GameState.INGAME) {
+	        GameStateManager.switchTo2D(gl);
+	        headsUpDisplay.display(gl);
+	        GameStateManager.switchTo3D(gl);}
 	}
 
 	
@@ -241,7 +231,10 @@ public class MazeRunner {
 		updateMovement(deltaTime);
 		
 		// Update Loot
-		//lootController.update();
+		// lootController.update();
+		
+		// Update headsUpDisplay
+		headsUpDisplay.update(deltaTime);
 		
 		// Set camera according to the players position
 		updateCamera();

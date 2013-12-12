@@ -9,7 +9,7 @@ import model.TexturedModel;
  */
 public abstract class Creature extends GameObject {
 	protected double hitpoints;
-	protected double MAX_HP = 200;
+	protected static final double MAX_HP = 200;
 	
 	protected Weapon weapon;
 	protected TexturedModel texturedModel;			// the model of the Creature

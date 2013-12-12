@@ -42,16 +42,15 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * *		attributes and constructor			*
 	 * **********************************************
 	 */
+	public static int screenWidth = 600, screenHeight = 600;		// screenSize
+	private GLCanvas canvas;										// canvas for drawing
+	private GameState gameState;									// current GameState
 	
-	private int screenWidth = 600, screenHeight = 600;		// Screen size.
-	private GLCanvas canvas;								// canvas for drawing
-	private GameState gameState;							// current GameState
+	private MazeRunner mazeRunner;									// INGAME functionality
+	private MainMenu menu;											// MENU functionality
+	private UserInput input;										// Mouse and Keyboard input functionality
 	
-	private MazeRunner mazeRunner;							// INGAME functionality
-	private MainMenu menu;									// MENU functionality
-	private UserInput input;								// Mouse and Keyboard input functionality
-	
-	private Cursor blankCursor;								// Cursor for ingame state
+	private Cursor blankCursor;										// Cursor for ingame state
 	
 	public static GL gl;
 	
@@ -178,13 +177,13 @@ public class GameStateManager extends Frame implements GLEventListener{
 		switch (gameState) {
 		case INGAME:
 			updateScreenCenter();
-			mazeRunner.update();	// update mazerunner game
+			mazeRunner.update();			// update mazerunner game
 			mazeRunner.display(getGl());	// display mazerunner game
 			break;
 		case MENU:
 			switchTo2D(getGl());			// switch to 2D
-			menu.update();			// update menu
-			menu.display(getGl());		// display menu
+			menu.update();					// update menu
+			menu.display(getGl());			// display menu
 			switchTo3D(getGl());			// switch to 3D
 			break;
 		case PAUSE:
@@ -229,7 +228,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 		screenHeight = height;
 		input.setScreenSize(getSize());
 		input.setCanvasSize(canvas.getSize());
-		gl.glViewport( 0, 0, screenWidth, screenHeight );
+		gl.glViewport(0, 0, screenWidth, screenHeight);
 		
 		// Set the new projection matrix.
 		gl.glMatrixMode( GL.GL_PROJECTION );
@@ -249,7 +248,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * Switches the projection to 2D by pushing a projection and modelview matrix
 	 * Also disables 3D projection options
 	 */
-	public void switchTo2D(GL gl) {
+	public static void switchTo2D(GL gl) {
 		GLU glu = new GLU();
 		
 		// push matrices and set projection to '2D' orthogonal
@@ -274,7 +273,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * Switches the projection back to 3D by popping a projection and a modelview matrix
 	 * re-enables 3D projection options
 	 */
-	public void switchTo3D(GL gl) {
+	public static void switchTo3D(GL gl) {
 		// pop matrices
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glPopMatrix();

@@ -17,16 +17,22 @@ public abstract class Pause {
 	protected static void display(GL gl, int screenWidth) {
         GLUT glut = new GLUT();
         
-       	// get the string pixel length
-        int length = glut.glutBitmapLength(GLUT.BITMAP_9_BY_15, pauseString);
+        // draw pause box
+        gl.glPushMatrix();
+        gl.glColor4f(0, 0, 0, 1);
+        gl.glBegin(GL.GL_QUADS);
+        	gl.glVertex2d(0, 18);
+        	gl.glVertex2d(screenWidth, 18);
+        	gl.glVertex2d(screenWidth, 31);
+        	gl.glVertex2d(0, 31);
+        gl.glEnd();
         
-        // set the color
-        gl.glColor4f(0f, 1f, 0f, 1f);
-        
-        // set the string position (middle bottom)
-        gl.glRasterPos2i(screenWidth/2 - length/2, 20);
-        
-        // draw the string
-        glut.glutBitmapString(GLUT.BITMAP_9_BY_15, pauseString);
+       	// draw pause string
+        gl.glPushMatrix();
+	        int length = glut.glutBitmapLength(GLUT.BITMAP_9_BY_15, pauseString);
+	        gl.glColor4f(0f, 1f, 0f, 1f);
+	        gl.glRasterPos2i(screenWidth/2 - length/2, 20);
+	        glut.glutBitmapString(GLUT.BITMAP_9_BY_15, pauseString);
+	    gl.glPopMatrix();
 	}
 }
