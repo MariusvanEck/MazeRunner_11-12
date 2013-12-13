@@ -38,8 +38,8 @@ public class EnemyAI{
 		for (int i=0; i<2; i++) {
 			// find a location
 			do {
-				x = rnd.nextInt((int) Maze.MAZE_SIZE); 
-				z = rnd.nextInt((int) Maze.MAZE_SIZE);
+				x = rnd.nextInt(maze.getMazeSize()); 
+				z = rnd.nextInt(maze.getMazeSize());
 			} while (maze.isWall(x, z));
 				
 			// add an enemy
@@ -200,7 +200,7 @@ public class EnemyAI{
 		// multiply the factor for a point contained in the memory by (1 + memoryIndex)/(MAZE_SIZE^2)
 		for (int i=0; i<possibleLocations.size(); i++) {
 			if (memory.contains(possibleLocations.get(i))) {
-				factors[i] *= (1 + memory.indexOf(possibleLocations.get(i)))/Math.pow(Maze.MAZE_SIZE, 2);}}
+				factors[i] *= (1 + memory.indexOf(possibleLocations.get(i)))/Math.pow(maze.getMazeSize(), 2);}}
 		
 		// make factors cumulative and normalize
 		for (int i=1; i<factors.length; i++) {

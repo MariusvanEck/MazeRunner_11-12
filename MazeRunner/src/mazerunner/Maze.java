@@ -13,8 +13,8 @@ import com.sun.opengl.util.texture.Texture;
  */
 public class Maze implements VisibleObject {
 	
-	public static double MAZE_SIZE = 10;
-	public static double LEVEL_SIZE = 1;
+	private int mazeSize;
+	private int levelSize;
 	public final static double SQUARE_SIZE = 5;
 	
 	private HashMap<String,Texture> textures;			// reference to the texture hashmap
@@ -23,30 +23,31 @@ public class Maze implements VisibleObject {
 
 	private ArrayList<int[][]> maze;
 	private int[][] level;
-	private ArrayList<Stair> stairs = new ArrayList<Stair>();
+	private ArrayList<Stair> stairs;
 	private GL gl; 
 	
 	public Maze(GL gl,String file,HashMap<String,Texture> textures){
 		this.gl = gl;
 		this.textures = textures;
+		this.maze = new ArrayList<int[][]>();
+		this.stairs = new ArrayList<Stair>();
 		
 		this.load(file);
 	}
 	
-	
-	public void load(String file){
+	private void load(String file){
 		try{     
 			FileInputStream fmaze = new FileInputStream(file);
 			ObjectInputStream omaze = new ObjectInputStream(fmaze);
+			
+			// TODO: hier heb ik een (Integer) cast vervangen voor een (int) cast
+			levelSize = (int) omaze.readObject();
+			mazeSize = (int) omaze.readObject();
 	      
-			LEVEL_SIZE = (Integer) omaze.readObject();
-			MAZE_SIZE = (Integer) omaze.readObject();
-	      
-			maze = new ArrayList<int[][]>();
-			for (int i=0; i<LEVEL_SIZE; i++) {
+			for (int i=0; i<levelSize; i++) {
 				maze.add((int[][]) omaze.readObject());
-				for (int z = 0; z < MAZE_SIZE; z++){
-					for(int x = 0; x < MAZE_SIZE;x++){
+				for (int z = 0; z < mazeSize; z++){
+					for(int x = 0; x < mazeSize;x++){
 						//finding stairs and orientation
 						if(maze.get(i)[x][z] == 11){
 							//WEST
@@ -99,7 +100,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isWall( int x, int z )
 	{
-		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
+		if( x >= 0 && x < mazeSize && z >= 0 && z < mazeSize )
 			return level[x][z] == 1;
 		else
 			return false;
@@ -162,7 +163,7 @@ public class Maze implements VisibleObject {
 	 * @return		whether there is a stair at maze[x][z][y]
 	 */
 	public boolean isStair(int x ,int z){
-		if(x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE)
+		if(x >= 0 && x < mazeSize && z >= 0 && z < mazeSize)
 			return level[x][z] == 11 || level[x][z] == 13;
 		return false;
 	}
@@ -294,8 +295,8 @@ public class Maze implements VisibleObject {
 		
 		//// walls ////
 		bindCurrentTexture("wall"); // bind wall texture
-		for(int i=0; i<MAZE_SIZE; i++) {
-	        for(int j=0; j<MAZE_SIZE; j++) {
+		for(int i=0; i<mazeSize; i++) {
+	        for(int j=0; j<mazeSize; j++) {
 	        	
 	        	gl.glPushMatrix();	// go to the current maze location and push
 	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
@@ -308,8 +309,8 @@ public class Maze implements VisibleObject {
 		
 		//// floors ////
 		bindCurrentTexture("floor"); // bind floor texture
-		for(int i=0; i<MAZE_SIZE; i++) {
-	        for(int j=0; j<MAZE_SIZE; j++) {
+		for(int i=0; i<mazeSize; i++) {
+	        for(int j=0; j<mazeSize; j++) {
 	        	
 	        	gl.glPushMatrix();	// go to the current maze location and push
 	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
@@ -322,8 +323,8 @@ public class Maze implements VisibleObject {
 		
 		//// roofs ////
 		bindCurrentTexture("floor"); // bind roof texture
-		for(int i=0; i<MAZE_SIZE; i++) {
-	        for(int j=0; j<MAZE_SIZE; j++) {
+		for(int i=0; i<mazeSize; i++) {
+	        for(int j=0; j<mazeSize; j++) {
 	        	
 	        	gl.glPushMatrix();	// go to the current maze location and push
 	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
@@ -459,5 +460,13 @@ public class Maze implements VisibleObject {
 		currentTexture = textures.get(textureName);
 		currentTexture.enable();
 		currentTexture.bind();
+	}
+	
+	
+	public int getMazeSize(){
+		return mazeSize;
+	}
+	public int getLevelSize(){
+		return levelSize;
 	}
 }

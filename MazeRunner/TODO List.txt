@@ -5,8 +5,8 @@
 	
 	+ File management
 		- [DONE] Set up a Database
-		- [TODO] Store Levels, highscore, settings in database
-		-  
+		- [inProgress] Store Levels, highscore, settings in database
+		- [TODO] Read the data from DataBase
 
 + Models
 	+ Create different models
