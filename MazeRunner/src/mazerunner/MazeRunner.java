@@ -17,6 +17,8 @@ import loot.LootController;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
+import database.DataBase;
+
 /** 
  * MazeRunner is the class representing the INGAME GameState
  * 
@@ -45,6 +47,7 @@ public class MazeRunner {
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); 	// Used to calculate elapsed time.
 	
 	private HashMap<String, Texture> textures;
+	private DataBase dataBase;
 
 
 	/*
@@ -57,6 +60,9 @@ public class MazeRunner {
 	 * Initialises the the INGAME part of the game.
 	 */
 	public MazeRunner(GL gl,UserInput input) {
+		// init the DataBase
+		this.dataBase = new DataBase();
+		
 		// set input
 		this.input = input;
 		
@@ -88,7 +94,7 @@ public class MazeRunner {
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		maze = new Maze(gl,"mazes\\traptest2.maze",textures);
+		maze = new Maze(gl,"mazes/inlaadmaze.maze",textures);
 		visibleObjects.add(maze);
 		
 		// Initialise the loot

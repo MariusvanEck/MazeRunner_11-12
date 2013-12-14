@@ -1,12 +1,21 @@
 package mazerunner;
 
 import java.awt.Point;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.media.opengl.GL;
+
+import cast.Cast;
+import cast.InvalidByteArraySize;
+
 import com.sun.opengl.util.texture.Texture;
+
+import database.DataBase;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -24,7 +33,7 @@ public class Maze implements VisibleObject {
 	private ArrayList<int[][]> maze;
 	private int[][] level;
 	private ArrayList<Stair> stairs;
-	private GL gl; 
+	private GL gl;
 	
 	public Maze(GL gl,String file,HashMap<String,Texture> textures){
 		this.gl = gl;
@@ -33,6 +42,37 @@ public class Maze implements VisibleObject {
 		this.stairs = new ArrayList<Stair>();
 		
 		this.load(file);
+	}
+	
+	public Maze(GL gl,DataBase dataBase,String name,HashMap<String,Texture> textures){
+		this.gl = gl;
+		this.textures = textures;
+		this.maze = new ArrayList<int[][]>();
+		this.stairs = new ArrayList<Stair>();
+		
+		this.load(dataBase,name);
+	}
+	
+	
+	private void load(DataBase dataBase,String name){
+		try{
+			ByteArrayInputStream in = dataBase.getMap(name);
+			byte[] b = new byte[4];
+			
+			if(in.read(b) == -1)
+				throw new IOException("Corrupted file");
+			levelSize = Cast.byteArrayToInt(b);
+			
+			if(in.read(b) == -1)
+				throw new IOException("Corrupted file");
+			mazeSize = Cast.byteArrayToInt(b);
+			
+			
+			
+			
+		}catch(IOException | InvalidByteArraySize e){
+			System.err.println("Maze: " + e.getMessage());
+		}
 	}
 	
 	private void load(String file){
@@ -288,6 +328,7 @@ public class Maze implements VisibleObject {
 	/**
 	 * maze display function
 	 */
+	@Override
 	public void display() {
 		// Set the materials
 		float colour[] = { 1f, 1f, 1f, 1f };

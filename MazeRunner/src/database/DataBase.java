@@ -1,5 +1,6 @@
 package database;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
@@ -8,7 +9,7 @@ public class DataBase {
 	private Connection connection = null;
 	private Statement statement = null;
 	private final String[] DEFAULT_MAZES_NAME = {"Map01","Map02"};
-	private final String[] DEFAULT_MAZES_LOCATION = {"mazes/Map01.maze","mazes/Map02.maze"};
+	private final String[] DEFAULT_MAZES_LOCATION = {"mazes/inlaadmaze.maze","mazes/traptest.maze"};
 	
 	public DataBase(){
 		try {
@@ -56,6 +57,7 @@ public class DataBase {
 			}
 	}
 	
+	@Override
 	protected void finalize() throws Throwable{
 		try{
 			this.cleanUp();
@@ -89,7 +91,48 @@ public class DataBase {
 	}
 	
 	
+	public ByteArrayInputStream getMap(String name){
+		try{
+			ResultSet rs = statement.executeQuery("SELECT Data " +
+												"FROM Map " +
+												"WHERE Map.Name = '" + name + "';");
+			if(rs.next()){
+				byte[] res = rs.getBytes("Data");
+				return new ByteArrayInputStream(res);
+			}
+			else{
+				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
+				return null;
+			}
+		}catch(SQLException e){
+			System.err.println("DataBase: " + e.getMessage());
+			return null;
+		}
+	}
 	
+	/* Doesn't work
+	 * - The Map.ID is always 0 don't know why
+	 * - Something goes wrong in the Query 
+	 */
+	public ByteArrayInputStream getMap(int ID){
+		
+		try{
+			ResultSet rs = statement.executeQuery("SELECT Data " +
+												"FROM Map " +
+												"WHERE Map.ID = '" + ID + "';"); // my guess is that the integer is the problem
+			if(rs.next()){
+				byte[] res = rs.getBytes("Data");
+				return new ByteArrayInputStream(res);
+			}
+			else{
+				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
+				return null;
+			}
+		}catch(SQLException e){
+			System.err.println("DataBase: " + e.getMessage());
+			return null;
+		}
+	}
 	
 	private boolean doesTableExists(String tableName,Connection conn) throws SQLException{
 		DatabaseMetaData dbmd = conn.getMetaData(); 
