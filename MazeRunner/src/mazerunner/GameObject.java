@@ -31,6 +31,13 @@ public abstract class GameObject {
 		locationZ = z;
 	}
 
+	
+	/*
+	 * **********************************************
+	 * *			getters and setters				*
+	 * **********************************************
+	 */
+	
 	/**
 	 * Sets the x-coordinate of the location.
 	 * @param locationX the locationX to set
@@ -79,6 +86,21 @@ public abstract class GameObject {
 		return locationZ;
 	}
 
+	
+	/*
+	 * **********************************************
+	 * *				miscelanous					*
+	 * **********************************************
+	 */
+	
+	/**
+	 * Checks if the object is near another GameObject whitin a certain distance
+	 */
+	public boolean near(GameObject that, double distance) {
+		if (distanceTo(that) < distance) return true;
+		return false;
+	}
+	
 	/**
 	 * normalises an angle in degrees to an angle between -180 and 180 degrees
 	 */

@@ -41,7 +41,7 @@ public class Player extends Creature {
 	 * @param hitpoints	The hit points (HP) of the player
 	 * @param weapon	The weapon equipped by the player (null if not equipped)
 	 */
-	public Player(GL gl,LootController lootController,double x,double y,double z,double h,double v,double hitpoints,Weapon weapon){
+	public Player(GL gl,LootController lootController,double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
 		super(gl,x,y,z,hitpoints,weapon,null);
 		horAngle = h;
 		verAngle = v;
@@ -125,6 +125,13 @@ public class Player extends Creature {
 		this.speed = speed;
 	}
 	
+	
+	/*
+	 * **********************************************
+	 * *					update					*
+	 * **********************************************
+	 */
+	
 	/**
 	 * Updates the physical location and orientation of the player
 	 * @param deltaTime The time in milliseconds since the last update.
@@ -152,17 +159,9 @@ public class Player extends Creature {
 		while(lootIterator.hasNext()){
 			currentLoot = lootIterator.next();
 			
-			if(currentLoot.near(locationX,locationY,locationZ)){
-				if(currentLoot instanceof Food){
+			if(currentLoot instanceof Food){
+				if(near(currentLoot, Maze.SQUARE_SIZE)){
 					this.addHP(50);
 					lootIterator.remove();}}}
-		
-		
-	}
-	
-	public double doDamage(){
-		if(weapon.getEquipped())
-			return weapon.doDamage();
-		return 0;
 	}
 }

@@ -10,8 +10,8 @@ import model.TexturedModel;
  * Class for living creatures Player, Enemy
  */
 public abstract class Creature extends GameObject {
-	protected double hitpoints;
-	protected double maxHP = 200; // can't be static final because not all the enemy's will have the same hp
+	protected int hitpoints;
+	protected int maxHP = 200;
 	
 	protected Weapon weapon;
 	protected TexturedModel texturedModel;			// the model of the Creature
@@ -26,7 +26,7 @@ public abstract class Creature extends GameObject {
 	 * @param weapon			The weapon the creature has (null if no weapon)
 	 * @param modelFileLocation	The location of the model (.obj) file
 	 */
-	public Creature(GL gl,double x, double y, double z,double hitpoints,Weapon weapon,String modelFileLocation){
+	public Creature(GL gl,double x, double y, double z,int hitpoints,Weapon weapon,String modelFileLocation){
 		super(x,y,z);
 		this.hitpoints = hitpoints;
 		this.weapon = weapon;
@@ -37,7 +37,7 @@ public abstract class Creature extends GameObject {
 	}
 	
 	/**
-	 * Gives current the HP
+	 * Get current the HP
 	 * @return the current hp
 	 */
 	public double getHP(){return hitpoints;}
@@ -47,7 +47,7 @@ public abstract class Creature extends GameObject {
 	 * @param add the amount to add
 	 * @return true if addHP was successful false otherwise
 	 */
-	public boolean addHP(double add){
+	public boolean addHP(int add){
 		if(add <= 0 || hitpoints == maxHP)
 			return false;
 		if(hitpoints + add <= maxHP)
@@ -61,9 +61,10 @@ public abstract class Creature extends GameObject {
 	 * Remove HP
 	 * @param remove amount to remove
 	 */
-	public void removeHP(double remove){
-		if(remove <= 0)
-			return;
-		hitpoints -= remove;
+	public void removeHP(int remove){
+		if (hitpoints - remove > 0)
+			hitpoints -= remove;
+		else 
+			hitpoints = 0;
 	}
 }
