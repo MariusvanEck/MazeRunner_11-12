@@ -22,24 +22,22 @@ public class TexturedModel {
 	private int diffuseModifierUniform;
 	
 	private  Model m;
-	private GL gl;
 	
 	public TexturedModel(GL gl,Model model){
-		this.gl = gl;
 		this.m = model;
-		this.setUpVBOs();
-		this.setupShaders();
+		this.setUpVBOs(gl);
+		this.setupShaders(gl);
 	}
 	
-	protected void finalize() throws Throwable{
+	protected void finalize(GL gl) throws Throwable{
 		try{
-			this.cleanUp();
+			this.cleanUp(gl);
 		}finally{
 			super.finalize();
 		}
 	}
 	
-	public void setUpVBOs(){
+	public void setUpVBOs(GL gl){
 		gl.glGenBuffers(1,vboVertexHandle,0);
 		gl.glGenBuffers(1,vboNormalHandle,0);
 		
@@ -70,7 +68,7 @@ public class TexturedModel {
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0); // unbind the buffer
 	}
 	
-	public void setupShaders(){
+	public void setupShaders(GL gl){
 		shaderProgramHandle = gl.glCreateProgram();
 		vertexShaderHandle = gl.glCreateShader(GL.GL_VERTEX_SHADER);
 		fragmentShaderHandle = gl.glCreateShader(GL.GL_FRAGMENT_SHADER);
@@ -132,10 +130,10 @@ public class TexturedModel {
 		
 		diffuseModifierUniform = gl.glGetUniformLocation(shaderProgramHandle, "diffuseIntensityModifier");
 		
-		setUpLighting();
+		setUpLighting(gl);
 	}
 	
-	public void cleanUp(){
+	public void cleanUp(GL gl){
 		gl.glDeleteProgram(shaderProgramHandle);
 		
 		gl.glDeleteBuffers(1,vboVertexHandle,0);
@@ -145,7 +143,7 @@ public class TexturedModel {
 		gl.glDeleteShader(fragmentShaderHandle);
 	}
 	
-	private void setUpLighting(){
+	private void setUpLighting(GL gl){
 		gl.glShadeModel(GL.GL_SMOOTH);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_LIGHTING);
@@ -158,7 +156,7 @@ public class TexturedModel {
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 	}
 	
-	public void render(double angle,double x,double y,double z){
+	public void render(GL gl, double angle,double x,double y,double z){
 		if(!m.isLoaded()) // there is nothing to render
 			return;
 		gl.glPushMatrix();
