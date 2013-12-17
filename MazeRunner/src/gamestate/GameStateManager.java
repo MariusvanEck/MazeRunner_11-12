@@ -84,6 +84,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 		// Initialize JOGL
 		initJOGL();
 		
+		//setUndecorated(true);
+		
 		// set visible
 		setVisible(true);
 		
@@ -96,6 +98,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 		// create a blank cursor for ingame
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+		
+		
 	}
 	
 	
@@ -228,12 +232,12 @@ public class GameStateManager extends Frame implements GLEventListener{
 		screenHeight = height;
 		input.setScreenSize(getSize());
 		input.setCanvasSize(canvas.getSize());
-		gl.glViewport(0, 0, screenWidth, screenHeight);
-		
+		gl.glViewport(x, y, screenWidth, screenHeight);
+	
 		// Set the new projection matrix.
 		gl.glMatrixMode( GL.GL_PROJECTION );
 		gl.glLoadIdentity();
-		glu.gluPerspective( 60, screenWidth/screenHeight, .1, 200 );
+		glu.gluPerspective( 60, (double)width/(double)height, .1, 200 );
 		gl.glMatrixMode( GL.GL_MODELVIEW );
 	}
 
