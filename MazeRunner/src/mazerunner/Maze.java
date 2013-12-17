@@ -34,6 +34,7 @@ public class Maze implements VisibleObject {
 	private int[][] level;
 	private ArrayList<Stair> stairs;
 	
+	// old constructor
 	public Maze(GL gl,String file,HashMap<String,Texture> textures){
 		this.textures = textures;
 		this.maze = new ArrayList<int[][]>();
@@ -42,26 +43,26 @@ public class Maze implements VisibleObject {
 		this.load(gl, file);
 	}
 	
-	public Maze(DataBase dataBase,String name,HashMap<String,Texture> textures){
+	public Maze(GL gl,DataBase dataBase,String name,HashMap<String,Texture> textures){
 		this.textures = textures;
 		this.maze = new ArrayList<int[][]>();
 		this.stairs = new ArrayList<Stair>();
 		
-		this.load(dataBase,name);
+		this.load(gl,dataBase,name);
 	}
 	
 	
-	private void load(DataBase dataBase,String name){ // moet nog testen of hij werkt
+	private void load(GL gl,DataBase dataBase,String name){ // moet nog testen of hij werkt
 		try{
 			ByteArrayInputStream in = dataBase.getMap(name);
 			byte[] b = new byte[4];
 			
 			if(in.read(b) == -1)
-				throw new IOException("Corrupted file");
+				throw new IOException("Corrupted data");
 			levelSize = Cast.byteArrayToInt(b);
 			
 			if(in.read(b) == -1)
-				throw new IOException("Corrupted file");
+				throw new IOException("Corrupted data");
 			mazeSize = Cast.byteArrayToInt(b);
 			
 			level = new int[mazeSize][mazeSize];
@@ -77,10 +78,9 @@ public class Maze implements VisibleObject {
 							x--;
 							continue;
 						}
-						int temp;
-						if((temp = in.read()) == -1)
-							throw new IOException("Corrupted file");
-						level[x][z] = temp; 
+						if((in.read(b)) == -1)
+							throw new IOException("Corrupted data");
+						level[x][z] = Cast.byteArrayToInt(b); 
 					}
 					maze.add(level);
 				}
@@ -91,11 +91,42 @@ public class Maze implements VisibleObject {
 			System.err.println("Maze: " + e.getMessage());
 		}
 		
-		// add stairs
+		getStairs(gl);
+		
 		
 		
 	}
 	
+	private void getStairs(GL gl){
+		for(int y = 0; y < levelSize; y++){
+			for(int z = 0; z < mazeSize; z++){
+				for(int x = 0; x < mazeSize;x++){
+					//finding stairs and orientation
+					if(maze.get(y)[x][z] == 11){
+						//WEST
+						if (maze.get(y)[x+1][z] == 13){
+							stairs.add(new Stair(gl,y,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+						}
+						//EAST
+						else if (maze.get(y)[x-1][z] == 13){
+							stairs.add(new Stair(gl,y,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+						}
+						//SOUTH
+						else if (maze.get(y)[x][z-1] == 13){
+							stairs.add(new Stair(gl,y,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+						}
+						//North
+						else if (maze.get(y)[x][z+1] == 13){
+							stairs.add(new Stair(gl,y,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	// old loader
 	private void load(GL gl, String file){
 		try{     
 			FileInputStream fmaze = new FileInputStream(file);
