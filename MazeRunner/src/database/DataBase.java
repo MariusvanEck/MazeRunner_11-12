@@ -85,7 +85,9 @@ public class DataBase {
 		
 			statement.executeUpdate("INSERT INTO Map(Name,Data)" +
 								"VALUES('" + name + "','" + data + "');");
-		}catch(SQLException | IOException e){
+		}catch(IOException e){
+			System.err.println("DataBase: " + e.getMessage());
+		}catch(SQLException e){
 			System.err.println("DataBase: " + e.getMessage());
 		}
 	}
