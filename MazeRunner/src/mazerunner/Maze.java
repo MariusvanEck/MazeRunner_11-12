@@ -80,9 +80,8 @@ public class Maze implements VisibleObject {
 			FileInputStream fmaze = new FileInputStream(file);
 			ObjectInputStream omaze = new ObjectInputStream(fmaze);
 			
-			// TODO: hier heb ik een (Integer) cast vervangen voor een (int) cast
-			levelSize = (int) omaze.readObject();
-			mazeSize = (int) omaze.readObject();
+			levelSize = (Integer) omaze.readObject();
+			mazeSize = (Integer) omaze.readObject();
 	      
 			for (int i=0; i<levelSize; i++) {
 				maze.add((int[][]) omaze.readObject());
