@@ -30,13 +30,13 @@ public class DataBase {
 			statement.setQueryTimeout(30); // timeout to 30 sec
 			
 			if(!doesTableExists("Map",connection)){
-				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER AUTO_INCREMENT PRIMARY KEY,Name TINYTEXT, Data LONGBLOB);"); // create table with an ID, Name (max 255 byte) and Data (max 4GB)
+				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT, Data LONGBLOB);"); // create table with an ID, Name (max 255 byte) and Data (max 4GB)
 				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
 				
 				
 				// adds the default lvl's to the database if the database was empty
-				//for(int i = 0; i < DEFAULT_MAZES_LOCATION.length;i++)	
-					addMap(DEFAULT_MAZES_NAME[0],DEFAULT_MAZES_LOCATION[0]);
+				for(int i = 0; i < DEFAULT_MAZES_LOCATION.length;i++)	
+					addMap(DEFAULT_MAZES_NAME[i],DEFAULT_MAZES_LOCATION[i]);
 				
 			}
 		}
@@ -124,10 +124,6 @@ public class DataBase {
 		}
 	}
 	
-	/* Doesn't work
-	 * - The Map.ID is always 0 don't know why
-	 * - Something goes wrong in the Query 
-	 */
 	public ByteArrayInputStream getMap(int ID){
 		
 		try{
