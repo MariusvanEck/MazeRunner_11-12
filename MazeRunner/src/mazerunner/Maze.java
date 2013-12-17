@@ -51,7 +51,7 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-	private void load(DataBase dataBase,String name){
+	private void load(DataBase dataBase,String name){ // moet nog testen of hij werkt
 		try{
 			ByteArrayInputStream in = dataBase.getMap(name);
 			byte[] b = new byte[4];
@@ -64,14 +64,36 @@ public class Maze implements VisibleObject {
 				throw new IOException("Corrupted file");
 			mazeSize = Cast.byteArrayToInt(b);
 			
+			level = new int[mazeSize][mazeSize];
 			
-			
-			
+			for(int y = 0; y < levelSize; y++){	
+				for(int z = 0; z < mazeSize; z++){
+					for(int x = 0; x < mazeSize;x++){
+						if(in.read() == ' '){
+							x--;
+							continue;
+						}
+						if(in.read() == '\n'){
+							x--;
+							continue;
+						}
+						int temp;
+						if((temp = in.read()) == -1)
+							throw new IOException("Corrupted file");
+						level[x][z] = temp; 
+					}
+					maze.add(level);
+				}
+			}
 		}catch(IOException e){
 			System.err.println("Maze: " + e.getMessage());
 		}catch(InvalidByteArraySize e){
 			System.err.println("Maze: " + e.getMessage());
 		}
+		
+		// add stairs
+		
+		
 	}
 	
 	private void load(GL gl, String file){
