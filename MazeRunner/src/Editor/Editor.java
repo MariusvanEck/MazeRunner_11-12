@@ -458,10 +458,12 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                 ObjectOutputStream omaze = new ObjectOutputStream(fmaze);
                 omaze.writeObject(nlevels);
                 omaze.writeObject(mazeX);
+                mirror();
                 for (int n = 0; n < nlevels; n++){
                     int[][] writeLevel = levels[n].getLevel();
                     omaze.writeObject(writeLevel);
                 }
+                mirror();
                 omaze.flush();
                 omaze.close();
          
@@ -535,7 +537,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
             System.out.println("De grootte van de levels is " + mazeX + " en de maze bevat " + nlevels + " levels.");
             System.out.println("Loading Completed!");
             btnr[2].setSelected(false);
-            
+            mirror();
         }
 
 		//The Exit button on the bottom-right
@@ -552,6 +554,20 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 	}
 
+	private void mirror(){
+		//Mirroring maze
+	        for(int n = 0; n < nlevels; n++){
+	    		int[][] templevel = levels[n].getLevel();
+	    		levels[n].level = new int[mazeX][mazeX]; 
+	    		for(int x = 0; x<mazeX; x++){
+	    			for(int y = mazeX-1; y>=0; y--){
+	    				int oy = mazeX-y-1;
+	    				levels[n].level[x][oy] = templevel[x][y];
+	    			}
+	    		}
+	    	}
+	}
+	
 	@Override
 	public void mousePressed(MouseEvent me) {
 		double squareX = Math.floor( ( (me.getX() - (mazeL)) / level.buttonSize));

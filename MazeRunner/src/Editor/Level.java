@@ -1,5 +1,10 @@
 package Editor;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.io.File;
 
 import javax.media.opengl.GL;
@@ -16,6 +21,9 @@ public class Level {
 	protected int lineWidth = 2;
 	private Texture[] textureMaze;
 	private int nTiles = 98; //this is the number of different tiles currently present in the maze
+	
+	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	private int screenHeight =  gd.getDisplayMode().getHeight();
 	
     static int primeNumbers[] = new int[100];
     private int aantalobjecten = 100;
@@ -172,6 +180,21 @@ public class Level {
 				}
 			}
 		}
+		
+		
+		//That red square, work in progress
+				PointerInfo a = MouseInfo.getPointerInfo();
+				Point b = a.getLocation();
+				int xm = (int) b.getX();
+				int ym = (int) b.getY();
+				
+				gl.glColor3f(255/255f, 0/255f, 0/255f);
+				gl.glBegin(GL.GL_QUADS);
+				gl.glVertex2f(xm+50, screenHeight-ym+50);
+				gl.glVertex2f(xm, screenHeight-ym+50);
+				gl.glVertex2f(xm, screenHeight-ym);
+				gl.glVertex2f(xm+50, screenHeight-ym);
+				gl.glEnd();
 		
 		
 		//Drawing the GRID on top of everything!
