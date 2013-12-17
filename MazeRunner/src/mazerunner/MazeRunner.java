@@ -94,7 +94,7 @@ public class MazeRunner {
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		maze = new Maze(gl,"mazes/inlaadmaze.maze",textures);
+		maze = new Maze(gl,"mazes/traptest.maze",textures);
 		visibleObjects.add(maze);
 		
 		// Initialise the loot
