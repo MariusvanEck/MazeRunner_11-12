@@ -23,7 +23,8 @@ import loot.*;
  * @author Bruno Scheele
  *
  */
-public class Player extends Creature {	
+public class Player extends Creature {
+	
 	private double horAngle, verAngle;
 	private double speed;
 	private double rotationSpeed;
@@ -41,7 +42,7 @@ public class Player extends Creature {
 	 * @param hitpoints	The hit points (HP) of the player
 	 * @param weapon	The weapon equipped by the player (null if not equipped)
 	 */
-	public Player(GL gl,LootController lootController,double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
+	public Player(GL gl, LootController lootController,double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
 		super(gl,x,y,z,hitpoints,weapon,null);
 		horAngle = h;
 		verAngle = v;
@@ -160,7 +161,7 @@ public class Player extends Creature {
 			currentLoot = lootIterator.next();
 			
 			if(currentLoot instanceof Food){
-				if(near(currentLoot, Maze.SQUARE_SIZE)){
+				if(near(currentLoot, .2*Maze.SQUARE_SIZE)){
 					this.addHP(50);
 					lootIterator.remove();}}}
 	}

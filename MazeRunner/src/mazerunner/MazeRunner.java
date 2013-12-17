@@ -103,7 +103,7 @@ public class MazeRunner {
 		
 		
 		// Initialise the player.
-		player = new Player(gl,lootController,6 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x-position
+		player = new Player(gl, lootController,6 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x-position
 							Maze.SQUARE_SIZE / 2,							// y-position
 							5 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// z-position
 							90, 0, 100,										// horizontal, vertical angle and hitpoints
@@ -212,7 +212,7 @@ public class MazeRunner {
 
         // Display all the visible objects of MazeRunner.
         for(Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext();) {
-        	it.next().display();}
+        	it.next().display(gl);}
         
         if(input.getGameState() == GameState.INGAME) {
 	        GameStateManager.switchTo2D(gl);

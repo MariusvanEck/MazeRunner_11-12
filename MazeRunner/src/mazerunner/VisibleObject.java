@@ -1,5 +1,7 @@
 package mazerunner;
 
+import javax.media.opengl.GL;
+
 /**
  * VisibleObject is the interface for all classes that have to be displayed on screen.
  * <p> 
@@ -24,5 +26,5 @@ public interface VisibleObject {
 	 * the static variables should be called in a static way, we type GL in caps then, like GL.GL_QUADS.
 	 * 
 	 */
-	void display();
+	void display(GL gl);
 }

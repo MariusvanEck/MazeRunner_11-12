@@ -3,6 +3,8 @@ package loot;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.media.opengl.GL;
+
 import mazerunner.Maze;
 import mazerunner.Player;
 import mazerunner.VisibleObject;
@@ -19,19 +21,21 @@ public class LootController implements VisibleObject {
 	public LootController(Player player){
 		lootList = new ArrayList<Loot>();
 		lootList.add(new Food(	2 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 
-								Maze.SQUARE_SIZE / 2,4 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 
+								Maze.SQUARE_SIZE / 2, 
+								4 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 
 								50, null));
 		lootList.add(new Food(	8 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 
-								Maze.SQUARE_SIZE / 2,4 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 
+								Maze.SQUARE_SIZE / 2, 
+								4 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 
 								50, null));
 	}
 	
 	/**
 	 * The loot display function
 	 */
-	public void display(){
+	public void display(GL gl){
 		for(Iterator<Loot> it = lootList.iterator(); it.hasNext();)
-			it.next().display();
+			it.next().display(gl);
 	}
 	
 	/**

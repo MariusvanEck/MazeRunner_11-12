@@ -42,7 +42,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * *		attributes and constructor			*
 	 * **********************************************
 	 */
-	public static int screenWidth = 600, screenHeight = 600;		// screenSize
+	public static int screenWidth = 800, screenHeight = 500;		// screenSize
 	private GLCanvas canvas;										// canvas for drawing
 	private GameState gameState;									// current GameState
 	
@@ -92,7 +92,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 		// Initialize and set a UserInput Object
 		input = new UserInput(canvas, getSize());
 		
-		// Initialize a Menu Object (MENU)
+		// initialize MainMenu
 		menu = new MainMenu(input, 0, 300, 0, 300);
 		
 		// create a blank cursor for ingame

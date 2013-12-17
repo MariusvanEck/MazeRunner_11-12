@@ -44,8 +44,8 @@ public class Stair implements VisibleObject{
 	
 	
 	
-	public void display(){
+	public void display(GL gl){
 		
-		texturedModel.render(angle, lowerX, lowerY, lowerZ);
+		texturedModel.render(gl, angle, lowerX, lowerY, lowerZ);
 	}
 }

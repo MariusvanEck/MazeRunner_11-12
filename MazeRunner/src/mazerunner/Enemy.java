@@ -68,11 +68,11 @@ public class Enemy extends Creature implements VisibleObject{
 	 * draws the model of the enemy
 	 */
 	@Override
-	public void display() { 
+	public void display(GL gl) { 
 		if(texturedModel == null)
 			System.out.println("null");
 		else
-		texturedModel.render(horAngle-180,locationX,locationY,locationZ);		
+		texturedModel.render(gl, horAngle-180,locationX,locationY,locationZ);		
 		
 	}
 

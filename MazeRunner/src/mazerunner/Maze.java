@@ -33,19 +33,16 @@ public class Maze implements VisibleObject {
 	private ArrayList<int[][]> maze;
 	private int[][] level;
 	private ArrayList<Stair> stairs;
-	private GL gl;
 	
 	public Maze(GL gl,String file,HashMap<String,Texture> textures){
-		this.gl = gl;
 		this.textures = textures;
 		this.maze = new ArrayList<int[][]>();
 		this.stairs = new ArrayList<Stair>();
 		
-		this.load(file);
+		this.load(gl, file);
 	}
 	
-	public Maze(GL gl,DataBase dataBase,String name,HashMap<String,Texture> textures){
-		this.gl = gl;
+	public Maze(DataBase dataBase,String name,HashMap<String,Texture> textures){
 		this.textures = textures;
 		this.maze = new ArrayList<int[][]>();
 		this.stairs = new ArrayList<Stair>();
@@ -77,7 +74,7 @@ public class Maze implements VisibleObject {
 		}
 	}
 	
-	private void load(String file){
+	private void load(GL gl, String file){
 		try{     
 			FileInputStream fmaze = new FileInputStream(file);
 			ObjectInputStream omaze = new ObjectInputStream(fmaze);
@@ -330,7 +327,7 @@ public class Maze implements VisibleObject {
 	 * maze display function
 	 */
 	@Override
-	public void display() {
+	public void display(GL gl) {
 		// Set the materials
 		float colour[] = { 1f, 1f, 1f, 1f };
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, colour, 0);	
@@ -394,7 +391,7 @@ public class Maze implements VisibleObject {
 */
 		for(Stair stair : stairs){
 			if(stair.getLowerY() == currentLevel)
-				stair.display();
+				stair.display(gl);
 		}
 	}
 	
