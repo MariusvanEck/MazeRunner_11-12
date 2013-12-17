@@ -1,9 +1,15 @@
 package menu;
 
+import java.io.File;
+
 import gamestate.GameState;
+import gamestate.GameStateManager;
 import gamestate.UserInput;
 
 import javax.media.opengl.GL;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
 
 public class MainMenu extends MenuObject implements MenuInterface{
 	
@@ -22,6 +28,8 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	public static final byte QUIT = 2;
 	
 	int x,y;
+	
+	private Texture[] textures;
 	
 	/**
 	 * Constructor creates menu objects
@@ -45,7 +53,16 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		
 		// set input object
 		this.input = input;
+		
+//		try {
+//			textures[0] = TextureIO.newTexture(new File("textures\\dungeon_floor.jpg"), false);
+//		} 
+//		catch (Exception e) {
+//			e.printStackTrace();
+//			System.exit(0);
+//		}
 	}
+	
 	
 	/**
 	 * Returns the value of the button hovered over
@@ -71,6 +88,25 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	 * Select the current display method
 	 */
 	public void display(GL gl){
+		
+//		//Drawing the background
+//		gl.glEnable(GL.GL_BLEND);
+//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//		textures[0].enable();
+//		textures[0].bind();
+//		//White background color for normal texture view
+//		gl.glColor3f(255/255f, 255/255f, 255/255f);
+//		gl.glBegin(GL.GL_QUADS);
+//			gl.glTexCoord2f(0,0);
+//			gl.glVertex2f(0, GameStateManager.screenHeight);
+//			gl.glTexCoord2f(1,0);
+//			gl.glVertex2f(GameStateManager.screenWidth, GameStateManager.screenHeight);
+//			gl.glTexCoord2f(1,1);
+//			gl.glVertex2f(GameStateManager.screenWidth, 0);
+//			gl.glTexCoord2f(0,1);
+//			gl.glVertex2f(0, 0);
+//		gl.glEnd();
+//		textures[0].disable();
 		
 		switch(menuState) {
 		case MAIN:
