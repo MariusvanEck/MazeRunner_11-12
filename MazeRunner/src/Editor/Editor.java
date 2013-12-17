@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.SQLException;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -31,9 +32,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import cast.Cast;
+
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
+
+import database.DataBase;
 
 public class Editor extends JFrame implements GLEventListener, MouseListener, MouseMotionListener, ActionListener {
 
@@ -303,6 +308,22 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	   	btn[0].setSelected(true);
 	}
 	
+	public boolean saveToDataBase(String name,DataBase dataBase){
+		String res = new String(Cast.intToByteArray(nlevels));
+		res += " " + new String(Cast.intToByteArray(mazeX));
+		
+		for(Level lvl : levels){
+			for(int z = 0; z < mazeX; z++){
+				for(int x = 0; x < mazeX; x++){
+					res += (new String(Cast.intToByteArray(lvl.level[x][z])) + " ");
+				}
+				res += "\n";
+			}
+		}
+		return dataBase.addMap(name, res);
+	}
+	
+	
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		
@@ -468,8 +489,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                 FileInputStream fmaze = new FileInputStream(file);
                 ObjectInputStream omaze = new ObjectInputStream(fmaze);
                 
-                nlevels = (int) omaze.readObject();
-                mazeX = (int) omaze.readObject();
+                nlevels = (Integer) omaze.readObject();
+                mazeX = (Integer) omaze.readObject();
                 
                 
                 int[][] firstLevel = (int[][]) omaze.readObject();

@@ -33,17 +33,16 @@ public class Level {
 				}
 			}
 		}
-	}
 		
-	//draws the level on the specified location
-	public void draw(GL gl, float startx, float starty, float width, float height){
-		textureMaze = new Texture[nTiles];
-		//!!
 		
 		//Loading all the textures in the maze
+		textureMaze = new Texture[nTiles];
+		//!!
 		try {
 			//textureMaze[0] = TextureIO.newTexture(new File("img\\Floor.png"), false); // do not use (yet) because of transparency issues
 			//only implement if there is time: putting textures over the floor texture
+			
+			// TODO: FIX it opgenGL current error iets ding Fix it Kevin!
 			
 			textureMaze[1] = TextureIO.newTexture(new File("img\\Wall.png"), false);
 			textureMaze[2] = TextureIO.newTexture(new File("img\\TorchN.png"), false);
@@ -58,7 +57,13 @@ public class Level {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		
+	}
+		
+	//draws the level on the specified location
+	public void draw(GL gl, float startx, float starty, float width, float height){
+				
 		buttonSize = height/y;
 		
 		for(int i = 0; i < x; i++){

@@ -12,5 +12,7 @@ public class Cast {
 		throw new InvalidByteArraySize("b.length: " + b.length + " it should be 4 or 2");
 	}
 	
-	
+	public static byte[] intToByteArray(int value) {
+	    return new byte[] {(byte)(value >>> 24),(byte)(value >>> 16),(byte)(value >>> 8),(byte)value};
+	}
 }

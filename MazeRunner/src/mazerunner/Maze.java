@@ -70,7 +70,9 @@ public class Maze implements VisibleObject {
 			
 			
 			
-		}catch(IOException | InvalidByteArraySize e){
+		}catch(IOException e){
+			System.err.println("Maze: " + e.getMessage());
+		}catch(InvalidByteArraySize e){
 			System.err.println("Maze: " + e.getMessage());
 		}
 	}

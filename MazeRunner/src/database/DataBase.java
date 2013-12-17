@@ -30,13 +30,13 @@ public class DataBase {
 			statement.setQueryTimeout(30); // timeout to 30 sec
 			
 			if(!doesTableExists("Map",connection)){
-				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID AutoNumber,Name TINYTEXT, Data LONGBLOB);"); // create table with an ID, Name (max 255 byte) and Data (max 4GB)
+				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER AUTO_INCREMENT PRIMARY KEY,Name TINYTEXT, Data LONGBLOB);"); // create table with an ID, Name (max 255 byte) and Data (max 4GB)
 				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
 				
 				
 				// adds the default lvl's to the database if the database was empty
-				for(int i = 0; i < DEFAULT_MAZES_LOCATION.length;i++)	
-					addMap(DEFAULT_MAZES_NAME[i],DEFAULT_MAZES_LOCATION[i]);
+				//for(int i = 0; i < DEFAULT_MAZES_LOCATION.length;i++)	
+					addMap(DEFAULT_MAZES_NAME[0],DEFAULT_MAZES_LOCATION[0]);
 				
 			}
 		}
@@ -66,7 +66,19 @@ public class DataBase {
 		}
 	}
 	
-	public void addMap(String name,String fileLocation){
+	
+	public boolean addMap(String name,String data){
+		try{
+			statement.executeUpdate("INSERT INTO Map(Name,Data)" + 
+									"VALUES('" + name + "','" + data + "');");
+			return true;
+		}catch(SQLException e){
+			System.err.println("DataBase: " + e.getMessage());
+			return false;
+		}
+	}
+	
+	public void importMap(String name,String fileLocation){
 		try{
 			FileInputStream in = new FileInputStream(fileLocation);
 			String data = "";
@@ -119,9 +131,14 @@ public class DataBase {
 	public ByteArrayInputStream getMap(int ID){
 		
 		try{
-			ResultSet rs = statement.executeQuery("SELECT Data " +
-												"FROM Map " +
-												"WHERE Map.ID = '" + ID + "';"); // my guess is that the integer is the problem
+			PreparedStatement prep = connection.prepareStatement("SELECT Data " +
+																"FROM Map " +
+																"WHERE Map.ID = ?");
+			prep.setInt(1, ID);
+			
+			ResultSet rs = prep.executeQuery();
+			
+			
 			if(rs.next()){
 				byte[] res = rs.getBytes("Data");
 				return new ByteArrayInputStream(res);
