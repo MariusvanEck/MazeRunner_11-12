@@ -30,8 +30,6 @@ public class Player extends Creature {
 	private double rotationSpeed;
 	private Control control;
 	
-	private LootController lootController;
-	
 	/**
 	 * The Player constructor.
 	 * @param x			The x-coordinate of the location
@@ -42,13 +40,12 @@ public class Player extends Creature {
 	 * @param hitpoints	The hit points (HP) of the player
 	 * @param weapon	The weapon equipped by the player (null if not equipped)
 	 */
-	public Player(GL gl, LootController lootController,double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
+	public Player(GL gl, double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
 		super(gl,x,y,z,hitpoints,weapon,null);
 		horAngle = h;
 		verAngle = v;
 		speed = 0.01;
 		rotationSpeed = 1;
-		this.lootController = lootController;
 	}
 	
 	
@@ -154,15 +151,5 @@ public class Player extends Creature {
 						Math.cos((horAngle + control.moveDirection)*(Math.PI/180));
 			}
 		}
-		
-		Loot currentLoot;
-		Iterator<Loot> lootIterator = lootController.getList().listIterator();
-		while(lootIterator.hasNext()){
-			currentLoot = lootIterator.next();
-			
-			if(currentLoot instanceof Food){
-				if(near(currentLoot, .2*Maze.SQUARE_SIZE)){
-					this.addHP(50);
-					lootIterator.remove();}}}
 	}
 }

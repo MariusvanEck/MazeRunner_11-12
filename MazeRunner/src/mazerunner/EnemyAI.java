@@ -35,7 +35,7 @@ public class EnemyAI{
 		
 		// add randomly initialised enemies 
 		int x, z;
-		for (int i=0; i<2; i++) {
+		for (int i=0; i<1; i++) {
 			// find a location
 			do {
 				x = rnd.nextInt(maze.getMazeSize()); 
@@ -100,6 +100,10 @@ public class EnemyAI{
 				nextTarget(enemy, control, memory);
 				enemy.setMemory(maze.currentGridPoint(enemy));}
 			
+			// if the enemy is near a player set the boolean
+			if (enemy.near(player, Maze.SQUARE_SIZE/2)) control.nearPlayer = true;
+			else control.nearPlayer = false;
+			
 			// update the Enemy's control
 			control.update();
 		}
@@ -143,13 +147,13 @@ public class EnemyAI{
 		if (maze.isWall(x + xSign*Maze.SQUARE_SIZE, z, 0)) {
 			if(zSign > 0) z = (maze.convertToGridZ(z)+ 1.05 + objectSize)*Maze.SQUARE_SIZE;
 			else if (zSign < 0) z = (maze.convertToGridZ(z) - 0.05 - objectSize)*Maze.SQUARE_SIZE;
-			x = enemy.locationX;}
+			x = enemy.locationX - xSign*0.01*Maze.SQUARE_SIZE;}
 		
 		// wall in the z direction
 		else if (maze.isWall(x, z + zSign*Maze.SQUARE_SIZE, 0)) {
 			if(xSign > 0) x = (maze.convertToGridX(x)+ 1.05 + objectSize)*Maze.SQUARE_SIZE;
 			else if (xSign < 0) x = (maze.convertToGridX(x) - 0.05 - objectSize)*Maze.SQUARE_SIZE;
-			z = enemy.locationZ;}
+			z = enemy.locationZ - zSign*0.01*Maze.SQUARE_SIZE;}
 		
 		return new Location(x, z);
 	}
@@ -159,8 +163,6 @@ public class EnemyAI{
 	 * randomly
 	 */
 	public void nextTarget(Enemy enemy, EnemyControl control, ArrayList<Point> memory) {
-		
-		//TODO verwijder alle testprints over nextTarget
 		
 		// the possible locations list for the enemy
 		ArrayList<Point> possibleLocations = new ArrayList<Point>();

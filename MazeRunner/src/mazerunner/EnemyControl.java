@@ -13,7 +13,7 @@ public class EnemyControl extends Control{
 	
 	private double targetAngle;				// angle of the current target
 	private int angleToRotate;				// angle to rotate
-	
+	public boolean nearPlayer;				
 	
 	/**
 	 * update the control variables for the related enemy
@@ -42,7 +42,10 @@ public class EnemyControl extends Control{
 	 * deriveMovement() sets forward to true if there is a target
 	 */
 	private void deriveMovement() {
-		if (!targets.isEmpty() && Math.abs(angleToRotate) < 30) {
+		if (	!targets.isEmpty() && 
+				Math.abs(angleToRotate) < 30 &&
+				!nearPlayer) {
+			
 			moveDirection = 0;
 			
 			// set the speed

@@ -97,18 +97,17 @@ public class MazeRunner {
 		maze = new Maze(gl,"mazes/traptest.maze",textures);
 		visibleObjects.add(maze);
 		
+		// Initialise the player.
+		player = new Player(gl, 6 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	
+							Maze.SQUARE_SIZE / 2,							
+							5 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	
+							90, 0, 100,										
+							null);		
+		
+
 		// Initialise the loot
 		lootController = new LootController(player);
 		visibleObjects.add(lootController);
-		
-		
-		// Initialise the player.
-		player = new Player(gl, lootController,6 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x-position
-							Maze.SQUARE_SIZE / 2,							// y-position
-							5 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// z-position
-							90, 0, 100,										// horizontal, vertical angle and hitpoints
-							null);											// the weapon that the player carries around
-		
 		
 		// initialise enemies and add
 		enemyAI = new EnemyAI(gl,player, maze);
@@ -241,7 +240,7 @@ public class MazeRunner {
 		updateMovement(deltaTime);
 		
 		// Update Loot
-		// lootController.update();
+		lootController.update();
 		
 		// Update headsUpDisplay
 		headsUpDisplay.update(deltaTime);
@@ -310,7 +309,19 @@ public class MazeRunner {
 			// set enemy back if a wall was hit
 			if (enemy.hasHitWall()){
 				enemy.locationX = previousX;
-				enemy.locationZ = previousZ;}}
+				enemy.locationZ = previousZ;}
+				
+			// damage player if near an enemy
+			if (enemy.near(player, Maze.SQUARE_SIZE/2)) {
+				if (enemy.hitTimer == 0) {
+					player.removeHP(25);
+					enemy.hitTimer += deltaTime;}
+				else if (enemy.hitTimer > 1000)
+					enemy.hitTimer = 0;
+				else 
+					enemy.hitTimer += deltaTime;}
+			
+			else enemy.hitTimer = 0;}
 	}
 	
 	/**

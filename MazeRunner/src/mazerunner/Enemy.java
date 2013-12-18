@@ -17,6 +17,7 @@ public class Enemy extends Creature implements VisibleObject{
 	public double maxSpeed;
 	private double speed;
 	private int rotationSpeed;
+	public double hitTimer;
 	
 	private EnemyControl control;		// the control controlling this enemy
 	private boolean playerVisible;		// is true if the player is currently visible
@@ -90,7 +91,7 @@ public class Enemy extends Creature implements VisibleObject{
 	public void update(int deltaTime) {
 		
 		// rotate the enemy, according to control
-		horAngle += rotationSpeed*control.getdX();
+		horAngle += rotationSpeed*control.dX;
 		if (horAngle > 180) horAngle -= 360;
 		else if (horAngle < -180) horAngle += 360;
 		
