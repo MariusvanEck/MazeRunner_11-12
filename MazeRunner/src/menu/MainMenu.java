@@ -8,6 +8,8 @@ import gamestate.UserInput;
 
 import javax.media.opengl.GL;
 
+import Editor.Editor;
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
@@ -25,7 +27,8 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	
 	public static final byte PLAY = 0;
 	public static final byte OPTIONS = 1;
-	public static final byte QUIT = 2;
+	public static final byte EDITOR = 2;
+	public static final byte QUIT = 3;
 	
 	int x,y;
 	
@@ -46,21 +49,29 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		quitMenu = new QuitMenu(minX,maxX,minY,maxY);
 		
 		// create menu buttons
-		buttons = new Button[3];
-		buttons[0] = new Button("Play",minX,maxX,minY+(maxY-minY)*2/3,maxY,buttonColor);
-		buttons[1] = new Button("Options",minX,maxX,minY+(maxY-minY)/3,minY+(maxY-minY)*2/3,buttonColor);
-		buttons[2] = new Button("Quit",minX,maxX,minY,minY+(maxY-minY)/3,buttonColor);
+		buttons = new Button[4];
+		buttons[0] = new Button("Play",minX,maxX,minY+(maxY-minY)*3/4,maxY,buttonColor);
+		buttons[1] = new Button("Options",minX,maxX,minY+(maxY-minY)*2/4,minY+(maxY-minY)*3/4,buttonColor);
+		buttons[2] = new Button("Editor",minX,maxX,minY+(maxY-minY)*1/4,minY+(maxY-minY)*2/4,buttonColor);
+		buttons[3] = new Button("Quit",minX,maxX,minY,minY+(maxY-minY)*1/4,buttonColor);
 		
 		// set input object
 		this.input = input;
 		
-//		try {
-//			textures[0] = TextureIO.newTexture(new File("textures\\dungeon_floor.jpg"), false);
-//		} 
-//		catch (Exception e) {
-//			e.printStackTrace();
-//			System.exit(0);
-//		}
+		textures = new Texture[1];
+		
+		loadTextures();
+	}
+	
+	public void loadTextures(){
+		try {
+			textures[0] = TextureIO.newTexture(new File("textures\\Background.png"), false);
+			System.out.println("Menu Textures loaded");
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 	
 	
@@ -73,6 +84,8 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		if(buttons[1].minX < x && x < buttons[1].maxX && buttons[1].minY < y && y < buttons[1].maxY)
 			return OPTIONS;
 		if(buttons[2].minX < x && x < buttons[2].maxX && buttons[2].minY < y && y < buttons[2].maxY)
+			return EDITOR;
+		if(buttons[3].minX < x && x < buttons[3].maxX && buttons[3].minY < y && y < buttons[3].maxY)
 			return QUIT;
 		return -1;
 	}
@@ -89,24 +102,24 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	 */
 	public void display(GL gl){
 		
-//		//Drawing the background
-//		gl.glEnable(GL.GL_BLEND);
-//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//		textures[0].enable();
-//		textures[0].bind();
-//		//White background color for normal texture view
-//		gl.glColor3f(255/255f, 255/255f, 255/255f);
-//		gl.glBegin(GL.GL_QUADS);
-//			gl.glTexCoord2f(0,0);
-//			gl.glVertex2f(0, GameStateManager.screenHeight);
-//			gl.glTexCoord2f(1,0);
-//			gl.glVertex2f(GameStateManager.screenWidth, GameStateManager.screenHeight);
-//			gl.glTexCoord2f(1,1);
-//			gl.glVertex2f(GameStateManager.screenWidth, 0);
-//			gl.glTexCoord2f(0,1);
-//			gl.glVertex2f(0, 0);
-//		gl.glEnd();
-//		textures[0].disable();
+		//Drawing the background
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		textures[0].enable();
+		textures[0].bind();
+		//White background color for normal texture view
+		gl.glColor3f(255/255f, 255/255f, 255/255f);
+		gl.glBegin(GL.GL_QUADS);
+			gl.glTexCoord2f(0,0);
+			gl.glVertex2f(0, GameStateManager.screenHeight);
+			gl.glTexCoord2f(1,0);
+			gl.glVertex2f(GameStateManager.screenWidth, GameStateManager.screenHeight);
+			gl.glTexCoord2f(1,1);
+			gl.glVertex2f(GameStateManager.screenWidth, 0);
+			gl.glTexCoord2f(0,1);
+			gl.glVertex2f(0, 0);
+		gl.glEnd();
+		textures[0].disable();
 		
 		switch(menuState) {
 		case MAIN:
@@ -169,7 +182,9 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		switch(getButton(x,y)){
 		case PLAY: 		buttons[PLAY].setSelected(true); break;
 		case OPTIONS: 	buttons[OPTIONS].setSelected(true);	break;
-		case QUIT:		buttons[QUIT].setSelected(true); break;}
+		case EDITOR:	buttons[EDITOR].setSelected(true); break;
+		case QUIT:		buttons[QUIT].setSelected(true); break;
+		}
 	}
 
 	
@@ -183,12 +198,13 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	* This method performs the correct actionz when a button is pressed
 	**/
 	public void buttonPressed(int x, int y){
-		
+
 		switch(menuState) {
 		case MAIN:
 			switch(getButton(x,y)) {
 			case PLAY: 		menuState = MenuState.PLAY; break;
 			case OPTIONS: 	menuState = MenuState.OPTIONS; break;
+			case EDITOR: 	menuState = MenuState.EDITOR; new Editor(); break;
 			case QUIT: 		menuState = MenuState.QUIT; break;}
 			break;
 			
@@ -207,6 +223,11 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			case PlayMenu.CONTINUE: input.setGameState(GameState.INGAME);
 			case PlayMenu.BACK: 	menuState = MenuState.MAIN; break;}
 			break;
+			
+//		case EDITOR:
+//			System.out.println("eryd");
+//			new Editor();
+//			break;
 			
 		case QUIT:
 			switch(quitMenu.getButton(x, y)) {

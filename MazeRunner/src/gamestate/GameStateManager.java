@@ -93,7 +93,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 		input = new UserInput(canvas, getSize());
 		
 		// initialize MainMenu
-		menu = new MainMenu(input, 0, 300, 0, 300);
+		// menu = new MainMenu(input, 0, 300, 0, 300);
 		
 		// create a blank cursor for ingame
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -199,7 +199,6 @@ public class GameStateManager extends Frame implements GLEventListener{
 		default: 
 			System.out.println("default case display loop");
 		}
-
 		
         // Load identity
         gl.glLoadIdentity();
@@ -310,6 +309,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 		
 		// gameState initialisation 
 		if (gameState == null) {
+			menu = new MainMenu(input, screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), 0, 300);
 			mazeRunner.init(gl, screenWidth, screenHeight);
 			gameState = GameState.MENU;
 			input.setGameState(gameState);}
