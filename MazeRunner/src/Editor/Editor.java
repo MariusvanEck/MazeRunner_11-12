@@ -106,6 +106,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	public static void main(String[] args){
 		new Editor();
 		System.out.println("Level editor started\nGenerating maze...\n");
+		//_exit:;
 	}
 
 	public void drawLevel(GL gl){
@@ -438,12 +439,12 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Saving a file
-        if (k == 1){
-        	toFront();
+		else if (k == 1){
             System.out.println("Starting Save");
             chooser.setFileFilter(filter);
             chooser.setCurrentDirectory(file);
             returnVal = chooser.showSaveDialog(Editor.this);
+            toFront();
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 file = chooser.getSelectedFile();
                 String path = file.getAbsolutePath();
@@ -476,7 +477,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
         }
         
         //Loading a file
-        if (k == 2){
+        else if (k == 2){
         	toFront();
             System.out.println("Start Loading...");
             chooser.setFileFilter(filter);
@@ -543,7 +544,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		//The Exit button on the bottom-right
 		if(k == 9){
 			System.out.println(level.toString());
-			System.exit(0);
+			super.dispose();
 		}
 		
 		//Check which level-button is selected
@@ -576,23 +577,23 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		int Y = mazeX - (int) squareY;
 		
 		//The wall draw button
-		if (btn[0].selected == true && squareX >= 0 && squareX < mazeX && squareY < mazeX && squareY >= 0){
+		if (btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			//System.out.println("Hier kan getekent worden");
 			level.level[X][Y-1] = 1;
 		}
 		
 		//Stair Low Part draw button
-		if (btn[1].selected == true && squareX >= 0 && squareX < mazeX && squareY < mazeX && squareY >= 0){
+		else if (btn[1].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 11;
 		}
 		
 		//Stair High Part draw button
-		if (btn[2].selected == true && squareX >= 0 && squareX < mazeX && squareY < mazeX && squareY >= 0){
+		else if (btn[2].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 13;
 		}
 		
 		//TorchN draw button
-		if (btn[6].selected == true && squareX >= 0 && squareX < mazeX && squareY < mazeX && squareY >= 0 && level.level[X][Y-1] != 97 && level.check(X,Y-1,2) == false){
+		else if (btn[6].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 97 && level.check(X,Y-1,2) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 2;
 			}
@@ -602,7 +603,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//TorchE draw button
-		if (btn[7].selected == true && squareX >= 0 && squareX < mazeX && squareY < mazeX && squareY >= 0 && level.level[X][Y-1] != 97 && level.check(X,Y-1,3) == false){
+		else if (btn[7].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 97 && level.check(X,Y-1,3) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 3;
 			}
@@ -612,7 +613,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//TorchS draw button
-		if (btn[8].selected == true && squareX >= 0 && squareX < mazeX && squareY < mazeX && squareY >= 0 && level.level[X][Y-1] != 97 && level.check(X,Y-1,5) == false){
+		else if (btn[8].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 97 && level.check(X,Y-1,5) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 5;
 			}
@@ -622,7 +623,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//TorchW draw button
-		if (btn[9].selected == true && squareX >= 0 && squareX < mazeX && squareY < mazeX && squareY >= 0 && 
+		else if (btn[9].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && 
 				level.level[X][Y-1] != 97 && level.check(X,Y-1,7) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 7;
@@ -633,8 +634,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
         //Player Spawn button
-        if (SwingUtilities.isLeftMouseButton(me) && btn[26].selected == true && squareX >= 0 && squareX < mazeX && 
-        		squareY < mazeX && squareY >= 0 && level.level[X][Y-1] != 97){
+		else if (SwingUtilities.isLeftMouseButton(me) && btn[26].selected == true && squareX > 0 && 
+        		squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 97){
             for(int a = 0; a < mazeX; a++){
                 for(int b = 0; b < mazeX; b++){
                 	for (int c = 0; c < nlevels; c++){
@@ -648,13 +649,13 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
         }
 		
 		//The Void draw button
-		if (btn[27].selected == true && level != levels[0] && squareX >= 0 && squareX < mazeX && squareY < mazeX && 
-				squareY >= 0 && level.level[X][Y-1] != 97){
+		else if (btn[27].selected == true && level != levels[0] && squareX > 0 && squareX < mazeX-1 &&
+				squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 97){
 			level.level[X][Y-1] = 17;
 		}
 		
 		//The right mouse button always draws an empty floor tile
-		if(SwingUtilities.isRightMouseButton(me)){
+		if(SwingUtilities.isRightMouseButton(me) && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			try{
 				level.level[X][Y-1] = 0;
 			}
@@ -727,5 +728,17 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 
 	public Button[] getBtn() {
 		return btn;
+	}
+	
+	public float getMazeL() {
+		return mazeL;
+	}
+
+	public float getMazeR() {
+		return mazeR;
+	}
+	
+	public float getMazeX() {
+		return mazeX;
 	}
 }

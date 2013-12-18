@@ -2,7 +2,7 @@ package menu;
 import gamestate.GameStateManager;
 
 import javax.media.opengl.GL;
-
+import gamestate.GameStateManager;
 import com.sun.opengl.util.GLUT;
 
 public class Button extends MenuObject{

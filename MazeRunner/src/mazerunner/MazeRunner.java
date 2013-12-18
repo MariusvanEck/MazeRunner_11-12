@@ -66,6 +66,9 @@ public class MazeRunner {
 		// set input
 		this.input = input;
 		
+		// set primes
+		LootController.primes();
+		
 		// load textures
 		loadTextures();
 		
@@ -94,7 +97,7 @@ public class MazeRunner {
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		maze = new Maze(gl,"mazes/traptest.maze",textures);
+		maze = new Maze(gl,"mazes/cointest.maze",textures);
 		visibleObjects.add(maze);
 		
 		// Initialise the player.
@@ -106,7 +109,7 @@ public class MazeRunner {
 		
 
 		// Initialise the loot
-		lootController = new LootController(player);
+		lootController = new LootController(player,maze);
 		visibleObjects.add(lootController);
 		
 		// initialise enemies and add

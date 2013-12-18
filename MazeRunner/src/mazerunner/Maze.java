@@ -561,4 +561,8 @@ public class Maze implements VisibleObject {
 	public int getLevelSize(){
 		return levelSize;
 	}
+	
+	public int[][] getMaze(int i){
+		return maze.get(i);
+	}
 }

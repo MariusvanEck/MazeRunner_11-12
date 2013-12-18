@@ -21,4 +21,6 @@ public abstract class Loot extends GameObject implements VisibleObject {
 		if(modelFileLocation != null)
 			model.load(modelFileLocation);
 	}
+	
+	
 }

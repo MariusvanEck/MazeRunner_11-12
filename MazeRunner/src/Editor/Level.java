@@ -24,6 +24,10 @@ public class Level {
 	
 	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private int screenHeight =  gd.getDisplayMode().getHeight();
+	//Dit is compleet fout en zou niet nodig moeten zijn
+	private int screenWidth =  gd.getDisplayMode().getWidth();
+	private float mazeL = ((screenWidth-screenHeight)/3*2);					//Left bound of mazeDrawingWindow
+	private int mazeX = 20;
 	
     static int primeNumbers[] = new int[100];
     private int aantalobjecten = 100;
@@ -183,18 +187,22 @@ public class Level {
 		
 		
 		//That red square, work in progress
-				PointerInfo a = MouseInfo.getPointerInfo();
-				Point b = a.getLocation();
-				int xm = (int) b.getX();
-				int ym = (int) b.getY();
-				
-				gl.glColor3f(255/255f, 0/255f, 0/255f);
-				gl.glBegin(GL.GL_QUADS);
-				gl.glVertex2f(xm+50, screenHeight-ym+50);
-				gl.glVertex2f(xm, screenHeight-ym+50);
-				gl.glVertex2f(xm, screenHeight-ym);
-				gl.glVertex2f(xm+50, screenHeight-ym);
-				gl.glEnd();
+		PointerInfo a = MouseInfo.getPointerInfo();
+		Point b = a.getLocation();
+		int xm = (int) b.getX();
+		int ym = (int) b.getY();
+		float squareX = (float) Math.floor(((xm - (mazeL)) / buttonSize));
+		float squareY = (float) Math.floor(((screenHeight - ym)/buttonSize));
+		if(squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+			//Fourth argument = transparency (1f = 100% 0f = 0%)
+			gl.glColor4f(255/255f, 255/255f, 0/255f, 0.5f);
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex2f(startx+((width-x*buttonSize)/2)+squareX*buttonSize, (squareY+1)*buttonSize);
+			gl.glVertex2f(startx+((width-x*buttonSize)/2)+(squareX+1)*buttonSize, (squareY+1)*buttonSize);
+			gl.glVertex2f(startx+((width-x*buttonSize)/2)+(squareX+1)*buttonSize, (squareY)*buttonSize);
+			gl.glVertex2f(startx+((width-x*buttonSize)/2)+squareX*buttonSize, (squareY)*buttonSize);
+			gl.glEnd();
+		}
 		
 		
 		//Drawing the GRID on top of everything!

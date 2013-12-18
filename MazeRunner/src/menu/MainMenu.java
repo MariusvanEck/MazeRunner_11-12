@@ -156,7 +156,6 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		buttons[2].update(minX,maxX,minY+(maxY-minY)/4,minY+(maxY-minY)*2/4);
 		buttons[3].update(minX,maxX,minY,minY+(maxY-minY)*1/4);
 	}
-
 	
 	/*
 	 * **********************************************
@@ -217,7 +216,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			switch(getButton(x,y)) {
 			case PLAY: 		menuState = MenuState.PLAY; break;
 			case OPTIONS: 	menuState = MenuState.OPTIONS; break;
-			case EDITOR: 	menuState = MenuState.EDITOR; new Editor(); break;
+			case EDITOR: 	menuState = MenuState.EDITOR; new Editor(); menuState = MenuState.MAIN; break;
 			case QUIT: 		menuState = MenuState.QUIT; break;}
 			break;
 			
