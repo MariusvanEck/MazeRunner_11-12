@@ -20,4 +20,9 @@ public abstract class MenuObject implements MenuInterface{
 	
 	public void setSelected(boolean select){selected = select;}
 	public boolean isSelected(){return selected;}
+
+	public void setMinX(int minX) {this.minX = minX;}
+	public void setMinY(int minY) {this.minY = minY;}
+	public void setMaxX(int maxX) {this.maxX = maxX;}
+	public void setMaxY(int maxY) {this.maxY = maxY;}
 }

@@ -144,6 +144,18 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		for (Button b : buttons) {
 			b.display(gl);}
 	}
+	
+	public void reshape(int minX, int maxX,int minY,int maxY){
+		this.minX = minX;
+		this.maxX = maxX;
+		this.minY = minY;
+		this.maxY = maxY;
+		
+		buttons[0].update(minX,maxX,minY+(maxY-minY)*3/4,maxY);
+		buttons[1].update(minX,maxX,minY+(maxY-minY)*2/4,minY+(maxY-minY)*3/4);
+		buttons[2].update(minX,maxX,minY+(maxY-minY)/4,minY+(maxY-minY)*2/4);
+		buttons[3].update(minX,maxX,minY,minY+(maxY-minY)*1/4);
+	}
 
 	
 	/*
@@ -167,7 +179,8 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		
 		if(input.wasMousePressed()) {
 			input.resetMousePressed();
-			buttonPressed(x,y);}
+			buttonPressed(x,y);
+		}
 	}
 	
 	/**

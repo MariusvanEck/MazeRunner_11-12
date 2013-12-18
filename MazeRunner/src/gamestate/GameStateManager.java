@@ -238,6 +238,11 @@ public class GameStateManager extends Frame implements GLEventListener{
 		gl.glLoadIdentity();
 		glu.gluPerspective( 60, (double)width/(double)height, .1, 200 );
 		gl.glMatrixMode( GL.GL_MODELVIEW );
+		if(menu != null){
+			System.out.println("check: " + screenWidth + " " + screenHeight);
+			menu.reshape(screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), 0, 200);
+		}
+		
 	}
 
 	

@@ -1,4 +1,6 @@
 package menu;
+import gamestate.GameStateManager;
+
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
@@ -57,5 +59,11 @@ public class Button extends MenuObject{
 		glut.glutStrokeString(GLUT.STROKE_ROMAN, text); // Draw's the text
 		
 		gl.glPopMatrix();
+	}
+	public void update(int minX,int maxX,int minY, int maxY){
+		this.minX = minX;
+		this.maxX = maxX;
+		this.minY = minY;
+		this.maxY = maxY;
 	}
 }
