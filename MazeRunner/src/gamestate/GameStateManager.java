@@ -52,7 +52,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	
 	private Cursor blankCursor;										// Cursor for ingame state
 	
-	public static GL gl; // This is temp untill Loot have models to render
+	private GL gl; // This is temp untill Loot have models to render
 	
 	/**
 	 * Initialises the complete game.
@@ -169,32 +169,32 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * The display function should be used to pick the right sub display function depending on the gameState
 	 */
 	public void display(GLAutoDrawable drawable) {
-		this.setGl(drawable.getGL());
+		this.gl = drawable.getGL();
 		
 		// update the game status
-		updateGameState(getGl());
+		updateGameState(gl);
 		
 		// clear the color buffer
-		getGl().glClear(GL.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
 		// update and display using the current gamestate
 		switch (gameState) {
 		case INGAME:
 			updateScreenCenter();
 			mazeRunner.update();			// update mazerunner game
-			mazeRunner.display(getGl());	// display mazerunner game
+			mazeRunner.display(gl);	// display mazerunner game
 			break;
 		case MENU:
-			switchTo2D(getGl());			// switch to 2D
+			switchTo2D(gl);			// switch to 2D
 			menu.update();					// update menu
-			menu.display(getGl());			// display menu
-			switchTo3D(getGl());			// switch to 3D
+			menu.display(gl);			// display menu
+			switchTo3D(gl);			// switch to 3D
 			break;
 		case PAUSE:
-			mazeRunner.display(getGl());						// display frozen mazerunner game
-			switchTo2D(getGl());								// switch to 2D
-			Pause.display(getGl(), screenWidth, screenHeight);	// display pause
-			switchTo3D(getGl());								// switch to 3D
+			mazeRunner.display(gl);						// display frozen mazerunner game
+			switchTo2D(gl);								// switch to 2D
+			Pause.display(gl, screenWidth, screenHeight);	// display pause
+			switchTo3D(gl);								// switch to 3D
 			break;
 		default: 
 			System.out.println("default case display loop");
@@ -202,9 +202,9 @@ public class GameStateManager extends Frame implements GLEventListener{
 
 		
         // Load identity
-        getGl().glLoadIdentity();
+        gl.glLoadIdentity();
         // Flush the OpenGL buffer.
-        getGl().glFlush();
+        gl.glFlush();
 	}
 	
 	/**
@@ -355,15 +355,5 @@ public class GameStateManager extends Frame implements GLEventListener{
 	public static void main(String[] args) {
 		// Create and run MazeRunner.
 		new GameStateManager();
-	}
-
-
-	public GL getGl() {
-		return gl;
-	}
-
-
-	public void setGl(GL gl) {
-		this.gl = gl;
 	}
 }
