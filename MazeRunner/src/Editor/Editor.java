@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -310,17 +311,33 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	}
 	
 	public boolean saveToDataBase(String name,DataBase dataBase){
-		String res = new String(Cast.intToByteArray(nlevels));
-		res += " " + new String(Cast.intToByteArray(mazeX));
-		
+		ArrayList<Byte> list = new ArrayList<Byte>();
+		byte[] temp = Cast.intToByteArray(nlevels); 
+		list.add(temp[0]);
+		list.add(temp[1]);
+		list.add(temp[2]);
+		list.add(temp[3]);
+
+		temp = Cast.intToByteArray(mazeX);
+		list.add(temp[0]);
+		list.add(temp[1]);
+		list.add(temp[2]);
+		list.add(temp[3]);
+				
 		for(Level lvl : levels){
 			for(int z = 0; z < mazeX; z++){
 				for(int x = 0; x < mazeX; x++){
-					res += (new String(Cast.intToByteArray(lvl.level[x][z])) + " ");
+					temp = Cast.intToByteArray(lvl.level[x][z]);
+					list.add(temp[0]);
+					list.add(temp[1]);
+					list.add(temp[2]);
+					list.add(temp[3]);
 				}
-				res += "\n";
 			}
 		}
+		byte[] res = new byte[list.size()];
+		for(int i = 0; i  < list.size(); i++)
+			res[i] = list.get(i);
 		return dataBase.addMap(name, res);
 	}
 	
@@ -448,6 +465,16 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
             if(returnVal == JFileChooser.APPROVE_OPTION) {
                 file = chooser.getSelectedFile();
                 String path = file.getAbsolutePath();
+                String name = "";
+                for(int h = path.length()-1; h > 0;h--){
+                	if(path.charAt(h) == '\\' || path.charAt(h) == '/'){
+                		name = path.substring(h+1);
+                		break;
+                	}
+                }
+                DataBase dataBase = new DataBase();
+                this.saveToDataBase(name, dataBase);
+                
                 if(!path.endsWith(".maze")){
                 	file = new File(path + ".maze");
                 }

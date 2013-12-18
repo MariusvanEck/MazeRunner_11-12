@@ -55,7 +55,7 @@ public class Button extends MenuObject{
 			gl.glColor3f(1-colorRed,1-colorGreen, 1-colorBlue);
 		
 		gl.glTranslatef(minX+borderGap, minY+borderGap, 0); // Translation to the button
-		gl.glScalef((maxX-minX-borderGap*2)/width, (maxY-minY-borderGap*2)/100f, 1f); // Text scale to the button size
+		gl.glScalef(Math.abs(maxX-minX-borderGap*2)/width, Math.abs(maxY-minY-borderGap*2)/100f, 1f); // Text scale to the button size
 		glut.glutStrokeString(GLUT.STROKE_ROMAN, text); // Draw's the text
 		
 		gl.glPopMatrix();

@@ -1,6 +1,5 @@
 package database;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
@@ -34,9 +33,7 @@ public class DataBase {
 				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
 				
 				
-				// adds the default lvl's to the database if the database was empty
-				for(int i = 0; i < DEFAULT_MAZES_LOCATION.length;i++)	
-					addMap(DEFAULT_MAZES_NAME[i],DEFAULT_MAZES_LOCATION[i]);
+				// TODO:adds the default lvl's to the database if the database was empty
 				
 			}
 		}
@@ -67,10 +64,13 @@ public class DataBase {
 	}
 	
 	
-	public boolean addMap(String name,String data){
+	public boolean addMap(String name,byte[] data){
 		try{
-			statement.executeUpdate("INSERT INTO Map(Name,Data)" + 
-									"VALUES('" + name + "','" + data + "');");
+			PreparedStatement prep = connection.prepareStatement("INSERT INTO Map(Name,Data)" +
+																"VALUES(?, ? );");
+			prep.setString(1, name);
+			prep.setBytes(2, data);
+			prep.execute();
 			return true;
 		}catch(SQLException e){
 			System.err.println("DataBase: " + e.getMessage());
@@ -95,7 +95,7 @@ public class DataBase {
 			}
 			in.close();
 		
-			statement.executeUpdate("INSERT INTO Map(Name,Data)" +
+			statement.executeUpdate("INSERT INTO Map(Name,Data) " +
 								"VALUES('" + name + "','" + data + "');");
 		}catch(IOException e){
 			System.err.println("DataBase: " + e.getMessage());
@@ -105,14 +105,21 @@ public class DataBase {
 	}
 	
 	
-	public ByteArrayInputStream getMap(String name){
+	public byte[] getMap(String name){
 		try{
+			ResultSet temp = statement.executeQuery("SELECT * FROM Map");
+			
+			if(temp.next()){
+				System.out.println(temp.getInt("ID") + " " + temp.getString("Name"));
+			}
+			
+			
+			
 			ResultSet rs = statement.executeQuery("SELECT Data " +
 												"FROM Map " +
 												"WHERE Map.Name = '" + name + "';");
 			if(rs.next()){
-				byte[] res = rs.getBytes("Data");
-				return new ByteArrayInputStream(res);
+				return rs.getBytes("Data");
 			}
 			else{
 				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
@@ -124,7 +131,7 @@ public class DataBase {
 		}
 	}
 	
-	public ByteArrayInputStream getMap(int ID){
+	public byte[] getMap(int ID){
 		
 		try{
 			PreparedStatement prep = connection.prepareStatement("SELECT Data " +
@@ -136,8 +143,7 @@ public class DataBase {
 			
 			
 			if(rs.next()){
-				byte[] res = rs.getBytes("Data");
-				return new ByteArrayInputStream(res);
+				return rs.getBytes("Data");
 			}
 			else{
 				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");

@@ -68,7 +68,7 @@ public class LootController implements VisibleObject {
 	}
 	
 	public boolean check(int i, int x, int z, int value, Maze maze){
-		int index = 0;
+	/*	int index = 0;
 		int number = maze.getMaze(i)[x][z];
 		int objects[] = new int[10];
         // Input is larger than the maximum value, so the value given will miss factors and thus objects
@@ -103,7 +103,7 @@ public class LootController implements VisibleObject {
             System.out.println("Error: Not all prime factors are given, primeNumbers array too small.");
             objects[0] = -1;
             System.exit(0);
-        }		
+        }*/		
 		return false;
 	}
 	

@@ -66,7 +66,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	public void loadTextures(){
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures\\Background.png"), false);
-			System.out.println("Menu Textures loaded");
+			System.out.println("MainMenu: Menu Textures loaded");
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -151,10 +151,11 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		this.minY = minY;
 		this.maxY = maxY;
 		
+		
 		buttons[0].update(minX,maxX,minY+(maxY-minY)*3/4,maxY);
 		buttons[1].update(minX,maxX,minY+(maxY-minY)*2/4,minY+(maxY-minY)*3/4);
 		buttons[2].update(minX,maxX,minY+(maxY-minY)/4,minY+(maxY-minY)*2/4);
-		buttons[3].update(minX,maxX,minY,minY+(maxY-minY)*1/4);
+		buttons[3].update(minX,maxX,minY,minY+(maxY-minY)/4);
 	}
 	
 	/*

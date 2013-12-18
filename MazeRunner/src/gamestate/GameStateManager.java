@@ -197,7 +197,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 			switchTo3D(gl);								// switch to 3D
 			break;
 		default: 
-			System.out.println("default case display loop");
+			System.err.println("GameState: Unknown GameState!");
 		}
 		
         // Load identity
@@ -239,7 +239,6 @@ public class GameStateManager extends Frame implements GLEventListener{
 		glu.gluPerspective( 60, (double)width/(double)height, .1, 200 );
 		gl.glMatrixMode( GL.GL_MODELVIEW );
 		if(menu != null){
-			System.out.println("check: " + screenWidth + " " + screenHeight);
 			menu.reshape(screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), 0, 200);
 		}
 		

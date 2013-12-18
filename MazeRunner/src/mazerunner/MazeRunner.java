@@ -97,7 +97,10 @@ public class MazeRunner {
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		maze = new Maze(gl,"mazes/cointest.maze",textures);
+		//maze = new Maze(gl,"mazes/cointest.maze",textures);
+		maze = new Maze(gl,dataBase,"empty",textures);
+		maze.lvlToString();
+		
 		visibleObjects.add(maze);
 		
 		// Initialise the player.
@@ -105,7 +108,7 @@ public class MazeRunner {
 							Maze.SQUARE_SIZE / 2,							
 							5 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	
 							90, 0, 100,										
-							null);		
+							null);
 		
 
 		// Initialise the loot

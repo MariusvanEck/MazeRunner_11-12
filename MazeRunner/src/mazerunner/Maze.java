@@ -54,40 +54,41 @@ public class Maze implements VisibleObject {
 	
 	private void load(GL gl,DataBase dataBase,String name){ // moet nog testen of hij werkt
 		try{
-			ByteArrayInputStream in = dataBase.getMap(name);
-			byte[] b = new byte[4];
-			
-			if(in.read(b) == -1)
+			byte[] b = dataBase.getMap(name);
+			if((b.length % 4) != 0)
 				throw new IOException("Corrupted data");
-			levelSize = Cast.byteArrayToInt(b);
 			
-			if(in.read(b) == -1)
-				throw new IOException("Corrupted data");
-			mazeSize = Cast.byteArrayToInt(b);
+			byte[] temp = new byte[4];
+			temp[0] = b[0];
+			temp[1] = b[1];
+			temp[2] = b[2];
+			temp[3] = b[3];
+			levelSize = Cast.byteArrayToInt(temp);
+			temp[0] = b[4];
+			temp[1] = b[5];
+			temp[2] = b[6];
+			temp[3] = b[7];
+			mazeSize = Cast.byteArrayToInt(temp);
 			
-			level = new int[mazeSize][mazeSize];
 			
-			for(int y = 0; y < levelSize; y++){	
+			this.level = new int[mazeSize][mazeSize];
+			for(int y = 0; y < levelSize;y++){
 				for(int z = 0; z < mazeSize; z++){
-					for(int x = 0; x < mazeSize;x++){
-						if(in.read() == ' '){
-							x--;
-							continue;
-						}
-						if(in.read() == '\n'){
-							x--;
-							continue;
-						}
-						if((in.read(b)) == -1)
-							throw new IOException("Corrupted data");
-						level[x][z] = Cast.byteArrayToInt(b); 
+					for(int x = 0; x < mazeSize; x++){
+						temp[0] = b[8+x+z*mazeSize+y*mazeSize*mazeSize];
+						temp[1] = b[9+x+z*mazeSize+y*mazeSize*mazeSize];
+						temp[2] = b[10+x+z*mazeSize+y*mazeSize*mazeSize];
+						temp[3] = b[11+x+z*mazeSize+y*mazeSize*mazeSize];
+						level[x][z] = Cast.byteArrayToInt(temp);
 					}
-					maze.add(level);
 				}
+				maze.add(level);
 			}
+			
+			
 		}catch(IOException e){
 			System.err.println("Maze: " + e.getMessage());
-		}catch(InvalidByteArraySize e){
+		}catch( InvalidByteArraySize e){
 			System.err.println("Maze: " + e.getMessage());
 		}
 		
@@ -564,5 +565,17 @@ public class Maze implements VisibleObject {
 	
 	public int[][] getMaze(int i){
 		return maze.get(i);
+	}
+	
+	public void lvlToString(){
+		for(int[][] level:maze){
+			for(int i = 0; i < levelSize; i++){
+				for(int j = 0; j < levelSize; j++){
+					System.out.print(level[j][i]);
+					System.out.print(' ');
+				}
+				System.out.print('\n');
+			}
+		}
 	}
 }
