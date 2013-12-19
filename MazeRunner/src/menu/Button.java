@@ -1,13 +1,10 @@
 package menu;
-import gamestate.GameStateManager;
 
 import javax.media.opengl.GL;
-import gamestate.GameStateManager;
-import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
 
 public class Button extends MenuObject{
-	private String text;
-	private float colorRed,colorGreen,colorBlue;
+	private Texture texture;
 	
 	/**
 	 * Button constructor
@@ -18,47 +15,38 @@ public class Button extends MenuObject{
 	 * @param minY the bottom y
 	 * @param maxY the top y
 	 */
-	public Button(String text,int minX,int maxX,int minY,int maxY,float[] buttonColor){
+	public Button(int minX,int maxX,int minY,int maxY, Texture texture){
 		super(minX,maxX,minY,maxY);
-		this.text = text;
-		this.colorRed = buttonColor[0];
-		this.colorGreen = buttonColor[1];
-		this.colorBlue = buttonColor[2];
+		this.texture = texture;
 	}
 	
 	/**
 	 * Draw the button
 	 */
 	public void display(GL gl){
-		if(selected)
-			gl.glColor3f(1-colorRed, 1-colorGreen, 1-colorBlue); // Color of the button background when selected
-		else 
-			gl.glColor3f(colorRed, colorGreen, colorBlue); // Color of the button background when not selected
 		
-		// Draw's the button background
-		gl.glBegin(GL.GL_QUADS);
-			gl.glVertex2f(minX, minY);
-			gl.glVertex2f(maxX, minY);
-			gl.glVertex2f(maxX, maxY);
-			gl.glVertex2f(minX,maxY);
-		gl.glEnd();
-		
-		// Draw's the text on the button
-		gl.glPushMatrix();
-		GLUT glut = new GLUT();
-		float width = glut.glutStrokeLengthf(GLUT.STROKE_ROMAN, text); // the width of the text-string in gl coordinations
-		float borderGap = 30; // Gap between the button border and the text
-		
-		if(selected)
-			gl.glColor3f(colorRed,colorGreen,colorBlue); // Color of the text
-		else
-			gl.glColor3f(1-colorRed,1-colorGreen, 1-colorBlue);
-		
-		gl.glTranslatef(minX+borderGap, minY+borderGap, 0); // Translation to the button
-		gl.glScalef(Math.abs(maxX-minX-borderGap*2)/width, Math.abs(maxY-minY-borderGap*2)/100f, 1f); // Text scale to the button size
-		glut.glutStrokeString(GLUT.STROKE_ROMAN, text); // Draw's the text
-		
-		gl.glPopMatrix();
+		if (texture != null){
+			gl.glEnable(GL.GL_BLEND);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			texture.enable();
+			texture.bind();
+			//White background color for normal texture view
+			gl.glColor3f(255/255f, 255/255f, 255/255f);
+			if(selected){
+				gl.glColor3f(128/255f, 128/255f, 128/255f);
+			}
+			gl.glBegin(GL.GL_QUADS);
+				gl.glTexCoord2f(0,0);
+				gl.glVertex2f(minX, maxY);
+				gl.glTexCoord2f(1,0);
+				gl.glVertex2f(maxX, maxY);
+				gl.glTexCoord2f(1,1);
+				gl.glVertex2f(maxX, minY);
+				gl.glTexCoord2f(0,1);
+				gl.glVertex2f(minX, minY);
+			gl.glEnd();
+			texture.disable();
+		}
 	}
 	public void update(int minX,int maxX,int minY, int maxY){
 		this.minX = minX;

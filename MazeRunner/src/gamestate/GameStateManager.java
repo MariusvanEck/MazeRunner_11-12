@@ -239,7 +239,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 		glu.gluPerspective( 60, (double)width/(double)height, .1, 200 );
 		gl.glMatrixMode( GL.GL_MODELVIEW );
 		if(menu != null){
-			menu.reshape(screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), 0, 200);
+			menu.reshape(screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), screenHeight/2-(screenHeight/8),
+					screenHeight/2+(screenHeight/8));
 		}
 		
 	}
@@ -313,7 +314,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 		
 		// gameState initialisation 
 		if (gameState == null) {
-			menu = new MainMenu(input, screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), 0, 300);
+			menu = new MainMenu(input,0,0,0,0); //kan er uit?
+					//screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), screenHeight/2-(screenHeight/8), screenHeight/2+(screenHeight/8));
 			mazeRunner.init(gl, screenWidth, screenHeight);
 			gameState = GameState.MENU;
 			input.setGameState(gameState);}

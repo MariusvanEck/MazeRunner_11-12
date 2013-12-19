@@ -1,8 +1,12 @@
 package menu;
 
+import java.io.File;
+
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
 
 public class OptionsMenu extends MenuObject{
 	
@@ -11,14 +15,30 @@ public class OptionsMenu extends MenuObject{
 	
 	public static final byte BACK = 0;
 	
+	private Texture[] textures;
+	
 	/**
 	 * Constructor creates menu objects
 	 */
-	public OptionsMenu(int minX,int maxX,int minY,int maxY){
+	public OptionsMenu(int minX, int maxX, int minY,int maxY){
 		super(minX,maxX,minY,maxY);
 		
+		textures = new Texture[1];
+		
+		loadTextures();
+		
 		buttons = new Button[1];
-		buttons[0] = new Button("Back",minX,maxX,minY,maxY/2,buttonColor);
+		buttons[0] = new Button(minX,maxX,minY,minY+(maxY-minY)/2, textures[0]);		//Back
+	}
+	
+	public void loadTextures(){
+		try {
+			textures[0] = TextureIO.newTexture(new File("textures\\back.png"), false);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 	
 	/**
@@ -30,21 +50,21 @@ public class OptionsMenu extends MenuObject{
 		return -1;
 	}
 	
+	public void reshape(int minX, int maxX, int minY, int maxY){
+		this.minX = minX;
+		this.maxX = maxX;
+		this.minY = minY;
+		this.maxY = maxY;
+		
+		buttons[0].update(minX,maxX,minY,minY+(maxY-minY)/2);
+	}
+	
 	/**
 	 * Draw the menu
 	 */
-	public void display(GL gl) {
-		gl.glPushMatrix();
-		GLUT glut = new GLUT();
-		float width = glut.glutStrokeLengthf(GLUT.STROKE_ROMAN, "Options"); // the width of the text-string in gl coordinations
-		gl.glColor3f(1f,0f,0f);
-		gl.glTranslatef(0, maxY-(maxY-minY)/4, 0); // Translation to upperside of screen
-		gl.glScalef((maxX-minX)/width,(maxY-minY)/4/100f, 1f); // Text scale
-		glut.glutStrokeString(GLUT.STROKE_ROMAN, "Options"); // Draw's the text
-		gl.glPopMatrix();
-		
-		for (Button b : buttons) {
-			b.display(gl);}
+	public void display(GL gl) {		
+		for(int i=0; i<buttons.length; i++)
+			buttons[i].display(gl);
 	}
 	
 	/**
@@ -53,7 +73,8 @@ public class OptionsMenu extends MenuObject{
 	public void update(int x, int y){
 		// set all the buttons to false
 		for (int i=0; i<buttons.length; i++) {
-			buttons[i].setSelected(false);}
+			buttons[i].setSelected(false);
+		}
 		
 		// set selected button to true
 		switch(getButton(x,y)){

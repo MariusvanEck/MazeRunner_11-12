@@ -1,15 +1,20 @@
 package menu;
 
+import java.io.File;
+
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
 
 public class QuitMenu extends MenuObject{
 	private Button buttons[];
-	private float[] buttonColor = {1,0,0};
 	
 	public static final byte YES = 0;
 	public static final byte NO = 1;
+	
+	private Texture[] textures;
 	
 	/**
 	 * Constructor creates menu objects
@@ -17,10 +22,25 @@ public class QuitMenu extends MenuObject{
 	public QuitMenu(int minX,int maxX,int minY,int maxY){
 		super(minX,maxX,minY,maxY);
 		
-		buttons = new Button[2];
-		buttons[0] = new Button("Yes",minX,maxX,minY+(maxY-minY)/4,minY+(maxY-minY)/2,buttonColor);
-		buttons[1] = new Button("No",minX,maxX,minY,minY+(maxY-minY)/4,buttonColor);
+		textures = new Texture[2];
 		
+		loadTextures();
+		
+		buttons = new Button[2];
+		buttons[0] = new Button(minX,maxX,minY+(maxY-minY)/4,minY+(maxY-minY)/2, textures[0]);		//Yes
+		buttons[1] = new Button(minX,maxX,minY,minY+(maxY-minY)/4, textures[1]);					//No
+		
+	}
+	
+	public void loadTextures(){
+		try {
+			textures[0] = TextureIO.newTexture(new File("textures\\yes.png"), false);
+			textures[1] = TextureIO.newTexture(new File("textures\\no.png"), false);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 	
 	/**
@@ -32,6 +52,16 @@ public class QuitMenu extends MenuObject{
 		if(buttons[1].minX < x && x < buttons[1].maxX && buttons[1].minY < y && y < buttons[1].maxY)
 			return NO;
 		return -1;
+	}
+	
+	public void reshape(int minX, int maxX,int minY,int maxY){
+		this.minX = minX;
+		this.maxX = maxX;
+		this.minY = minY;
+		this.maxY = maxY;
+		
+		buttons[0].update(minX,maxX,minY+(maxY-minY)/4,minY+(maxY-minY)/2);
+		buttons[1].update(minX,maxX,minY,minY+(maxY-minY)/4);
 	}
 	
 	/**

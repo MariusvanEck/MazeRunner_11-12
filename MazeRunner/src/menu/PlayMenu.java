@@ -1,14 +1,20 @@
 package menu;
 
+import java.io.File;
+
 import javax.media.opengl.GL;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
 
 public class PlayMenu extends MenuObject{
 	private Button buttons[];
-	private float[] buttonColor = {1,0,0};
 	
 	public static final byte NEW = 0;
 	public static final byte CONTINUE = 1;
 	public static final byte BACK = 2;
+	
+	private Texture[] textures;
 	
 	
 	/**
@@ -17,11 +23,26 @@ public class PlayMenu extends MenuObject{
 	public PlayMenu(int minX,int maxX,int minY,int maxY){
 		super(minX,maxX,minY,maxY);
 		
-		buttons = new Button[3];
+		textures = new Texture[3];
 		
-		buttons[0] = new Button("New",minX,maxX,minY+(maxY-minY)*2/3,maxY,buttonColor);
-		buttons[1] = new Button("Continue",minX,maxX,minY+(maxY-minY)/3,minY+(maxY-minY)*2/3,buttonColor);
-		buttons[2] = new Button("Back",minX,maxX,minY,minY+(maxY-minY)/3,buttonColor);
+		loadTextures();
+		
+		buttons = new Button[3];
+		buttons[0] = new Button(minX,maxX,minY+(maxY-minY)*2/3,maxY, textures[0]);						//New
+		buttons[1] = new Button(minX,maxX,minY+(maxY-minY)/3,minY+(maxY-minY)*2/3, textures[1]);		//Continue
+		buttons[2] = new Button(minX,maxX,minY,minY+(maxY-minY)/3, textures[2]);							//Back
+	}
+	
+	public void loadTextures(){
+		try {
+			textures[0] = TextureIO.newTexture(new File("textures\\new.png"), false);
+			textures[1] = TextureIO.newTexture(new File("textures\\continue.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures\\back.png"), false);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 	
 	/**
@@ -44,6 +65,18 @@ public class PlayMenu extends MenuObject{
 		for(int i=0; i<buttons.length; i++)
 			buttons[i].display(gl);
 	}
+	
+	public void reshape(int minX, int maxX,int minY,int maxY){
+		this.minX = minX;
+		this.maxX = maxX;
+		this.minY = minY;
+		this.maxY = maxY;
+		
+		buttons[0].update(minX,maxX,minY+(maxY-minY)*2/3,maxY);
+		buttons[1].update(minX,maxX,minY+(maxY-minY)/3,minY+(maxY-minY)*2/3);
+		buttons[2].update(minX,maxX,minY,minY+(maxY-minY)/3);
+	}
+	
 	
 	/**
 	 * This methode is used to check if and what is selected

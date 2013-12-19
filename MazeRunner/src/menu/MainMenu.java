@@ -23,7 +23,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	private QuitMenu quitMenu;
 	
 	public MenuState menuState;
-	private float[] buttonColor = {1,0,0};  
+	private float[] buttonColor = {1,1,1};  
 	
 	public static final byte PLAY = 0;
 	public static final byte OPTIONS = 1;
@@ -48,25 +48,28 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		optionsMenu = new OptionsMenu(minX,maxX,minY,maxY);
 		quitMenu = new QuitMenu(minX,maxX,minY,maxY);
 		
-		// create menu buttons
-		buttons = new Button[4];
-		buttons[0] = new Button("Play",minX,maxX,minY+(maxY-minY)*3/4,maxY,buttonColor);
-		buttons[1] = new Button("Options",minX,maxX,minY+(maxY-minY)*2/4,minY+(maxY-minY)*3/4,buttonColor);
-		buttons[2] = new Button("Editor",minX,maxX,minY+(maxY-minY)*1/4,minY+(maxY-minY)*2/4,buttonColor);
-		buttons[3] = new Button("Quit",minX,maxX,minY,minY+(maxY-minY)*1/4,buttonColor);
-		
 		// set input object
 		this.input = input;
 		
-		textures = new Texture[1];
+		textures = new Texture[5];
 		
 		loadTextures();
+		
+		// create menu buttons
+		buttons = new Button[4];
+		buttons[0] = new Button(minX,maxX,minY+(maxY-minY)*3/4,maxY, textures[1]);						//Play
+		buttons[1] = new Button(minX,maxX,minY+(maxY-minY)*2/4,minY+(maxY-minY)*3/4, textures[2]);	//Options
+		buttons[2] = new Button(minX,maxX,minY+(maxY-minY)*1/4,minY+(maxY-minY)*2/4, textures[3]);		//Editor
+		buttons[3] = new Button(minX,maxX,minY,minY+(maxY-minY)*1/4, textures[4]);						//Quit
 	}
 	
 	public void loadTextures(){
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures\\Background.png"), false);
-			System.out.println("MainMenu: Menu Textures loaded");
+			textures[1] = TextureIO.newTexture(new File("textures\\Play.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures\\options.png"), false);
+			textures[3] = TextureIO.newTexture(new File("textures\\editor.png"), false);
+			textures[4] = TextureIO.newTexture(new File("textures\\quit.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -126,12 +129,25 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			displayMain(gl);
 			break;
 		case OPTIONS:
+			optionsMenu.reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/8),
+					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/8),
+					GameStateManager.screenHeight/2-(GameStateManager.screenHeight/8),
+					GameStateManager.screenHeight/2+(GameStateManager.screenHeight/8));
 			optionsMenu.display(gl);
 			break;
 		case PLAY:
+			//Holy Moly!!
+			playMenu.reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/8),
+					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/8),
+					GameStateManager.screenHeight/2-(GameStateManager.screenHeight/8),
+					GameStateManager.screenHeight/2+(GameStateManager.screenHeight/8));
 			playMenu.display(gl);
 			break;
 		case QUIT:
+			quitMenu.reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/8),
+					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/8),
+					GameStateManager.screenHeight/2-(GameStateManager.screenHeight/8),
+					GameStateManager.screenHeight/2+(GameStateManager.screenHeight/8));
 			quitMenu.display(gl);
 			break;
 		}
@@ -150,7 +166,6 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		this.maxX = maxX;
 		this.minY = minY;
 		this.maxY = maxY;
-		
 		
 		buttons[0].update(minX,maxX,minY+(maxY-minY)*3/4,maxY);
 		buttons[1].update(minX,maxX,minY+(maxY-minY)*2/4,minY+(maxY-minY)*3/4);
@@ -223,7 +238,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			
 		case OPTIONS:
 			switch(optionsMenu.getButton(x, y)) {
-			case OptionsMenu.BACK:	menuState = MenuState.MAIN; break;}
+			case OptionsMenu.BACK:	menuState = MenuState.MAIN; System.out.println("Options: Back pressed");  break;}
 			break;
 			
 		case PLAY:
@@ -236,11 +251,6 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			case PlayMenu.CONTINUE: input.setGameState(GameState.INGAME);
 			case PlayMenu.BACK: 	menuState = MenuState.MAIN; break;}
 			break;
-			
-//		case EDITOR:
-//			System.out.println("eryd");
-//			new Editor();
-//			break;
 			
 		case QUIT:
 			switch(quitMenu.getButton(x, y)) {
