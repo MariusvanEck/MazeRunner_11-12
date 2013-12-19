@@ -27,24 +27,24 @@ public class Maze implements VisibleObject {
 	
 	private HashMap<String,Texture> textures;			// reference to the texture hashmap
 	private Texture currentTexture;						// specifies the current texture
-	private int currentLevel = 0;						// specifies the currentLevel
+	private int currentLevelIndex = 0;						// specifies the currentLevel
 
-	private ArrayList<int[][]> maze;
-	private int[][] level;
+	private ArrayList<int[][]> levels;
+	private int[][] currentLevel;
 	private ArrayList<Stair> stairs;
 	
 	// old constructor
 	public Maze(GL gl,String file,HashMap<String,Texture> textures){
 		this.textures = textures;
-		this.maze = new ArrayList<int[][]>();
+		this.levels = new ArrayList<int[][]>();
 		this.stairs = new ArrayList<Stair>();
 		
 		this.load(gl, file);
 	}
 	
-	public Maze(GL gl,DataBase dataBase,String name,HashMap<String,Texture> textures){
+	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
 		this.textures = textures;
-		this.maze = new ArrayList<int[][]>();
+		this.levels = new ArrayList<int[][]>();
 		this.stairs = new ArrayList<Stair>();
 		
 		this.load(gl,dataBase,name);
@@ -69,7 +69,7 @@ public class Maze implements VisibleObject {
 			mazeSize = Cast.byteArrayToInt(temp);
 			
 			
-			this.level = new int[mazeSize][mazeSize];
+			this.currentLevel = new int[mazeSize][mazeSize];
 			for(int y = 0; y < levelSize;y++){
 				for(int z = 0; z < mazeSize; z++){
 					for(int x = 0; x < mazeSize; x++){
@@ -77,10 +77,10 @@ public class Maze implements VisibleObject {
 						temp[1] = b[9+x+z*mazeSize+y*mazeSize*mazeSize];
 						temp[2] = b[10+x+z*mazeSize+y*mazeSize*mazeSize];
 						temp[3] = b[11+x+z*mazeSize+y*mazeSize*mazeSize];
-						level[x][z] = Cast.byteArrayToInt(temp);
+						currentLevel[x][z] = Cast.byteArrayToInt(temp);
 					}
 				}
-				maze.add(level);
+				levels.add(currentLevel);
 			}
 			
 			
@@ -101,21 +101,21 @@ public class Maze implements VisibleObject {
 			for(int z = 0; z < mazeSize; z++){
 				for(int x = 0; x < mazeSize;x++){
 					//finding stairs and orientation
-					if(maze.get(y)[x][z] == 11){
+					if(levels.get(y)[x][z] == 11){
 						//WEST
-						if (maze.get(y)[x+1][z] == 13){
+						if (levels.get(y)[x+1][z] == 13){
 							stairs.add(new Stair(gl,y,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 						}
 						//EAST
-						else if (maze.get(y)[x-1][z] == 13){
+						else if (levels.get(y)[x-1][z] == 13){
 							stairs.add(new Stair(gl,y,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 						}
 						//SOUTH
-						else if (maze.get(y)[x][z-1] == 13){
+						else if (levels.get(y)[x][z-1] == 13){
 							stairs.add(new Stair(gl,y,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 						}
-						//North
-						else if (maze.get(y)[x][z+1] == 13){
+						//NORTH
+						else if (levels.get(y)[x][z+1] == 13){
 							stairs.add(new Stair(gl,y,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 						}
 					}
@@ -134,25 +134,25 @@ public class Maze implements VisibleObject {
 			mazeSize = (Integer) omaze.readObject();
 	      
 			for (int i=0; i<levelSize; i++) {
-				maze.add((int[][]) omaze.readObject());
+				levels.add((int[][]) omaze.readObject());
 				for (int z = 0; z < mazeSize; z++){
 					for(int x = 0; x < mazeSize;x++){
 						//finding stairs and orientation
-						if(maze.get(i)[x][z] == 11){
+						if(levels.get(i)[x][z] == 11){
 							//WEST
-							if (maze.get(i)[x+1][z] == 13){
+							if (levels.get(i)[x+1][z] == 13){
 								stairs.add(new Stair(gl,i,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 							//EAST
-							else if (maze.get(i)[x-1][z] == 13){
+							else if (levels.get(i)[x-1][z] == 13){
 								stairs.add(new Stair(gl,i,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 							//SOUTH
-							else if (maze.get(i)[x][z-1] == 13){
+							else if (levels.get(i)[x][z-1] == 13){
 								stairs.add(new Stair(gl,i,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 							//North
-							else if (maze.get(i)[x][z+1] == 13){
+							else if (levels.get(i)[x][z+1] == 13){
 								stairs.add(new Stair(gl,i,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
 							}
 						}
@@ -160,7 +160,7 @@ public class Maze implements VisibleObject {
 				}
 			}
 	  
-			level = maze.get(currentLevel);
+			currentLevel = levels.get(currentLevelIndex);
 			omaze.close();
 			
 			
@@ -190,7 +190,7 @@ public class Maze implements VisibleObject {
 	public boolean isWall( int x, int z )
 	{
 		if( x >= 0 && x < mazeSize && z >= 0 && z < mazeSize )
-			return level[x][z] == 1;
+			return currentLevel[x][z] == 1;
 		else
 			return false;
 	}
@@ -258,7 +258,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isStair(int x ,int z){
 		if(x >= 0 && x < mazeSize && z >= 0 && z < mazeSize)
-			return level[x][z] == 11 || level[x][z] == 13;
+			return currentLevel[x][z] == 11 || currentLevel[x][z] == 13;
 		return false;
 	}
 	
@@ -369,7 +369,7 @@ public class Maze implements VisibleObject {
 	 * @param isWall 	true for wall, false for no wall
 	 */
 	public synchronized void editMaze(int x, int y,int z, boolean isWall) {
-		level[x][z] = isWall? 1 : 0;
+		currentLevel[x][z] = isWall? 1 : 0;
 	}
 	
 	
@@ -446,7 +446,7 @@ public class Maze implements VisibleObject {
 		currentTexture.disable(); // disable stairL texture
 */
 		for(Stair stair : stairs){
-			if(stair.getLowerY() == currentLevel)
+			if(stair.getLowerY() == currentLevelIndex)
 				stair.display(gl);
 		}
 	}
@@ -526,19 +526,19 @@ public class Maze implements VisibleObject {
 	 */
 	
 	/**
-	 * get the current active level
+	 * get the current active level index
 	 */
 	public int getCurrentLevel() {
-		return currentLevel;
+		return currentLevelIndex;
 	}
 	
 	/**
 	 * set the current active level
 	 * @param currentLevel
 	 */
-	public void setCurrentLevel(int currentLevel) {
-		this.currentLevel = currentLevel;
-		level = maze.get(currentLevel);
+	public void setCurrentLevel(int currentLevelIndex) {
+		this.currentLevelIndex = currentLevelIndex;
+		currentLevel = levels.get(currentLevelIndex);
 	}
 	
 	/**
@@ -566,11 +566,11 @@ public class Maze implements VisibleObject {
 	}
 	
 	public int[][] getMaze(int i){
-		return maze.get(i);
+		return levels.get(i);
 	}
 	
 	public void lvlToString(){
-		for(int[][] level:maze){
+		for(int[][] level:levels){
 			for(int i = 0; i < levelSize; i++){
 				for(int j = 0; j < levelSize; j++){
 					System.out.print(level[j][i]);

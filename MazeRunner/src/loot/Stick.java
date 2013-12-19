@@ -9,6 +9,7 @@ import mazerunner.Creature;
 public class Stick extends Weapon{
 
 	private final static String modelFileLocation = null; 	// specify the model file here
+	
 	private int downTime = 1000;							// the weapon down time in ms
 	private Long timeDoneLastDamage;						// last time the stick was swung
 	private int damage = 10;								// the sticks damage output
