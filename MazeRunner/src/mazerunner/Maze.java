@@ -68,6 +68,7 @@ public class Maze implements VisibleObject {
 			temp[3] = b[7];
 			mazeSize = Cast.byteArrayToInt(temp);
 			
+			System.out.println("Maze <levelSize/mazeSize>: " + levelSize + "/" + mazeSize);
 			
 			this.currentLevel = new int[mazeSize][mazeSize];
 			for(int y = 0; y < levelSize;y++){
