@@ -1,10 +1,8 @@
 package mazerunner;
 
-import java.util.Iterator;
-
 import javax.media.opengl.GL;
 
-import loot.*;
+import loot.Weapon;
 
 /**
  * Player represents the actual player in MazeRunner.
