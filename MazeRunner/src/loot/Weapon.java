@@ -3,8 +3,8 @@ package loot;
 import mazerunner.Creature;
 
 public abstract class Weapon extends Loot {
-	private int damage;
-	boolean equipped;
+	
+	private Creature creature;
 	
 	/**
 	 * Weapon constructor
@@ -15,31 +15,41 @@ public abstract class Weapon extends Loot {
 	 * @param equipped				Is this weapon equipped by a creature
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Weapon(double x, double y, double z, int damage, boolean equipped, String modelFileLocation){
-		super(x,y,z,modelFileLocation);
-		this.damage = damage;
-		this.equipped = equipped;
+	public Weapon(double x, double y, double z, String modelFileLocation){
+		super(x, y, z, modelFileLocation);
+	}
+	
+	/**
+	 * Constructor for stick without location belonging to a creature
+	 */
+	public Weapon(String modelFileLocation) {
+		super(-999, -999, -999, modelFileLocation);
 	}
 	
 	/**
 	 * doDamage
 	 * @return The damage to be dealt to the enemy creature
 	 */
-	public void doDamage(Creature creature){
-		creature.removeHP(damage);
+	public abstract void doDamage(Creature creature);
+	
+	/**
+	 * Set the associated creature
+	 */
+	public void setCreature(Creature creature) {
+		this.creature = creature;
+	}
+
+	/**
+	 * get the associated creature
+	 */
+	public Creature getCreature() {
+		return creature;
 	}
 	
 	/**
-	 * Give state of equipped
-	 * @return equipped
+	 * check if the weapon is equiped (has an associated creature)
 	 */
-	public boolean getEquipped(){return equipped;}
-	
-	/**
-	 * Set Equipped
-	 * @param set The state of equipped that you want
-	 */
-	public void setEquipped(boolean set){
-		equipped = set;
+	public boolean isEquipped() {
+		return getCreature() != null;
 	}
 }

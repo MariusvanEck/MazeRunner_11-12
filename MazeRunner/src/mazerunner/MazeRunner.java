@@ -233,6 +233,12 @@ public class MazeRunner {
 	 * update() updates the mazerunner game using the past time since the previous frame
 	 */
 	public void update() {
+		
+		// TEMP: if players health is 0 go to main menu and reset
+		if (player.hitpoints == 0) {
+			input.setGameState(GameState.MENU);
+			input.setNewGame(true);}
+		
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		
 		long currentTime = now.getTimeInMillis();
@@ -312,19 +318,7 @@ public class MazeRunner {
 			// set enemy back if a wall was hit
 			if (enemy.hasHitWall()){
 				enemy.locationX = previousX;
-				enemy.locationZ = previousZ;}
-				
-			// damage player if near an enemy
-			if (enemy.near(player, Maze.SQUARE_SIZE/2)) {
-				if (enemy.hitTimer == 0) {
-					player.removeHP(25);
-					enemy.hitTimer += deltaTime;}
-				else if (enemy.hitTimer > 1000)
-					enemy.hitTimer = 0;
-				else 
-					enemy.hitTimer += deltaTime;}
-			
-			else enemy.hitTimer = 0;}
+				enemy.locationZ = previousZ;}}
 	}
 	
 	/**

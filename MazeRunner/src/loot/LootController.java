@@ -133,7 +133,7 @@ public class LootController implements VisibleObject {
 			currentLoot = lootIterator.next();
 			
 			if(currentLoot instanceof Food){
-				if(currentLoot.near(player, .2*Maze.SQUARE_SIZE)){
+				if(currentLoot.near(player, .2)){
 					player.addHP(50);
 					lootIterator.remove();}}}
 	}

@@ -29,9 +29,13 @@ public abstract class Creature extends GameObject {
 	public Creature(GL gl,double x, double y, double z,int hitpoints,Weapon weapon,String modelFileLocation){
 		super(x,y,z);
 		this.hitpoints = hitpoints;
+		
+		// set the weapon and associate the enemy with it
 		this.weapon = weapon;
-		if(this.weapon != null) // if Creature has no weapon weapon will be null
-			this.weapon.setEquipped(true);
+		if (weapon != null)
+			weapon.setCreature(this);
+		
+		// set the model
 		if(modelFileLocation != null) // if Creature has no model the string will be null
 			texturedModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f));
 	}
@@ -43,7 +47,7 @@ public abstract class Creature extends GameObject {
 	public double getHP(){return hitpoints;}
 	
 	/**
-	 * Adds the HP
+	 * Add HP
 	 * @param add the amount to add
 	 * @return true if addHP was successful false otherwise
 	 */
@@ -66,5 +70,21 @@ public abstract class Creature extends GameObject {
 			hitpoints -= remove;
 		else 
 			hitpoints = 0;
+	}
+
+	
+	/**
+	 * Get the weapon
+	 */
+	public Weapon getWeapon() {
+		return weapon;
+	}
+
+	
+	/**
+	 * set the weapon
+	 */
+	public void setWeapon(Weapon weapon) {
+		this.weapon = weapon;
 	}
 }

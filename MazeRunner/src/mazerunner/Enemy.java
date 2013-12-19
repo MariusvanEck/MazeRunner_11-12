@@ -13,11 +13,10 @@ import loot.Weapon;
  */
 public class Enemy extends Creature implements VisibleObject{
 	
+	private int rotationSpeed = 2;
+	public final double maxSpeed = 0.005;
 	private double horAngle;
-	public double maxSpeed;
 	private double speed;
-	private int rotationSpeed;
-	public double hitTimer;
 	
 	private EnemyControl control;		// the control controlling this enemy
 	private boolean playerVisible;		// is true if the player is currently visible
@@ -46,14 +45,15 @@ public class Enemy extends Creature implements VisibleObject{
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
 				hitpoints, weapon, modelFileLocation);
 		
+		// set the angle and speed
 		this.horAngle = horAngle;
-		maxSpeed = 0.005;
 		speed = maxSpeed;
-		rotationSpeed = 2;
 		
+		// create and set a control
 		control = new EnemyControl();
 		control.setEnemy(this);
 		
+		// initialise the memory
 		memory = new Point(x, z);
 	}
  
@@ -103,6 +103,27 @@ public class Enemy extends Creature implements VisibleObject{
 					Math.cos(Math.toRadians((control.moveDirection + horAngle)));}
 	}
 
+	
+	/*
+	 * **********************************************
+	 * *				miscelanous					*
+	 * **********************************************
+	 */
+	
+	/**
+	 * Checks if the player is in the current enemy viewing cone
+	 */
+	public boolean derivePlayerInCone(Player player) {
+		// find the angle to rotate
+		double playerAngle = Math.toDegrees(
+			Math.atan2(locationX - player.locationX, locationZ - player.locationZ));
+		int angleToRotate = (int) Math.floor(playerAngle - horAngle);
+		angleToRotate = (int) GameObject.normaliseAngle(angleToRotate);
+		
+		if (Math.abs(angleToRotate) < 45) return true;
+		else return false;
+	}
+	
 	/**
 	 * check if the enemy has reached its current target
 	 */
@@ -131,12 +152,11 @@ public class Enemy extends Creature implements VisibleObject{
 
 	/**
 	 * set the speed to a factor time maxSpeed
-	 * @param speed
 	 */
 	protected void setSpeed(double speedFactor) {
 		this.speed = speedFactor*maxSpeed;
 	}
-
+	
 	protected Control getControl() {
 		return control;
 	}
@@ -153,58 +173,26 @@ public class Enemy extends Creature implements VisibleObject{
 		this.playerVisible = playerVisible;
 	}
 
-	/**
-	 * Checks if the player is in the current enemy viewing cone
-	 */
-	public boolean derivePlayerInCone(Player player) {
-		// find the angle to rotate
-		double playerAngle = Math.toDegrees(
-			Math.atan2(locationX - player.locationX, locationZ - player.locationZ));
-		int angleToRotate = (int) Math.floor(playerAngle - horAngle);
-		angleToRotate = (int) GameObject.normaliseAngle(angleToRotate);
-		
-		if (Math.abs(angleToRotate) < 45) return true;
-		else return false;
-	}
-
-	/**
-	 * get the memory
-	 */
 	public Point getMemory() {
 		return memory;
 	}
 
-	/**
-	 * set the memory
-	 */
 	public void setMemory(Point memory) {
 		this.memory = memory;
 	}
 
-	/**
-	 * has the enemy hit a wall
-	 */
 	public boolean hasHitWall() {
 		return hitWall;
 	}
-	
-	/**
-	 * set hitWall
-	 */
+
 	public void setHitWall(boolean hitWall) {
 		this.hitWall = hitWall;
 	}
 
-	/**
-	 * get the time Passed since the player disappeared
-	 */
 	public int getTimePassed() {
 		return TimePassed;
 	}
 
-	/**
-	 * set timePassed
-	 */
 	public void setTimePassed(int timePassed) {
 		TimePassed = timePassed;
 	}

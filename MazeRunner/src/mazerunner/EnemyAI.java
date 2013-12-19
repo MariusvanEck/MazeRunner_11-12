@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.media.opengl.GL;
 
+import loot.Stick;
+
 public class EnemyAI{
 	
 	private Maze maze;
@@ -25,7 +27,7 @@ public class EnemyAI{
 	 * @param player	the player
 	 * @param maze		the maze
 	 */
-	public EnemyAI(GL gl,Player player, Maze maze) {
+	public EnemyAI(GL gl, Player player, Maze maze) {
 		this.maze = maze;
 		this.player = player;
 		this.memory = new ArrayList<Point>();
@@ -43,7 +45,9 @@ public class EnemyAI{
 			} while (maze.isWall(x, z));
 				
 			// add an enemy
-			enemies.add(new Enemy(gl,x, 0, z, rnd.nextDouble()*360 - 180, 100, null, "models/test.obj"));}
+			enemies.add(new Enemy(	gl, x, 0, z, 
+									rnd.nextDouble()*360 - 180, 100, 
+									new Stick(), "models/test.obj"));}
 	}
 	
 	/**
@@ -100,9 +104,8 @@ public class EnemyAI{
 				nextTarget(enemy, control, memory);
 				enemy.setMemory(maze.currentGridPoint(enemy));}
 			
-			// if the enemy is near a player set the boolean
-			if (enemy.near(player, Maze.SQUARE_SIZE/2)) control.nearPlayer = true;
-			else control.nearPlayer = false;
+			// damage the player with the enemies weapon
+			enemy.getWeapon().doDamage(player);
 			
 			// update the Enemy's control
 			control.update();
