@@ -14,6 +14,13 @@ public class EnemyControl extends Control{
 	private double targetAngle;				// angle of the current target
 	private int angleToRotate;				// angle to rotate
 	
+	
+	/*
+	 * **********************************************
+	 * *					update					*
+	 * **********************************************
+	 */
+	
 	/**
 	 * update the control variables for the related enemy
 	 */
@@ -63,6 +70,13 @@ public class EnemyControl extends Control{
 		else dX = 0;	
 	}
 	
+	
+	/*
+	 * **********************************************
+	 * *			target functions				*
+	 * **********************************************
+	 */
+	
 	/**
 	 * sets the current target
 	 */
@@ -95,6 +109,13 @@ public class EnemyControl extends Control{
 		return ((Math.abs(enemy.locationX - targetX) < margin) && 
 				(Math.abs(enemy.locationZ - targetZ) < margin));
 	}
+	
+	
+	/*
+	 * **********************************************
+	 * *			getters and setters				*
+	 * **********************************************
+	 */
 	
 	/**
 	 * sets the enemy

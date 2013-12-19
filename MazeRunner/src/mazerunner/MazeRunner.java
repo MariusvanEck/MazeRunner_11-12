@@ -235,7 +235,7 @@ public class MazeRunner {
 	public void update() {
 		
 		// TEMP: if players health is 0 go to main menu and reset
-		if (player.hitpoints == 0) {
+		if (player.getHitpoints() == 0) {
 			input.setGameState(GameState.MENU);
 			input.setNewGame(true);}
 		

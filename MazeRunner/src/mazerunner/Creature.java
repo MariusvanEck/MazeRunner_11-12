@@ -10,11 +10,13 @@ import model.TexturedModel;
  * Class for living creatures Player, Enemy
  */
 public abstract class Creature extends GameObject {
-	protected int hitpoints;
-	protected int maxHP = 200;
 	
-	protected Weapon weapon;
-	protected TexturedModel texturedModel;			// the model of the Creature
+	private double horAngle;						// the horizontal angle
+	private int hitpoints;							// the number of hitpoints
+	public int maxHP;								// the maximum number of hitpoints
+	
+	private Weapon weapon;							// the weapon of the creature
+	private TexturedModel texturedModel;			// the model of the Creature
 	
 	/**
 	 * The Creature constructor.
@@ -37,8 +39,15 @@ public abstract class Creature extends GameObject {
 		
 		// set the model
 		if(modelFileLocation != null) // if Creature has no model the string will be null
-			texturedModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f));
+			setTexturedModel(new TexturedModel(gl,new Model(modelFileLocation,0.75f)));
 	}
+	
+	
+	/*
+	 * **********************************************
+	 * *				HP functions				*
+	 * **********************************************
+	 */
 	
 	/**
 	 * Get current the HP
@@ -73,6 +82,26 @@ public abstract class Creature extends GameObject {
 	}
 
 	
+	/*
+	 * **********************************************
+	 * *			Getters and setters				*
+	 * **********************************************
+	 */
+
+	/**
+	 * Get the creatures horizontal angle
+	 */
+	protected double getHorAngle() {
+		return horAngle;
+	}
+
+	/**
+	 * Set the creatures horizontal angle
+	 */
+	protected void setHorAngle(double horAngle) {
+		this.horAngle = horAngle;
+	}
+	
 	/**
 	 * Get the weapon
 	 */
@@ -80,11 +109,38 @@ public abstract class Creature extends GameObject {
 		return weapon;
 	}
 
-	
 	/**
 	 * set the weapon
 	 */
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
+	}
+
+	/**
+	 * Get the textured model
+	 */
+	public TexturedModel getTexturedModel() {
+		return texturedModel;
+	}
+
+	/**
+	 * Set the textured model
+	 */
+	public void setTexturedModel(TexturedModel texturedModel) {
+		this.texturedModel = texturedModel;
+	}
+
+	/**
+	 * Get the hitpoints
+	 */
+	public int getHitpoints() {
+		return hitpoints;
+	}
+
+	/**
+	 * Set the hitpoints
+	 */
+	public void setHitpoints(int hitpoints) {
+		this.hitpoints = hitpoints;
 	}
 }

@@ -8,10 +8,10 @@ import com.sun.opengl.util.GLUT;
 
 public class HeadsUpDisplay {
 
-	private Player player;
+	private Player player;			// the player
 	private int time;				// time since game start
 	private String timeString;		// time in string format
-	private int sw, sh;
+	private int sw, sh;				// the screen width and height
 	
 	/**
 	 * Sets up a new heads up display for the game and sets the time to 0
@@ -23,6 +23,13 @@ public class HeadsUpDisplay {
 		sw = GameStateManager.screenWidth;
 		sh = GameStateManager.screenHeight;
 	}
+	
+	
+	/*
+	 * **********************************************
+	 * *					update					*
+	 * **********************************************
+	 */
 	
 	/**
 	 * updates the HUD
@@ -37,6 +44,13 @@ public class HeadsUpDisplay {
 		sw = GameStateManager.screenWidth;
 		sh = GameStateManager.screenHeight;
 	}
+
+	
+	/*
+	 * **********************************************
+	 * *				draw functions				*
+	 * **********************************************
+	 */
 	
 	/**
 	 * display the time passed since game start and the health bar
@@ -44,7 +58,7 @@ public class HeadsUpDisplay {
 	public void display(GL gl) {
 
 		// draw focus area
-		drawFocusArea(gl, 1.5);
+		drawFocusArea(gl, 1.2);
 		
 		// draw time box
 		drawTimeBox(gl);
@@ -131,7 +145,7 @@ public class HeadsUpDisplay {
 
 	public void drawHealthBar(GL gl)  {
 		 
-		double frac = (double)player.hitpoints / (double)player.maxHP;
+		double frac = (double)player.getHitpoints() / (double)Player.maxHP;
 		int health = (int) Math.floor(( (2*(double)sw/3-2))*frac);
 		    // draw health bar
 		    gl.glPushMatrix();

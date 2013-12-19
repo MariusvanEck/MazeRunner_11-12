@@ -16,7 +16,11 @@ public abstract class GameObject {
 	/**
 	 * The default GameObject constructor. 
 	 */
-	public GameObject() {}
+	public GameObject() {
+		locationX = Integer.MIN_VALUE;
+		locationY = Integer.MIN_VALUE;
+		locationZ = Integer.MIN_VALUE;
+	}
 	
 	/**
 	 * GameObject constructor with a defined starting position.
@@ -31,6 +35,39 @@ public abstract class GameObject {
 		locationZ = z;
 	}
 
+	
+	/*
+	 * **********************************************
+	 * *				miscelanous					*
+	 * **********************************************
+	 */
+	
+	/**
+	 * Checks if the object is near another GameObject (within distance*SQUARE_SIZE range)
+	 */
+	public boolean near(GameObject that, double distance) {
+		if (distanceTo(that) < distance*Maze.SQUARE_SIZE) return true;
+		return false;
+	}
+	
+	/**
+	 * normalises an angle in degrees to an angle between -180 and 180 degrees
+	 */
+	public static double normaliseAngle(double angle) {
+		int signAngle = (int) Math.signum(angle);
+		int numReductions = (int) Math.floor(Math.abs((angle + signAngle*180) / 360));
+		
+		return (angle - signAngle*numReductions*360);
+	}
+	
+	/**
+	 * get the distance between this object and the passed object
+	 */
+	public double distanceTo(GameObject that) {
+		return Math.sqrt(	Math.pow(this.locationX - that.locationX, 2) +
+							Math.pow(this.locationX - that.locationX, 2));
+	}
+	
 	
 	/*
 	 * **********************************************
@@ -86,36 +123,10 @@ public abstract class GameObject {
 		return locationZ;
 	}
 
-	
-	/*
-	 * **********************************************
-	 * *				miscelanous					*
-	 * **********************************************
-	 */
-	
 	/**
-	 * Checks if the object is near another GameObject (within distance*SQUARE_SIZE range)
+	 * Get the location object derived from this gameObject
 	 */
-	public boolean near(GameObject that, double distance) {
-		if (distanceTo(that) < distance*Maze.SQUARE_SIZE) return true;
-		return false;
-	}
-	
-	/**
-	 * normalises an angle in degrees to an angle between -180 and 180 degrees
-	 */
-	public static double normaliseAngle(double angle) {
-		int signAngle = (int) Math.signum(angle);
-		int numReductions = (int) Math.floor(Math.abs((angle + signAngle*180) / 360));
-		
-		return (angle - signAngle*numReductions*360);
-	}
-	
-	/**
-	 * get the distance between this object and the passed object
-	 */
-	public double distanceTo(GameObject that) {
-		return Math.sqrt(	Math.pow(this.locationX - that.locationX, 2) +
-							Math.pow(this.locationX - that.locationX, 2));
+	public Location getLocation() {
+		return new Location (locationX, locationZ);
 	}
 }

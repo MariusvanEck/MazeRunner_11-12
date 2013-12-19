@@ -23,7 +23,8 @@ import loot.Weapon;
  */
 public class Player extends Creature {
 	
-	private double horAngle, verAngle;
+	public static final int maxHP = 200;
+	private double verAngle;
 	private double speed;
 	private double rotationSpeed;
 	private Control control;
@@ -40,10 +41,40 @@ public class Player extends Creature {
 	 */
 	public Player(GL gl, double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
 		super(gl,x,y,z,hitpoints,weapon,null);
-		horAngle = h;
-		verAngle = v;
+		setHorAngle(h);
+		setVerAngle(v);
 		speed = 0.01;
 		rotationSpeed = 1;
+	}
+	
+	
+	/*
+	 * **********************************************
+	 * *					update					*
+	 * **********************************************
+	 */
+	
+	/**
+	 * Updates the physical location and orientation of the player
+	 * @param deltaTime The time in milliseconds since the last update.
+	 */
+	public void update(int deltaTime) {
+		if (control != null) {
+			// update control
+			control.update();
+			
+			// rotate the player, according to control
+			setHorAngle(getHorAngle() - rotationSpeed*control.dX);
+			setVerAngle(getVerAngle() - rotationSpeed*control.dY);
+			
+			// move the player, according to control
+			if (control.moveDirection != null) {
+				locationX -= speed*deltaTime*
+						Math.sin((getHorAngle() + control.moveDirection)*(Math.PI/180));
+				locationZ -= speed*deltaTime*
+						Math.cos((getHorAngle() + control.moveDirection)*(Math.PI/180));
+			}
+		}
 	}
 	
 	
@@ -71,22 +102,6 @@ public class Player extends Creature {
 	public Control getControl()
 	{
 		return control;
-	}
-
-	/**
-	 * Returns the horizontal angle of the orientation.
-	 * @return the horAngle
-	 */
-	public double getHorAngle() {
-		return horAngle;
-	}
-
-	/**
-	 * Sets the horizontal angle of the orientation.
-	 * @param horAngle the horAngle to set
-	 */
-	public void setHorAngle(double horAngle) {
-		this.horAngle = horAngle;
 	}
 
 	/**
@@ -119,35 +134,5 @@ public class Player extends Creature {
 	 */
 	public void setSpeed(double speed) {
 		this.speed = speed;
-	}
-	
-	
-	/*
-	 * **********************************************
-	 * *					update					*
-	 * **********************************************
-	 */
-	
-	/**
-	 * Updates the physical location and orientation of the player
-	 * @param deltaTime The time in milliseconds since the last update.
-	 */
-	public void update(int deltaTime) {
-		if (control != null) {
-			// update control
-			control.update();
-			
-			// rotate the player, according to control
-			horAngle -= rotationSpeed*control.getdX();
-			verAngle -= rotationSpeed*control.getdY();
-			
-			// move the player, according to control
-			if (control.moveDirection != null) {
-				locationX -= speed*deltaTime*
-						Math.sin((horAngle + control.moveDirection)*(Math.PI/180));
-				locationZ -= speed*deltaTime*
-						Math.cos((horAngle + control.moveDirection)*(Math.PI/180));
-			}
-		}
 	}
 }

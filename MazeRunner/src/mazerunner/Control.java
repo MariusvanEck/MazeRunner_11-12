@@ -29,56 +29,6 @@ public abstract class Control
 	protected int dY = 0;
 	
 	/**
-	 * @return Returns true if forward motion is desired.
-	 */
-	public boolean getForward()
-	{
-		return forward;
-	}
-	
-	/**
-	 * @return Returns true if backwards motion is desired.
-	 */
-	public boolean getBack()
-	{
-		return back;
-	}
-	
-	/**
-	 * @return Returns true if left sidestepping motion is desired.
-	 */
-	public boolean getLeft()
-	{
-		return left;
-	}
-	
-	/**
-	 * @return Returns true if right sidestepping motion is desired.
-	 */
-	public boolean getRight()
-	{
-		return right;
-	}
-
-	/**
-	 * Gets the amount of rotation desired on the horizontal plane.
-	 * @return The horizontal rotation.
-	 */
-	public int getdX()
-	{
-		return dX;
-	}
-	
-	/**
-	 * Gets the amount of rotation desired on the vertical plane.
-	 * @return The vertical rotation.
-	 */
-	public int getdY()
-	{
-		return dY;
-	}
-	
-	/**
 	 * Updates the fields of the Control class to represent the
 	 * most up-to-date values. 
 	 */

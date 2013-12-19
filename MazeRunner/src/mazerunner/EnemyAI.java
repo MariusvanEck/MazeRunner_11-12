@@ -46,9 +46,16 @@ public class EnemyAI{
 				
 			// add an enemy
 			enemies.add(new Enemy(	gl, x, 0, z, 
-									rnd.nextDouble()*360 - 180, 100, 
+									rnd.nextDouble()*360 - 180,  
 									new Stick(), "models/test.obj"));}
 	}
+	
+	
+	/*
+	 * **********************************************
+	 * *					update					*
+	 * **********************************************
+	 */
 	
 	/**
 	 * loops over all the enemies to set the right EnemyControl parameters, 
@@ -123,10 +130,8 @@ public class EnemyAI{
 		boolean inCone = enemy.derivePlayerInCone(player);
 		// is the player close to the enemy
 		boolean toClose = (enemy.distanceTo(player) < Maze.SQUARE_SIZE);
-		
 		// is the player behind a wall
-		boolean behindWall = maze.isVisionBlocked(player.locationX, player.locationZ, 
-				enemy.locationX, enemy.locationZ);;
+		boolean behindWall = maze.isVisionBlocked(player, enemy);
 		// is the player visible
 		boolean playerVisible = (inCone || toClose) && !behindWall;
 				
@@ -227,6 +232,16 @@ public class EnemyAI{
 							((double) nextLocation.y + 0.5) * Maze.SQUARE_SIZE);
 	}
 	
+	
+	/*
+	 * **********************************************
+	 * *			setters and getters				*
+	 * **********************************************
+	 */
+	
+	/**
+	 * Get the ArrayList with all the enemies associated with this AI
+	 */ 
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;
 	}

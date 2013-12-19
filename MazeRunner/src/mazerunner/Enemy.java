@@ -13,12 +13,12 @@ import loot.Weapon;
  */
 public class Enemy extends Creature implements VisibleObject{
 	
-	private int rotationSpeed = 2;
-	public final double maxSpeed = 0.005;
-	private double horAngle;
-	private double speed;
+	private final static int maxHP = 100;	// The maximum hp for the enemy
+	private final int rotationSpeed = 2;	// The enemy's rotation speed			
+	private final double maxSpeed = 0.005;	// the maximum speed for the enemy
+	private double speed = maxSpeed;		// the enemy's speed
 	
-	private EnemyControl control;		// the control controlling this enemy
+	private EnemyControl control;		// the enemies control
 	private boolean playerVisible;		// is true if the player is currently visible
 	private boolean hitWall;			// is true if the enemy hit a wall
 	private int TimePassed;				// integer used for keeping track of the "aggro" time
@@ -37,21 +37,17 @@ public class Enemy extends Creature implements VisibleObject{
 	 * @param weapon			The weapon of the Enemy
 	 * @param modelFileLocation The location of the model file
 	 */
-	public Enemy(GL gl,int x, int y, int z, double horAngle, int hitpoints,
-			Weapon weapon, String modelFileLocation) {
-		// Set the initial position and viewing direction of the enemy.
+	public Enemy(GL gl,int x, int y, int z, double horAngle, Weapon weapon, String modelFileLocation) {
 		super(gl,x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
 				y*Maze.SQUARE_SIZE, 
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
-				hitpoints, weapon, modelFileLocation);
+				maxHP, weapon, modelFileLocation);
 		
-		// set the angle and speed
-		this.horAngle = horAngle;
-		speed = maxSpeed;
+		setHorAngle(horAngle);
 		
 		// create and set a control
-		control = new EnemyControl();
-		control.setEnemy(this);
+		setControl(new EnemyControl());
+		((EnemyControl)getControl()).setEnemy(this);
 		
 		// initialise the memory
 		memory = new Point(x, z);
@@ -70,10 +66,10 @@ public class Enemy extends Creature implements VisibleObject{
 	 */
 	@Override
 	public void display(GL gl) { 
-		if(texturedModel == null)
+		if(getTexturedModel() == null)
 			System.out.println("null");
 		else
-		texturedModel.render(gl, horAngle-180,locationX,locationY,locationZ);		
+		getTexturedModel().render(gl, getHorAngle()-180,locationX,locationY,locationZ);		
 		
 	}
 
@@ -91,16 +87,14 @@ public class Enemy extends Creature implements VisibleObject{
 	public void update(int deltaTime) {
 		
 		// rotate the enemy, according to control
-		horAngle += rotationSpeed*control.dX;
-		if (horAngle > 180) horAngle -= 360;
-		else if (horAngle < -180) horAngle += 360;
+		setHorAngle(GameObject.normaliseAngle(getHorAngle() + rotationSpeed*control.dX));
 		
 		// move the enemy, according to control
 		if (control.moveDirection != null) {
 			locationX -= speed*deltaTime*
-					Math.sin(Math.toRadians((control.moveDirection + horAngle)));
+					Math.sin(Math.toRadians((control.moveDirection + getHorAngle())));
 			locationZ -= speed*deltaTime*
-					Math.cos(Math.toRadians((control.moveDirection + horAngle)));}
+					Math.cos(Math.toRadians((control.moveDirection + getHorAngle())));}
 	}
 
 	
@@ -117,7 +111,7 @@ public class Enemy extends Creature implements VisibleObject{
 		// find the angle to rotate
 		double playerAngle = Math.toDegrees(
 			Math.atan2(locationX - player.locationX, locationZ - player.locationZ));
-		int angleToRotate = (int) Math.floor(playerAngle - horAngle);
+		int angleToRotate = (int) Math.floor(playerAngle - getHorAngle());
 		angleToRotate = (int) GameObject.normaliseAngle(angleToRotate);
 		
 		if (Math.abs(angleToRotate) < 45) return true;
@@ -138,14 +132,6 @@ public class Enemy extends Creature implements VisibleObject{
 	 * **********************************************
 	 */
 
-	protected double getHorAngle() {
-		return horAngle;
-	}
-
-	protected void setHorAngle(double horAngle) {
-		this.horAngle = horAngle;
-	}
-
 	protected double getSpeed() {
 		return speed;
 	}
@@ -154,15 +140,12 @@ public class Enemy extends Creature implements VisibleObject{
 	 * set the speed to a factor time maxSpeed
 	 */
 	protected void setSpeed(double speedFactor) {
-		this.speed = speedFactor*maxSpeed;
-	}
-	
-	protected Control getControl() {
-		return control;
-	}
-
-	protected void setControl(EnemyControl control) {
-		this.control = control;
+		if(speedFactor >= 0 && speedFactor <= 1)
+			this.speed = speedFactor*maxSpeed;
+		else if (speedFactor > 1)
+			this.speed = maxSpeed;
+		else
+			this.speed = 0;
 	}
 	
 	public boolean isPlayerVisible() {
@@ -197,5 +180,11 @@ public class Enemy extends Creature implements VisibleObject{
 		TimePassed = timePassed;
 	}
 
+	protected EnemyControl getControl() {
+		return control;
+	}
 
+	protected void setControl(EnemyControl control) {
+		this.control = control;	
+	}
 }

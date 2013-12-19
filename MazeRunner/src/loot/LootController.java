@@ -14,7 +14,7 @@ public class LootController implements VisibleObject {
 	private ArrayList<Loot> lootList;
 	private Player player;
 	public static int primeNumbers[] = new int[100];
-    private int aantalobjecten = 100;
+    // private int aantalobjecten = 100;
 	
     /**
 	 * Create a new lootcontroller with an associated player

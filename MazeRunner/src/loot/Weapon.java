@@ -23,7 +23,7 @@ public abstract class Weapon extends Loot {
 	 * Constructor for stick without location belonging to a creature
 	 */
 	public Weapon(String modelFileLocation) {
-		super(-999, -999, -999, modelFileLocation);
+		super(modelFileLocation);
 	}
 	
 	/**

@@ -22,5 +22,14 @@ public abstract class Loot extends GameObject implements VisibleObject {
 			model.load(modelFileLocation);
 	}
 	
+	/**
+	 * Loot constructor without location (associated with creature)
+	 */
+	public Loot(String modelFileLocation) {
+		super();
+		if(modelFileLocation != null)
+			model.load(modelFileLocation);
+	}
+	
 	
 }

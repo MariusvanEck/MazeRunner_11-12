@@ -50,7 +50,6 @@ public class Maze implements VisibleObject {
 		this.load(gl,dataBase,name);
 	}
 	
-	
 	private void load(GL gl,DataBase dataBase,String name){ // moet nog testen of hij werkt
 		try{
 			byte[] b = dataBase.getMap(name);
@@ -125,7 +124,6 @@ public class Maze implements VisibleObject {
 		}
 	}
 	
-	
 	// old loader
 	private void load(GL gl, String file){
 		try{     
@@ -175,7 +173,7 @@ public class Maze implements VisibleObject {
 	
 	/*
 	 * **********************************************
-	 * *			  Checks for Objects			*
+	 * *			  		Checks					*
 	 * **********************************************
 	 */
 	
@@ -205,8 +203,13 @@ public class Maze implements VisibleObject {
 	 * @param x2	x-coordinate of the second point
 	 * @param y2	y-coordinate of the second point
 	 */
-	public boolean isVisionBlocked(double x1, double z1,
-			double x2, double z2) {
+	public boolean isVisionBlocked(GameObject GameObject1,
+			GameObject GameObject2) {
+		
+		double x1 = GameObject1.getLocationX();
+		double x2 = GameObject2.getLocationX();
+		double z1 = GameObject1.getLocationZ();
+		double z2 = GameObject2.getLocationZ();
 		
 		// sort the points so that X2 > X1
 		if (x1 > x2) {
