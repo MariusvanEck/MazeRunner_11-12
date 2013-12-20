@@ -20,7 +20,7 @@ public class LootController implements VisibleObject {
 	 * Create a new lootcontroller with an associated player
 	 * @param player
 	 */
-	public LootController(Player player,Maze maze){
+	public LootController(GL gl,Player player,Maze maze){
 		this.player = player;
 		
 		lootList = new ArrayList<Loot>();
@@ -28,15 +28,15 @@ public class LootController implements VisibleObject {
 		for (int i=0; i < maze.getLevelSize(); i++) {
 			for (int z = 0; z < maze.getMazeSize(); z++){
 				for(int x = 0; x < maze.getMazeSize(); x++){
-					lootList.add(new Food(5, 5, 5, 50, null));
+					lootList.add(new Food(gl,5, 5, 5, 50, null));
 					if(check(i,x,z,2,maze)){
-						lootList.add(new Food(x * ms + ms / 2, ms / 2, z * ms + ms / 2, 50, null));
+						lootList.add(new Food(gl,x * ms + ms / 2, ms / 2, z * ms + ms / 2, 50, null));
 					}
 					if(check(i,x,z,3,maze)){
-						lootList.add(new Food(x * ms + ms / 2, 3 * ms / 4, z * ms + ms / 2, 50, null));
+						lootList.add(new Food(gl,x * ms + ms / 2, 3 * ms / 4, z * ms + ms / 2, 50, null));
 					}
 					if(check(i,x,z,5,maze)){
-						lootList.add(new Coin(x * ms + ms / 2, 3 * ms / 4, z * ms + ms / 2, null));
+						lootList.add(new Coin(gl,x * ms + ms / 2, 3 * ms / 4, z * ms + ms / 2, null));
 					}
 				}
 			}

@@ -24,15 +24,15 @@ public class Stick extends Weapon{
 	 * @param y			y-coordinate
 	 * @param z			z-coordinate
 	 */
-	public Stick(double x, double y, double z){
-		super(x, y, z, modelFileLocation);
+	public Stick(GL gl,double x, double y, double z){
+		super(gl,x, y, z, modelFileLocation);
 	}
 	
 	/**
 	 * Constructor for stick without location (associated with a creature)
 	 */
-	public Stick() {
-		super(modelFileLocation);
+	public Stick(GL gl) {
+		super(gl,modelFileLocation);
 	}
 	
 	/**

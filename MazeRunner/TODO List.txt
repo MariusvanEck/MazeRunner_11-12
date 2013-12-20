@@ -6,7 +6,7 @@
 	+ File management
 		- [DONE] Set up a Database
 		- [inProgress] Store Levels, highscore, settings in database
-		- [TODO] Read the data from DataBase
+		- [DONE] Read the data from DataBase
 
 + Models
 	+ Create different models
@@ -35,11 +35,11 @@
 + Menu
 	+Option Menu
 		- [TODO] Make a GUI to manipulate the settings
-		- [TODO] Pimp our menu
+		- [DONE] Pimp our menu
 
 + Level
 	+ Stair
-		- [TODO] Draw the stair
+		- [DONE] Draw the stair
 		- [TODO] Create a stair model/texture
 		-
 + Creature

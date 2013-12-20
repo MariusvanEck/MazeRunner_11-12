@@ -1,5 +1,7 @@
 package loot;
 
+import javax.media.opengl.GL;
+
 import mazerunner.Creature;
 
 public abstract class Weapon extends Loot {
@@ -15,15 +17,15 @@ public abstract class Weapon extends Loot {
 	 * @param equipped				Is this weapon equipped by a creature
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Weapon(double x, double y, double z, String modelFileLocation){
-		super(x, y, z, modelFileLocation);
+	public Weapon(GL gl,double x, double y, double z, String modelFileLocation){
+		super(gl,x, y, z, modelFileLocation);
 	}
 	
 	/**
 	 * Constructor for stick without location belonging to a creature
 	 */
-	public Weapon(String modelFileLocation) {
-		super(modelFileLocation);
+	public Weapon(GL gl,String modelFileLocation) {
+		super(gl,modelFileLocation);
 	}
 	
 	/**

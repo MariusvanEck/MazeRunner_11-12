@@ -13,12 +13,12 @@ public class Coin extends Loot {
 	 * @param hpIncrease 			The HP that will be regenerated
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Coin(double x, double y, double z, String modelFileLocation){
-		super(x, y, z, modelFileLocation);
+	public Coin(GL gl,double x, double y, double z, String modelFileLocation){
+		super(gl,x, y, z, modelFileLocation);
 	}
 	
 	/**
-	 * the display function
+	 * the display function should not be used and render(gl,angle) instead
 	 */
 	public void display(GL gl){
 		GLUT glut = new GLUT();
