@@ -1,10 +1,11 @@
 package menu;
 
-import java.io.File;
-
 import gamestate.GameState;
 import gamestate.GameStateManager;
+import gamestate.Sound;
 import gamestate.UserInput;
+
+import java.io.File;
 
 import javax.media.opengl.GL;
 
@@ -22,7 +23,8 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	private OptionsMenu optionsMenu;
 	private QuitMenu quitMenu;
 	
-	public MenuState menuState; 
+	public MenuState menuState;
+	public Sound theme = new Sound("theme.wav");
 	
 	public static final byte PLAY = 0;
 	public static final byte OPTIONS = 1;
@@ -62,6 +64,9 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		buttons[3] = new Button(minX,maxX,minY,minY+(maxY-minY)*1/4, textures[4]);						//Quit
 	}
 	
+	/**
+	 * Load the textures
+	 */
 	public void loadTextures(){
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures\\Background.png"), false);
@@ -75,8 +80,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			System.exit(0);
 		}
 	}
-	
-	
+
 	/**
 	 * Returns the value of the button hovered over
 	 */

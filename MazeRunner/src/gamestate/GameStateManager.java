@@ -52,8 +52,6 @@ public class GameStateManager extends Frame implements GLEventListener{
 	
 	private Cursor blankCursor;										// Cursor for ingame state
 	
-	private GL gl; // This is temp untill Loot have models to render
-	
 	/**
 	 * Initialises the complete game.
 	 * <p>
@@ -162,7 +160,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * The display function should be used to pick the right sub display function depending on the gameState
 	 */
 	public void display(GLAutoDrawable drawable) {
-		this.gl = drawable.getGL();
+		GL gl = drawable.getGL();
 		
 		// update the game status
 		updateGameState(gl);
@@ -307,15 +305,15 @@ public class GameStateManager extends Frame implements GLEventListener{
 		
 		// gameState initialisation 
 		if (gameState == null) {
-			menu = new MainMenu(input,0,0,0,0); //kan er uit?
-					//screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), screenHeight/2-(screenHeight/8), screenHeight/2+(screenHeight/8));
+			menu = new MainMenu(input,0,0,0,0); 
 			mazeRunner.init(gl, screenWidth, screenHeight);
-			gameState = GameState.MENU;
-			input.setGameState(gameState);}
-		 
+			input.setGameState(GameState.MENU);}
+		
 		// check if the gameState and is changed and update
 		if (gameState != input.getGameState()) {
+			if (gameState == GameState.MENU) menu.theme.stop();
 			gameState = input.getGameState();
+			
 			switch(gameState) {
 			case INGAME:
 				mazeRunner.setPreviousTime();
@@ -327,8 +325,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 				setCursor(blankCursor);
 				break;
 			case MENU:
-				setCursor(Cursor.DEFAULT_CURSOR); 	// Frame.setCursor(cursor) is depricated and replaced by
-													// component.setCursor (from which frame inherits), so this works.
+				menu.theme.loop();
+				setCursor(Cursor.DEFAULT_CURSOR);									
 				break;}}
 	}
 	
