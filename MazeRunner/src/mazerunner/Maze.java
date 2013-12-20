@@ -21,11 +21,12 @@ public class Maze implements VisibleObject {
 	
 	private HashMap<String,Texture> textures;			// reference to the texture hashmap
 	private Texture currentTexture;						// specifies the current texture
-	private int currentLevelIndex = 0;						// specifies the currentLevel
-
-	private ArrayList<int[][]> levels;
-	private int[][] currentLevel;
 	
+	private int currentLevelIndex = 0;					// specifies the currentLevel
+	private ArrayList<int[][]> levels;					// the levels in an arraylist
+	private int[][] currentLevel;						// the current level
+	
+	// the object lists to display
 	private ArrayList<Stair> stairs;
 	private ArrayList<Floor> floors;
 	private ArrayList<Roof> roofs;
@@ -34,7 +35,6 @@ public class Maze implements VisibleObject {
 	// old constructor
 	public Maze(GL gl, String mazeFile, HashMap<String,Texture> textures){
 		this.textures = textures;
-		
 		this.load(gl, mazeFile);
 	}
 	
@@ -93,10 +93,17 @@ public class Maze implements VisibleObject {
 //		
 //	}
 	
+	
+	/*
+	 * **********************************************
+	 * *			   load functions	 			*
+	 * **********************************************
+	 */
+	
 	/**
 	 * OLD LOADER
 	 */
-	private void load(GL gl, String file){
+	private void load(GL gl, String file) {
 		levels = new ArrayList<int[][]>();
 		
 		try{     
@@ -110,7 +117,7 @@ public class Maze implements VisibleObject {
 				levels.add((int[][]) omaze.readObject());}
 	  
 			currentLevel = levels.get(currentLevelIndex);
-			getCurrentLevelObjects();
+			loadCurrentLevelObjects();
 			omaze.close();
 		}
         catch(Exception ex){ex.printStackTrace();}
@@ -119,7 +126,7 @@ public class Maze implements VisibleObject {
 	/**
 	 * Get the object of the current level and fill the arraylists with active objects
 	 */
-	private void getCurrentLevelObjects() {
+	private void loadCurrentLevelObjects() {
 		
 		stairs = new ArrayList<Stair>();
 		roofs = new ArrayList<Roof>();
@@ -164,12 +171,25 @@ public class Maze implements VisibleObject {
 	 * @param z		the z-coordinate of the location to check
 	 * @return		whether there is a wall at maze[x][z]
 	 */
-	public boolean isWall( int x, int z )
-	{
+	public boolean isWall( int x, int z ) {
 		if( x >= 0 && x < mazeSize && z >= 0 && z < mazeSize )
-			return currentLevel[x][z] == 1;
+			return currentLevel[x][z] == 1 || currentLevel[x][z] == 13;
 		else
 			return false;
+	}
+	
+	/**
+	 * isStair(int x,int y,int z) checks for a stair
+	 * 
+	 * @param x		the x-coordinate of the location to check
+	 * @param y		the y-coordinate of the location to check
+	 * @param z		the z-coordinate of the location to check
+	 * @return		whether there is a stair at maze[x][z][y]
+	 */
+	public boolean isStair(int x ,int z) {
+		if(x >= 0 && x < mazeSize && z >= 0 && z < mazeSize)
+			return currentLevel[x][z] == 11;
+		return false;
 	}
 	
 	/**
@@ -224,20 +244,6 @@ public class Maze implements VisibleObject {
 		
 		return false;
 	}
-
-	/**
-	 * isStair(int x,int y,int z) checks for a stair
-	 * 
-	 * @param x		the x-coordinate of the location to check
-	 * @param y		the y-coordinate of the location to check
-	 * @param z		the z-coordinate of the location to check
-	 * @return		whether there is a stair at maze[x][z][y]
-	 */
-	public boolean isStair(int x ,int z){
-		if(x >= 0 && x < mazeSize && z >= 0 && z < mazeSize)
-			return currentLevel[x][z] == 11 || currentLevel[x][z] == 13;
-		return false;
-	}
 	
 	/**
 	 * isWall(double x, double z, double objectSize) checks for a wall in a square with edge 
@@ -252,8 +258,7 @@ public class Maze implements VisibleObject {
 	 * @param objectSize		size of the square to check
 	 * @return					whether there is a wall at maze[x][z] at the current level
 	 */
-	public boolean isWall(double x, double z, double objectSize)
-	{
+	public boolean isWall(double x, double z, double objectSize) {
 		int gXmin = convertToGridX(x-objectSize*SQUARE_SIZE);
 		int gXmax = convertToGridX(x+objectSize*SQUARE_SIZE);
 		int gZmin = convertToGridZ(z-objectSize*SQUARE_SIZE);
@@ -265,8 +270,9 @@ public class Maze implements VisibleObject {
 	}
 	
 	/**
-	 * isStair(double x, double z) checks for a stair in a square with edge 0.1*SQUARE_SIZE around the location
-	 * by converting the double values to integer coordinates.
+	 * isStair(double x, double z, double objectSize) checks for a stair in a square with edge 
+	 * objectSize*SQUARE_SIZE around the location by converting the double values to integer 
+	 * coordinates.
 	 * <p>
 	 * This method first converts the x and z to values that correspond with the grid 
 	 * defined by maze[][]. Then it calls upon isStair(int, int) to check for a stair.
@@ -275,11 +281,11 @@ public class Maze implements VisibleObject {
 	 * @param z		the z-coordinate of the location to check
 	 * @return		whether there is a stair at maze[x][z][y]
 	 */
-	public boolean isStair(double x, double z){
-		int gXmin = convertToGridX(x-0.1*SQUARE_SIZE);
-		int gXmax = convertToGridX(x+0.1*SQUARE_SIZE);
-		int gZmin = convertToGridZ(z-0.1*SQUARE_SIZE);
-		int gZmax = convertToGridZ(z+0.1*SQUARE_SIZE);
+	public boolean isStair(double x, double z, double objectSize) {
+		int gXmin = convertToGridX(x-objectSize*SQUARE_SIZE);
+		int gXmax = convertToGridX(x+objectSize*SQUARE_SIZE);
+		int gZmin = convertToGridZ(z-objectSize*SQUARE_SIZE);
+		int gZmax = convertToGridZ(z+objectSize*SQUARE_SIZE);
 		
 		return 	isStair(gXmin,gZmin) || isStair(gXmax,gZmax) ||
 				isStair(gXmin,gZmax) || isStair(gXmax,gZmin) ||
@@ -349,10 +355,19 @@ public class Maze implements VisibleObject {
 		currentLevel[x][z] = isWall? 1 : 0;
 	}
 	
+	/**
+	 * load a new level of the maze
+	 */
+	public void changeLevel(int i) {
+		if (i < numLevels) {
+			currentLevel = levels.get(i);
+			loadCurrentLevelObjects();}
+	}
+	
 	
 	/*
 	 * **********************************************
-	 * *			Drawing functions 				*
+	 * *			Drawing function				*
 	 * **********************************************
 	 */
 	
