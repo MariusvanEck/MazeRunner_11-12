@@ -28,7 +28,7 @@ public class OptionsMenu extends MenuObject{
 		loadTextures();
 		
 		buttons = new Button[1];
-		buttons[0] = new Button(minX,maxX,minY,minY+(maxY-minY)/2, textures[0]);		//Back
+		buttons[0] = new Button(minX,maxX,minY,minY+(maxY-minY)/3, textures[0]);		//Back
 	}
 	
 	public void loadTextures(){
@@ -56,7 +56,7 @@ public class OptionsMenu extends MenuObject{
 		this.minY = minY;
 		this.maxY = maxY;
 		
-		buttons[0].update(minX,maxX,minY,minY+(maxY-minY)/2);
+		buttons[0].update(minX,maxX,minY,minY+(maxY-minY)/3);
 	}
 	
 	/**

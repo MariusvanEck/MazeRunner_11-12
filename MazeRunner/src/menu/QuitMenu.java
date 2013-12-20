@@ -1,5 +1,7 @@
 package menu;
 
+import gamestate.GameStateManager;
+
 import java.io.File;
 
 import javax.media.opengl.GL;
@@ -22,7 +24,7 @@ public class QuitMenu extends MenuObject{
 	public QuitMenu(int minX,int maxX,int minY,int maxY){
 		super(minX,maxX,minY,maxY);
 		
-		textures = new Texture[2];
+		textures = new Texture[3];
 		
 		loadTextures();
 		
@@ -36,6 +38,7 @@ public class QuitMenu extends MenuObject{
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures\\yes.png"), false);
 			textures[1] = TextureIO.newTexture(new File("textures\\no.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures\\sure.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -68,14 +71,25 @@ public class QuitMenu extends MenuObject{
 	 * Draw the menu
 	 */
 	public void display(GL gl){
-		gl.glPushMatrix();
-		GLUT glut = new GLUT();
-		float width = glut.glutStrokeLengthf(GLUT.STROKE_ROMAN, "Are your sure?"); // the width of the text-string in gl coordinations
-		gl.glColor3f(1f,0f,0f);
-		gl.glTranslatef(0, maxY-(maxY-minY)/4, 0); // Translation to upperside of screen
-		gl.glScalef((maxX-minX)/width,(maxY-minY)/4/100f, 1f); // Text scale
-		glut.glutStrokeString(GLUT.STROKE_ROMAN, "Are your sure?"); // Draw's the text
-		gl.glPopMatrix();
+		
+		//Drawing the question
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		textures[2].enable();
+		textures[2].bind();
+		//White background color for normal texture view
+		gl.glColor3f(255/255f, 255/255f, 255/255f);
+		gl.glBegin(GL.GL_QUADS);
+			gl.glTexCoord2f(0,0);
+			gl.glVertex2f(minX-(maxX-minX), maxY+((maxX-minX)/2));
+			gl.glTexCoord2f(1,0);
+			gl.glVertex2f(maxX+(maxX-minX), maxY+((maxX-minX)/2));
+			gl.glTexCoord2f(1,1);
+			gl.glVertex2f(maxX+(maxX-minX), maxY);
+			gl.glTexCoord2f(0,1);
+			gl.glVertex2f(minX-(maxX-minX), maxY);
+		gl.glEnd();
+		textures[2].disable();
 		
 		for(int i=0; i<buttons.length; i++)
 			buttons[i].display(gl);

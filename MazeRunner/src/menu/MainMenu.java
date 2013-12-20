@@ -22,8 +22,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	private OptionsMenu optionsMenu;
 	private QuitMenu quitMenu;
 	
-	public MenuState menuState;
-	private float[] buttonColor = {1,1,1};  
+	public MenuState menuState; 
 	
 	public static final byte PLAY = 0;
 	public static final byte OPTIONS = 1;
@@ -136,7 +135,6 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			optionsMenu.display(gl);
 			break;
 		case PLAY:
-			//Holy Moly!!
 			playMenu.reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/8),
 					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/8),
 					GameStateManager.screenHeight/2-(GameStateManager.screenHeight/8),
@@ -144,11 +142,13 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			playMenu.display(gl);
 			break;
 		case QUIT:
-			quitMenu.reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/8),
-					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/8),
+			quitMenu.reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/16),
+					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/16),
 					GameStateManager.screenHeight/2-(GameStateManager.screenHeight/8),
 					GameStateManager.screenHeight/2+(GameStateManager.screenHeight/8));
 			quitMenu.display(gl);
+			break;
+		default:
 			break;
 		}
 	}
@@ -190,7 +190,9 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		case MAIN:		updateMain(x,y); break;
 		case OPTIONS:	optionsMenu.update(x,y); break;
 		case PLAY:		playMenu.update(x,y); break;
-		case QUIT:		quitMenu.update(x,y); break;}
+		case QUIT:		quitMenu.update(x,y); break;
+		default:
+			break;}
 		
 		if(input.wasMousePressed()) {
 			input.resetMousePressed();
@@ -238,7 +240,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			
 		case OPTIONS:
 			switch(optionsMenu.getButton(x, y)) {
-			case OptionsMenu.BACK:	menuState = MenuState.MAIN; System.out.println("Options: Back pressed");  break;}
+			case OptionsMenu.BACK:	menuState = MenuState.MAIN; break;}
 			break;
 			
 		case PLAY:
@@ -256,6 +258,8 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			switch(quitMenu.getButton(x, y)) {
 			case QuitMenu.YES: 		System.exit(0);	break;			
 			case QuitMenu.NO: 		menuState = MenuState.MAIN; break;}
+			break;
+		default:
 			break;
 		}
 	}

@@ -84,22 +84,15 @@ public class GameStateManager extends Frame implements GLEventListener{
 		// Initialize JOGL
 		initJOGL();
 		
-		//setUndecorated(true);
-		
 		// set visible
 		setVisible(true);
 		
 		// Initialize and set a UserInput Object
 		input = new UserInput(canvas, getSize());
 		
-		// initialize MainMenu
-		// menu = new MainMenu(input, 0, 300, 0, 300);
-		
 		// create a blank cursor for ingame
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-		
-		
 	}
 	
 	
@@ -181,20 +174,20 @@ public class GameStateManager extends Frame implements GLEventListener{
 		switch (gameState) {
 		case INGAME:
 			updateScreenCenter();
-			mazeRunner.update();			// update mazerunner game
-			mazeRunner.display(gl);	// display mazerunner game
+			mazeRunner.update();							// update mazerunner game
+			mazeRunner.display(gl);							// display mazerunner game
 			break;
 		case MENU:
-			switchTo2D(gl);			// switch to 2D
-			menu.update();					// update menu
-			menu.display(gl);			// display menu
-			switchTo3D(gl);			// switch to 3D
+			switchTo2D(gl);									// switch to 2D
+			menu.update();									// update menu
+			menu.display(gl);								// display menu
+			switchTo3D(gl);									// switch to 3D
 			break;
 		case PAUSE:
-			mazeRunner.display(gl);						// display frozen mazerunner game
-			switchTo2D(gl);								// switch to 2D
+			mazeRunner.display(gl);							// display frozen mazerunner game
+			switchTo2D(gl);									// switch to 2D
 			Pause.display(gl, screenWidth, screenHeight);	// display pause
-			switchTo3D(gl);								// switch to 3D
+			switchTo3D(gl);									// switch to 3D
 			break;
 		default: 
 			System.err.println("GameState: Unknown GameState!");
