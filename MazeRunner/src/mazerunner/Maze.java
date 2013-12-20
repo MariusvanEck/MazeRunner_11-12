@@ -2,19 +2,13 @@ package mazerunner;
 
 import java.awt.Point;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
-import cast.Cast;
-import cast.InvalidByteArraySize;
-
 import com.sun.opengl.util.texture.Texture;
-
-import database.DataBase;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -22,7 +16,7 @@ import database.DataBase;
 public class Maze implements VisibleObject {
 	
 	private int mazeSize;
-	private int levelSize;
+	private int numLevels;
 	public final static double SQUARE_SIZE = 5;
 	
 	private HashMap<String,Texture> textures;			// reference to the texture hashmap
@@ -31,145 +25,127 @@ public class Maze implements VisibleObject {
 
 	private ArrayList<int[][]> levels;
 	private int[][] currentLevel;
+	
 	private ArrayList<Stair> stairs;
+	private ArrayList<Floor> floors;
+	private ArrayList<Roof> roofs;
+	private ArrayList<Wall> walls;
 	
 	// old constructor
-	public Maze(GL gl,String file,HashMap<String,Texture> textures){
+	public Maze(GL gl, String mazeFile, HashMap<String,Texture> textures){
 		this.textures = textures;
-		this.levels = new ArrayList<int[][]>();
-		this.stairs = new ArrayList<Stair>();
 		
-		this.load(gl, file);
+		this.load(gl, mazeFile);
 	}
 	
-	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
-		this.textures = textures;
-		this.levels = new ArrayList<int[][]>();
-		this.stairs = new ArrayList<Stair>();
-		
-		this.load(gl,dataBase,name);
-	}
 	
-	private void load(GL gl,DataBase dataBase,String name){ // moet nog testen of hij werkt
-		try{
-			byte[] b = dataBase.getMap(name);
-			if((b.length % 4) != 0)
-				throw new IOException("Corrupted data");
-			
-			byte[] temp = new byte[4];
-			temp[0] = b[0];
-			temp[1] = b[1];
-			temp[2] = b[2];
-			temp[3] = b[3];
-			levelSize = Cast.byteArrayToInt(temp);
-			temp[0] = b[4];
-			temp[1] = b[5];
-			temp[2] = b[6];
-			temp[3] = b[7];
-			mazeSize = Cast.byteArrayToInt(temp);
-			
-			System.out.println("Maze <levelSize/mazeSize>: " + levelSize + "/" + mazeSize);
-			
-			this.currentLevel = new int[mazeSize][mazeSize];
-			for(int y = 0; y < levelSize;y++){
-				for(int z = 0; z < mazeSize; z++){
-					for(int x = 0; x < mazeSize; x++){
-						temp[0] = b[8+x+z*mazeSize+y*mazeSize*mazeSize];
-						temp[1] = b[9+x+z*mazeSize+y*mazeSize*mazeSize];
-						temp[2] = b[10+x+z*mazeSize+y*mazeSize*mazeSize];
-						temp[3] = b[11+x+z*mazeSize+y*mazeSize*mazeSize];
-						currentLevel[x][z] = Cast.byteArrayToInt(temp);
-					}
-				}
-				levels.add(currentLevel);
-			}
-			
-			
-		}catch(IOException e){
-			System.err.println("Maze: " + e.getMessage());
-		}catch( InvalidByteArraySize e){
-			System.err.println("Maze: " + e.getMessage());
-		}
-		
-		getStairs(gl);
-		
-		
-		
-	}
+//	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
+//		this.textures = textures;
+//		this.levels = new ArrayList<int[][]>();
+//		this.stairs = new ArrayList<Stair>();
+//		
+//		this.load(gl,dataBase,name);
+//	}
 	
-	private void getStairs(GL gl){
-		for(int y = 0; y < levelSize; y++){
-			for(int z = 0; z < mazeSize; z++){
-				for(int x = 0; x < mazeSize;x++){
-					//finding stairs and orientation
-					if(levels.get(y)[x][z] == 11){
-						//WEST
-						if (levels.get(y)[x+1][z] == 13){
-							stairs.add(new Stair(gl,y,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-						}
-						//EAST
-						else if (levels.get(y)[x-1][z] == 13){
-							stairs.add(new Stair(gl,y,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-						}
-						//SOUTH
-						else if (levels.get(y)[x][z-1] == 13){
-							stairs.add(new Stair(gl,y,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-						}
-						//NORTH
-						else if (levels.get(y)[x][z+1] == 13){
-							stairs.add(new Stair(gl,y,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-						}
-					}
-				}
-			}
-		}
-	}
+//	private void load(GL gl,DataBase dataBase,String name){ // moet nog testen of hij werkt
+//		try{
+//			byte[] b = dataBase.getMap(name);
+//			if((b.length % 4) != 0)
+//				throw new IOException("Corrupted data");
+//			
+//			byte[] temp = new byte[4];
+//			temp[0] = b[0];
+//			temp[1] = b[1];
+//			temp[2] = b[2];
+//			temp[3] = b[3];
+//			numLevels = Cast.byteArrayToInt(temp);
+//			temp[0] = b[4];
+//			temp[1] = b[5];
+//			temp[2] = b[6];
+//			temp[3] = b[7];
+//			mazeSize = Cast.byteArrayToInt(temp);
+//			
+//			
+//			this.currentLevel = new int[mazeSize][mazeSize];
+//			for(int y = 0; y < numLevels;y++){
+//				for(int z = 0; z < mazeSize; z++){
+//					for(int x = 0; x < mazeSize; x++){
+//						temp[0] = b[8+x+z*mazeSize+y*mazeSize*mazeSize];
+//						temp[1] = b[9+x+z*mazeSize+y*mazeSize*mazeSize];
+//						temp[2] = b[10+x+z*mazeSize+y*mazeSize*mazeSize];
+//						temp[3] = b[11+x+z*mazeSize+y*mazeSize*mazeSize];
+//						currentLevel[x][z] = Cast.byteArrayToInt(temp);
+//					}
+//				}
+//				levels.add(currentLevel);
+//			}
+//			
+//			
+//		}catch(IOException e){
+//			System.err.println("Maze: " + e.getMessage());
+//		}catch( InvalidByteArraySize e){
+//			System.err.println("Maze: " + e.getMessage());
+//		}
+//		
+//		getStairs(gl);
+//		
+//		
+//		
+//	}
 	
-	// old loader
+	/**
+	 * OLD LOADER
+	 */
 	private void load(GL gl, String file){
+		levels = new ArrayList<int[][]>();
+		
 		try{     
 			FileInputStream fmaze = new FileInputStream(file);
 			ObjectInputStream omaze = new ObjectInputStream(fmaze);
 			
-			levelSize = (Integer) omaze.readObject();
+			numLevels = (Integer) omaze.readObject();
 			mazeSize = (Integer) omaze.readObject();
 	      
-			for (int i=0; i<levelSize; i++) {
-				levels.add((int[][]) omaze.readObject());
-				for (int z = 0; z < mazeSize; z++){
-					for(int x = 0; x < mazeSize;x++){
-						//finding stairs and orientation
-						if(levels.get(i)[x][z] == 11){
-							//WEST
-							if (levels.get(i)[x+1][z] == 13){
-								stairs.add(new Stair(gl,i,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-							}
-							//EAST
-							else if (levels.get(i)[x-1][z] == 13){
-								stairs.add(new Stair(gl,i,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-							}
-							//SOUTH
-							else if (levels.get(i)[x][z-1] == 13){
-								stairs.add(new Stair(gl,i,x*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,x*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-							}
-							//North
-							else if (levels.get(i)[x][z+1] == 13){
-								stairs.add(new Stair(gl,i,(x+1)*Maze.SQUARE_SIZE,z*Maze.SQUARE_SIZE,(x+1)*Maze.SQUARE_SIZE,(z+1)*Maze.SQUARE_SIZE,"models\\stairs.obj"));
-							}
-						}
-					}
-				}
-			}
+			for (int i=0; i<numLevels; i++) {
+				levels.add((int[][]) omaze.readObject());}
 	  
 			currentLevel = levels.get(currentLevelIndex);
+			getCurrentLevelObjects();
 			omaze.close();
-			
-			
-			
-			
 		}
         catch(Exception ex){ex.printStackTrace();}
-}
+	}
+	
+	/**
+	 * Get the object of the current level and fill the arraylists with active objects
+	 */
+	private void getCurrentLevelObjects() {
+		
+		stairs = new ArrayList<Stair>();
+		roofs = new ArrayList<Roof>();
+		walls = new ArrayList<Wall>();
+		floors = new ArrayList<Floor>();
+		
+		for (int i=0; i<mazeSize; i++) {
+			for (int j=0; j<mazeSize; j++) {
+				
+				// check for a wall
+				if (currentLevel[i][j] == 1) 
+					walls.add(new Wall(i, j));
+				
+				// add other objects
+				else {
+					// roof and floor
+					roofs.add(new Roof(i, j));
+					floors.add(new Floor(i, j));
+					
+					// check for stairs
+					if (currentLevel[i][j] == 11) {
+						if 		(currentLevel[i+1][j] == 13) 	stairs.add(new Stair(i, j, 270));
+						else if (currentLevel[i-1][j] == 13)	stairs.add(new Stair(i+1, j+1, 90));
+						else if (currentLevel[i][j-1] == 13)	stairs.add(new Stair(i, j+1, 0));
+						else if (currentLevel[i][j+1] == 13)	stairs.add(new Stair(i+1, j, 180));}}}}
+	}
 	
 	
 	/*
@@ -385,141 +361,32 @@ public class Maze implements VisibleObject {
 	 */
 	@Override
 	public void display(GL gl) {
-		// Set the materials
-		float colour[] = { 1f, 1f, 1f, 1f };
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, colour, 0);	
-		
+				
 		//// walls ////
 		bindCurrentTexture("wall"); // bind wall texture
-		for(int i=0; i<mazeSize; i++) {
-	        for(int j=0; j<mazeSize; j++) {
-	        	
-	        	gl.glPushMatrix();	// go to the current maze location and push
-	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
-				
-	            if (isWall(i,j)) {
-			    	drawTexturedWall(gl, (float) SQUARE_SIZE);}
-	            
-	            gl.glPopMatrix();}} // pop
+		for (Wall w : walls) {
+			w.display(gl);}
 		currentTexture.disable(); // disable wall texture
 		
 		//// floors ////
 		bindCurrentTexture("floor"); // bind floor texture
-		for(int i=0; i<mazeSize; i++) {
-	        for(int j=0; j<mazeSize; j++) {
-	        	
-	        	gl.glPushMatrix();	// go to the current maze location and push
-	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
-				
-	            if (!isWall(i,j)) {
-			    	drawTexturedFloor(gl, (float) SQUARE_SIZE);}
-	            
-	            gl.glPopMatrix();}} // pop
+		for(Floor f : floors) {
+			f.display(gl);}
 		currentTexture.disable(); // disable floor texture
 		
 		//// roofs ////
 		bindCurrentTexture("floor"); // bind roof texture
-		for(int i=0; i<mazeSize; i++) {
-	        for(int j=0; j<mazeSize; j++) {
-	        	
-	        	gl.glPushMatrix();	// go to the current maze location and push
-	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
-	            gl.glRotated(180, 0, 0, 1);
-	            
-	            if (!isWall(i,j)) {
-			    	drawTexturedFloor(gl, (float) SQUARE_SIZE);}
-	            
-	            gl.glPopMatrix();}} // pop
+		for(Roof r : roofs) {
+			r.display(gl);}
 		currentTexture.disable(); // disable roof texture
-		
-		//// stairsL ////
-/*		bindCurrentTexture("stairL"); // bind stairL texture
-		for(int i=0; i<MAZE_SIZE; i++) {
-	        for(int j=0; j<MAZE_SIZE; j++) {
-	        	
-	        	gl.glPushMatrix();	// go to the current maze location and push
-	            gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
-	            
-	            if (isStair(i,j)) {
-			    	drawTexturedStairL(gl, (float) SQUARE_SIZE);}
-	            
-	            gl.glPopMatrix();}} // pop
-		currentTexture.disable(); // disable stairL texture
-*/
-		for(Stair stair : stairs){
-			if(stair.getLowerY() == currentLevelIndex)
-				stair.display(gl);
-		}
+	
+		//// stairs ////
+		Stair.loadModel(gl);
+		for(Stair s : stairs){
+				s.display(gl);}
 	}
 	
-	/**
-	 * drawTexturedwall(gl, size) draws 4 panels of a cube with specified size 
-	 * around the current point, applying the enabled texture
-	 */
-	public static void drawTexturedWall(GL gl, float size) {
-        float s = size/2;
-		
-        gl.glBegin(GL.GL_QUADS);
-	        // Front Face
-        	gl.glNormal3f(0, 0, 1);
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f(-s, -s,  s);  // Bottom Left Of The Texture and Quad
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f( s, -s,  s);  // Bottom Right Of The Texture and Quad
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f( s,  s,  s);  // Top Right Of The Texture and Quad
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f(-s,  s,  s);  // Top Left Of The Texture and Quad
-	        // Back Face
-	        gl.glNormal3f(0, 0, -1);
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f(-s, -s, -s);  // Bottom Right Of The Texture and Quad
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f(-s,  s, -s);  // Top Right Of The Texture and Quad
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f( s,  s, -s);  // Top Left Of The Texture and Quad
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f( s, -s, -s);  // Bottom Left Of The Texture and Quad
-	        // Right face
-	        gl.glNormal3f(1, 0, 0);
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f( s, -s, -s);  // Bottom Right Of The Texture and Quad
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f( s,  s, -s);  // Top Right Of The Texture and Quad
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f( s,  s,  s);  // Top Left Of The Texture and Quad
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f( s, -s,  s);  // Bottom Left Of The Texture and Quad
-	        // Left Face
-	        gl.glNormal3f(-1, 0, 0);
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f(-s, -s, -s);  // Bottom Left Of The Texture and Quad
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f(-s, -s,  s);  // Bottom Right Of The Texture and Quad
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f(-s,  s,  s);  // Top Right Of The Texture and Quad
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f(-s,  s, -s);  // Top Left Of The Texture and Quad
-        gl.glEnd();
-	}
 
-	/**
-	 * drawTexturedFloor(gl, size) draws a floor panel, applying the enabled texture
-	 */
-	public static void drawTexturedFloor(GL gl, float size) {
-		float s = size/2;
-		
-		gl.glBegin(GL.GL_QUADS);
-			gl.glNormal3f(0, 1, 0);
-		    gl.glTexCoord2f(0f, 1f); gl.glVertex3f(-s,  -s, -s);  // Top Left Of The Texture and Quad
-		    gl.glTexCoord2f(0f, 0f); gl.glVertex3f(-s,  -s,  s);  // Bottom Left Of The Texture and Quad
-		    gl.glTexCoord2f(1f, 0f); gl.glVertex3f( s,  -s,  s);  // Bottom Right Of The Texture and Quad
-		    gl.glTexCoord2f(1f, 1f); gl.glVertex3f( s,  -s, -s);  // Top Right Of The Texture and Quad
-	    gl.glEnd();
-	}
-	
-	/**
-	 * drawTexturedStairL(gl, size) draws the lower part of the stairs
-	 * around the current point, applying the enabled texture
-	 */
-	public static void drawTexturedStairL(GL gl, float size) {
-        float s = size/2;
-		
-        gl.glBegin(GL.GL_QUADS);
-	        // Top Face
-        	gl.glNormal3f(0, 0, 1);
-	        gl.glTexCoord2f(1, 1); gl.glVertex3f(-s, -s,  s);  // Bottom Left Of The Texture and Quad
-	        gl.glTexCoord2f(1, 0); gl.glVertex3f( s, -s,  s);  // Bottom Right Of The Texture and Quad
-	        gl.glTexCoord2f(0, 0); gl.glVertex3f( s,  0,  -s);  // Top Right Of The Texture and Quad
-	        gl.glTexCoord2f(0, 1); gl.glVertex3f( -s,  0,  -s);  // Top Left Of The Texture and Quad
-        gl.glEnd();
-	}
-
-	
 	/*
 	 * **********************************************
 	 * *			getters and setters 			*
@@ -558,22 +425,34 @@ public class Maze implements VisibleObject {
 		currentTexture.bind();
 	}
 	
-	
+	/** 
+	 * get the maze size
+	 */
 	public int getMazeSize(){
 		return mazeSize;
 	}
+	
+	/** 
+	 * get the level size
+	 */
 	public int getLevelSize(){
-		return levelSize;
+		return numLevels;
 	}
 	
-	public int[][] getMaze(int i){
+	/**
+	 * get a certain level
+	 */
+	public int[][] getLevel(int i){
 		return levels.get(i);
 	}
 	
+	/**
+	 * print the levels
+	 */
 	public void lvlToString(){
 		for(int[][] level:levels){
-			for(int i = 0; i < levelSize; i++){
-				for(int j = 0; j < levelSize; j++){
+			for(int i = 0; i < numLevels; i++){
+				for(int j = 0; j < numLevels; j++){
 					System.out.print(level[j][i]);
 					System.out.print(' ');
 				}

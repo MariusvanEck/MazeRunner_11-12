@@ -44,7 +44,8 @@ public class MazeRunner {
 	private UserInput input;												// user input object controls the game.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); 	// Used to calculate elapsed time.
 	
-	private HashMap<String, Texture> textures;
+	private static HashMap<String, Texture> textures;
+	private static Texture currentTexture;
 	// private DataBase dataBase;
 
 
@@ -143,6 +144,23 @@ public class MazeRunner {
 			textures.put("roof", TextureIO.newTexture(new File("textures\\dungeon_roof.jpg"), false));}
 
 		catch (Exception e) {e.printStackTrace(); System.exit(0);}
+	}
+	
+	/**
+	 * bind a texture to openGL
+	 * @param texture
+	 */
+	public static void bindTexture(String textureName) {
+		currentTexture = textures.get(textureName);
+		currentTexture.enable();
+		currentTexture.bind();
+	}
+	
+	/**
+	 * disable the current texture
+	 */
+	public static void disableCurrentTexture() {
+		currentTexture.disable();
 	}
 	
 	
