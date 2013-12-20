@@ -45,13 +45,12 @@ public class MazeRunner {
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); 	// Used to calculate elapsed time.
 	
 	private static HashMap<String, Texture> textures;
-	private static Texture currentTexture;
 	// private DataBase dataBase;
 
 
-	/*
+/*
  * **********************************************
- * *		Initialization methods				*
+ * *		Initialisation methods				*
  * **********************************************
  */
 	
@@ -96,9 +95,8 @@ public class MazeRunner {
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		maze = new Maze(gl, "mazes\\traptest2.maze", textures);
+		maze = new Maze(gl, "mazes\\traptest.maze", textures);
 		maze.lvlToString();
-		
 		visibleObjects.add(maze);
 		
 		// Initialise the player.
@@ -146,24 +144,7 @@ public class MazeRunner {
 		catch (Exception e) {e.printStackTrace(); System.exit(0);}
 	}
 	
-	/**
-	 * bind a texture to openGL
-	 * @param texture
-	 */
-	public static void bindTexture(String textureName) {
-		currentTexture = textures.get(textureName);
-		currentTexture.enable();
-		currentTexture.bind();
-	}
-	
-	/**
-	 * disable the current texture
-	 */
-	public static void disableCurrentTexture() {
-		currentTexture.disable();
-	}
-	
-	
+
 /*
  * **********************************************
  * *				draw methods 				*
@@ -303,6 +284,10 @@ public class MazeRunner {
 		// check if a wall was hit
 		boolean hitWall = maze.isWall(player.getLocationX(), player.getLocationZ(), 0.1);
 		
+		// go to the next level if a stair was hit
+		if (maze.isStair(player.getLocationX(), player.getLocationZ(), 0)) {
+			maze.changeLevel(maze.getCurrentLevel() + 1);}
+		
 		// set player back if a wall was hit
 		if (hitWall){
 			player.locationX = previousX;
@@ -331,9 +316,10 @@ public class MazeRunner {
 			enemy.update(deltaTime);
 			
 			// check if a wall was hit
-			enemy.setHitWall(maze.isWall(enemy.getLocationX(), enemy.getLocationZ(), 0.2));
+			enemy.setHitWall(	maze.isWall(enemy.getLocationX(), enemy.getLocationZ(), 0.2) ||
+					maze.isStair(enemy.locationX, enemy.locationZ, 0));
 			
-			// set enemy back if a wall was hit
+			// set enemy back if a wall or stair was hit
 			if (enemy.hasHitWall()){
 				enemy.locationX = previousX;
 				enemy.locationZ = previousZ;}}
