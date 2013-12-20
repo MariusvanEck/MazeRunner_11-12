@@ -1,5 +1,7 @@
 package loot;
 
+import gamestate.Sound;
+
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
@@ -8,7 +10,8 @@ import mazerunner.Creature;
 
 public class Stick extends Weapon{
 
-	private final static String modelFileLocation = null; 	// specify the model file here
+	private final static String modelFileLocation = null; 		// specify the model file here
+	private final static Sound hit = new Sound("stick.wav");	// the hitting sound
 	
 	private int downTime = 1000;							// the weapon down time in ms
 	private Long timeDoneLastDamage;						// last time the stick was swung
@@ -47,7 +50,8 @@ public class Stick extends Weapon{
 			creature.near(getCreature(), range)) 
 		{
 			timeDoneLastDamage = Calendar.getInstance().getTimeInMillis();
-			creature.removeHP(damage);}
+			creature.removeHP(damage);
+			hit.play();}
 	}
 	
 	/**
