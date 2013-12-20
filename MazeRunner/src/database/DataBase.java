@@ -4,12 +4,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 
+import cast.Cast;
+import cast.InvalidByteArraySize;
+
 public class DataBase {
 	private Connection connection = null;
 	private Statement statement = null;
-	private final String[] DEFAULT_MAZES_NAME = {"Map01","Map02"};
-	private final String[] DEFAULT_MAZES_LOCATION = {"mazes/inlaadmaze.maze","mazes/traptest.maze"};
-	
+		
 	public DataBase(){
 		try {
 			setup();
@@ -29,7 +30,8 @@ public class DataBase {
 			statement.setQueryTimeout(30); // timeout to 30 sec
 			
 			if(!doesTableExists("Map",connection)){
-				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT, Data LONGBLOB);"); // create table with an ID, Name (max 255 byte) and Data (max 4GB)
+				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT," + // create table with an ID, Name (max 255 byte)
+											"Data BLOB,lvl0 LONGBLOB,lvl1 LONGBLOB,lvl2 LONGBLOB,lvl3 LONGBLOB, lvl4 LONGBLOB, lvl5 LONGBLOB);"); //  and Data (max 4GB per lvl)
 				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
 				
 				
@@ -64,12 +66,37 @@ public class DataBase {
 	}
 	
 	
-	public boolean addMap(String name,byte[] data){
+	public boolean addMap(String name,byte[][] lvlData){
 		try{
-			PreparedStatement prep = connection.prepareStatement("INSERT INTO Map(Name,Data)" +
-																"VALUES(?, ? );");
+			if(lvlData.length-1 > 6 || lvlData.length == 0){ // the length of the first array
+				System.err.println("DataBase: Invalid array size is: " + lvlData.length + " max size is 6");
+				return false;
+			}
+			PreparedStatement prep = connection.prepareStatement("INSERT INTO Map(Name,Data,lvl0,lvl1,lvl2,lvl3,lvl4,lvl5)" +
+																"VALUES(?, ?, ?, ?, ?, ?, ?, ?);");
 			prep.setString(1, name);
-			prep.setBytes(2, data);
+			
+			prep.setBytes(2,lvlData[6]);
+			
+			switch(lvlData.length-2){
+				case 5:
+					prep.setBytes(8, lvlData[5]);
+				case 4:
+					prep.setBytes(7, lvlData[4]);
+				case 3:
+					prep.setBytes(6, lvlData[3]);
+				case 2:
+					prep.setBytes(5, lvlData[2]);
+				case 1:
+					prep.setBytes(4, lvlData[1]);
+				case 0:
+					prep.setBytes(3, lvlData[0]);
+					break;
+				default:
+					System.err.println("DataBase: Something went wrong!");
+					return false;
+			}
+
 			prep.execute();
 			return true;
 		}catch(SQLException e){
@@ -105,7 +132,11 @@ public class DataBase {
 	}
 	
 	
-	public byte[] getMap(String name){
+	public int[][] getMap(String name,int lvl){
+		if(lvl > 6){
+			System.err.println("DataBase: wrong lvl has to be less then 5");
+			return null;
+		}
 		try{
 			ResultSet temp = statement.executeQuery("SELECT * FROM Map");
 			
@@ -115,17 +146,36 @@ public class DataBase {
 			
 			
 			
-			ResultSet rs = statement.executeQuery("SELECT Data " +
+			ResultSet rs = statement.executeQuery("SELECT * " +
 												"FROM Map " +
 												"WHERE Map.Name = '" + name + "';");
 			if(rs.next()){
-				return rs.getBytes("Data");
+				byte[] b = rs.getBytes("Data"); 
+				int mazeSize = Cast.byteArrayToInt(new byte[] {b[4],b[5],b[6],b[7]});
+				
+				byte[] b_lvl = rs.getBytes("lvl"+lvl);
+				
+				int[][] res = new int[mazeSize][mazeSize];
+				int i = 0;
+				for(int z = 0; z < mazeSize; z++){
+					for(int x = 0; x < mazeSize;x++){
+						res[x][z] = Cast.byteArrayToInt(new byte[] {b_lvl[i],b_lvl[i+1],b_lvl[i+2],b_lvl[i+3]});
+						i+=4;
+					}
+				}
+				
+				
+				
+				return res;
 			}
 			else{
 				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
 				return null;
 			}
 		}catch(SQLException e){
+			System.err.println("DataBase: " + e.getMessage());
+			return null;
+		} catch (InvalidByteArraySize e) {
 			System.err.println("DataBase: " + e.getMessage());
 			return null;
 		}

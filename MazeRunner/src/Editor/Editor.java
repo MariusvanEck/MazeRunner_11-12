@@ -311,20 +311,24 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	}
 	
 	public boolean saveToDataBase(String name,DataBase dataBase){
-		ArrayList<Byte> list = new ArrayList<Byte>();
+		byte[][] res = new byte[7][];
+		res[6] = new byte[8];
 		byte[] temp = Cast.intToByteArray(nlevels); 
-		list.add(temp[0]);
-		list.add(temp[1]);
-		list.add(temp[2]);
-		list.add(temp[3]);
-
+		res[6][0] = temp[0];
+		res[6][1] = temp[1];
+		res[6][2] = temp[2];
+		res[6][3] = temp[3];
+		
 		temp = Cast.intToByteArray(mazeX);
-		list.add(temp[0]);
-		list.add(temp[1]);
-		list.add(temp[2]);
-		list.add(temp[3]);
-				
-		for(Level lvl : levels){
+		res[6][4] = temp[0];
+		res[6][5] = temp[1];
+		res[6][6] = temp[2];
+		res[6][7] = temp[3];
+		
+		
+		for(int y = 0; y < nlevels;y++){
+			ArrayList<Byte> list = new ArrayList<Byte>();
+			Level lvl = levels[y];
 			for(int z = 0; z < mazeX; z++){
 				for(int x = 0; x < mazeX; x++){
 					temp = Cast.intToByteArray(lvl.level[x][z]);
@@ -334,10 +338,11 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 					list.add(temp[3]);
 				}
 			}
+			
+			res[y] = new byte[list.size()];
+				for(int i = 0; i  < list.size(); i++)
+					res[y][i] = list.get(i);
 		}
-		byte[] res = new byte[list.size()];
-		for(int i = 0; i  < list.size(); i++)
-			res[i] = list.get(i);
 		return dataBase.addMap(name, res);
 	}
 	
@@ -472,6 +477,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                 		break;
                 	}
                 }
+                mirror();
                 DataBase dataBase = new DataBase();
                 this.saveToDataBase(name, dataBase);
                 
@@ -486,7 +492,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                 ObjectOutputStream omaze = new ObjectOutputStream(fmaze);
                 omaze.writeObject(nlevels);
                 omaze.writeObject(mazeX);
-                mirror();
                 for (int n = 0; n < nlevels; n++){
                     int[][] writeLevel = levels[n].getLevel();
                     omaze.writeObject(writeLevel);
