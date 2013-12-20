@@ -4,5 +4,5 @@ package menu;
  * Enumerated type holding the menu states
  */
 public enum MenuState {
-	MAIN, PLAY, OPTIONS, QUIT, EDITOR;
+	MAIN, PLAY, OPTIONS, QUIT;
 }

@@ -9,8 +9,6 @@ import java.io.File;
 
 import javax.media.opengl.GL;
 
-import Editor.Editor;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
@@ -238,7 +236,10 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			switch(getButton(x,y)) {
 			case PLAY: 		menuState = MenuState.PLAY; break;
 			case OPTIONS: 	menuState = MenuState.OPTIONS; break;
-			case EDITOR: 	menuState = MenuState.EDITOR; new Editor(); menuState = MenuState.MAIN; break;
+			case EDITOR: 	
+				input.setGameState(GameState.EDITOR); 
+				menuState = MenuState.MAIN; 
+				break;
 			case QUIT: 		menuState = MenuState.QUIT; break;}
 			break;
 			
@@ -265,6 +266,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			break;
 		default:
 			break;
+
 		}
 	}
 }

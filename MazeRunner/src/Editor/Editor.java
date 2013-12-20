@@ -1,5 +1,7 @@
 package Editor;
 
+import gamestate.GameStateManager;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
@@ -8,15 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -33,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import mazerunner.MazeRunner;
 import cast.Cast;
 
 import com.sun.opengl.util.Animator;
@@ -576,7 +576,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		//The Exit button on the bottom-right
 		if(k == 9){
 			System.out.println(level.toString());
-			super.dispose();
+			new GameStateManager();
+			dispose();
 		}
 		
 		//Check which level-button is selected

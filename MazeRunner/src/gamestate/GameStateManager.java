@@ -19,6 +19,7 @@ import javax.media.opengl.glu.GLU;
 
 import mazerunner.MazeRunner;
 import menu.MainMenu;
+import Editor.Editor;
 
 import com.sun.opengl.util.Animator;
 
@@ -187,9 +188,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 			Pause.display(gl, screenWidth, screenHeight);	// display pause
 			switchTo3D(gl);									// switch to 3D
 			break;
-		default: 
-			System.err.println("GameState: Unknown GameState!");
-		}
+		case EDITOR: 
+			break;}
 		
         // Load identity
         gl.glLoadIdentity();
@@ -326,7 +326,11 @@ public class GameStateManager extends Frame implements GLEventListener{
 				break;
 			case MENU:
 				menu.theme.loop();
-				setCursor(Cursor.DEFAULT_CURSOR);									
+				setCursor(Cursor.DEFAULT_CURSOR);
+				break;
+			case EDITOR:
+				new Editor();
+				dispose();
 				break;}}
 	}
 	
