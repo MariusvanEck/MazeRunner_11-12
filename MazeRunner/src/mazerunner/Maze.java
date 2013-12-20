@@ -2,6 +2,7 @@ package mazerunner;
 
 import java.awt.Point;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,8 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.texture.Texture;
+
+import database.DataBase;
 
 /**
  * Maze represents the maze used by MazeRunner.
@@ -39,59 +42,28 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-//	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
-//		this.textures = textures;
-//		this.levels = new ArrayList<int[][]>();
-//		this.stairs = new ArrayList<Stair>();
-//		
-//		this.load(gl,dataBase,name);
-//	}
+	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
+		this.textures = textures;
+		this.levels = new ArrayList<int[][]>();
+		this.stairs = new ArrayList<Stair>();
+		
+		this.load(gl,dataBase,name);
+	}
 	
-//	private void load(GL gl,DataBase dataBase,String name){ // moet nog testen of hij werkt
-//		try{
-//			byte[] b = dataBase.getMap(name);
-//			if((b.length % 4) != 0)
-//				throw new IOException("Corrupted data");
-//			
-//			byte[] temp = new byte[4];
-//			temp[0] = b[0];
-//			temp[1] = b[1];
-//			temp[2] = b[2];
-//			temp[3] = b[3];
-//			numLevels = Cast.byteArrayToInt(temp);
-//			temp[0] = b[4];
-//			temp[1] = b[5];
-//			temp[2] = b[6];
-//			temp[3] = b[7];
-//			mazeSize = Cast.byteArrayToInt(temp);
-//			
-//			
-//			this.currentLevel = new int[mazeSize][mazeSize];
-//			for(int y = 0; y < numLevels;y++){
-//				for(int z = 0; z < mazeSize; z++){
-//					for(int x = 0; x < mazeSize; x++){
-//						temp[0] = b[8+x+z*mazeSize+y*mazeSize*mazeSize];
-//						temp[1] = b[9+x+z*mazeSize+y*mazeSize*mazeSize];
-//						temp[2] = b[10+x+z*mazeSize+y*mazeSize*mazeSize];
-//						temp[3] = b[11+x+z*mazeSize+y*mazeSize*mazeSize];
-//						currentLevel[x][z] = Cast.byteArrayToInt(temp);
-//					}
-//				}
-//				levels.add(currentLevel);
-//			}
-//			
-//			
-//		}catch(IOException e){
-//			System.err.println("Maze: " + e.getMessage());
-//		}catch( InvalidByteArraySize e){
-//			System.err.println("Maze: " + e.getMessage());
-//		}
-//		
-//		getStairs(gl);
-//		
-//		
-//		
-//	}
+	private void load(GL gl,DataBase dataBase,String name){
+		mazeSize = dataBase.getMazeSize(name);
+		numLevels = dataBase.getNumLevels(name);
+		
+		for(int i = 0; i < numLevels; i++)
+			levels.add(dataBase.getMap(name, i));
+		
+		currentLevel = levels.get(0);
+		
+		loadCurrentLevelObjects();
+		
+		
+		
+	}
 	
 	
 	/*
@@ -465,6 +437,7 @@ public class Maze implements VisibleObject {
 	 * print the levels
 	 */
 	public void lvlToString(){
+		System.out.println("Maze: ");
 		for(int[][] level:levels){
 			for(int i = 0; i < numLevels; i++){
 				for(int j = 0; j < numLevels; j++){

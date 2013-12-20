@@ -17,6 +17,8 @@ import loot.LootController;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
+import database.DataBase;
+
 /** 
  * MazeRunner is the class representing the INGAME GameState
  * 
@@ -95,8 +97,9 @@ public class MazeRunner {
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		maze = new Maze(gl, "mazes\\traptest.maze", textures);
-		maze.lvlToString();
+		//maze = new Maze(gl, "mazes\\traptest.maze", textures);
+		DataBase dataBase = new DataBase();
+		maze = new Maze(gl,dataBase,"test",textures);
 		visibleObjects.add(maze);
 		
 		// Initialise the player.

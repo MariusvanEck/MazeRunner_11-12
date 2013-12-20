@@ -138,14 +138,6 @@ public class DataBase {
 			return null;
 		}
 		try{
-			ResultSet temp = statement.executeQuery("SELECT * FROM Map");
-			
-			if(temp.next()){
-				System.out.println(temp.getInt("ID") + " " + temp.getString("Name"));
-			}
-			
-			
-			
 			ResultSet rs = statement.executeQuery("SELECT * " +
 												"FROM Map " +
 												"WHERE Map.Name = '" + name + "';");
@@ -213,5 +205,44 @@ public class DataBase {
 			return rs.getRow() == 1;
 		
 		return false;
+	}
+	
+	public int getNumLevels(String name){
+		try {
+			ResultSet temp = statement.executeQuery("SELECT Data FROM Map WHERE Name = '" + name + "';");
+			if(temp.next()){
+				byte[] b = temp.getBytes("Data");
+				return Cast.byteArrayToInt(new byte[] {b[0],b[1],b[2],b[3]});
+			}
+			else{
+				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
+				return 0;
+			}
+		} catch (SQLException e) {
+			System.err.println("DataBase: " + e.getMessage());
+			return 0;
+		} catch (InvalidByteArraySize e) {
+			System.err.println("DataBase: " + e.getMessage());
+			return 0;
+		}
+	}
+	public int getMazeSize(String name){
+		try {
+			ResultSet temp = statement.executeQuery("SELECT Data FROM Map WHERE Name = '" + name + "';");
+			if(temp.next()){
+				byte[] b = temp.getBytes("Data");
+				return Cast.byteArrayToInt(new byte[] {b[4],b[5],b[6],b[7]});
+			}
+			else{
+				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
+				return 0;
+			}
+		} catch (SQLException e) {
+			System.err.println("DataBase: " + e.getMessage());
+			return 0;
+		} catch (InvalidByteArraySize e) {
+			System.err.println("DataBase: " + e.getMessage());
+			return 0;
+		}
 	}
 }
