@@ -40,7 +40,7 @@ public class UserInput extends Control
 	private Robot robot;									// used for centering the mouse
 	
 	protected boolean wasMousePressed;						// boolean indicating a mouse press
-	private boolean newGame = true;							// boolean indicating a new game start
+	private boolean newGame = false;						// boolean indicating a new game start
 	
 	/**
 	 * UserInput constructor.

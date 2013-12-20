@@ -1,13 +1,15 @@
 package mazerunner;
 
+import gamestate.GameStateManager;
+
 import java.awt.Point;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
+import javax.swing.JFileChooser;
 
 import com.sun.opengl.util.texture.Texture;
 
@@ -334,6 +336,21 @@ public class Maze implements VisibleObject {
 		if (i < numLevels) {
 			currentLevel = levels.get(i);
 			loadCurrentLevelObjects();}
+	}
+	
+	/**
+	 * Pick a file from the mazes directory
+	 */
+	public static String selectMaze(GameStateManager gsm) {
+		JFileChooser fileChooser = new JFileChooser("mazes");
+		
+		int action = fileChooser.showOpenDialog(gsm);
+		if (action == JFileChooser.APPROVE_OPTION) {
+			String fileString = fileChooser.getSelectedFile().getName();
+			fileString = fileString.substring(0, fileString.length() - 5);
+			return fileString;}
+		else
+			return null;
 	}
 	
 	

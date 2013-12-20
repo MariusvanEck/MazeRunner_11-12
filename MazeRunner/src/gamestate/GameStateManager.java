@@ -17,8 +17,10 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
+import mazerunner.Maze;
 import mazerunner.MazeRunner;
 import menu.MainMenu;
+import menu.MenuState;
 import Editor.Editor;
 
 import com.sun.opengl.util.Animator;
@@ -43,6 +45,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * *		attributes and constructor			*
 	 * **********************************************
 	 */
+
 	public static int screenWidth = 800, screenHeight = 500;		// screenSize
 	private GLCanvas canvas;										// canvas for drawing
 	private GameState gameState;									// current GameState
@@ -51,7 +54,9 @@ public class GameStateManager extends Frame implements GLEventListener{
 	private MainMenu menu;											// MENU functionality
 	private UserInput input;										// Mouse and Keyboard input functionality
 	
-	private Cursor blankCursor;										// Cursor for ingame state
+	// Cursor for ingame state
+	private Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+			new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");										
 	
 	/**
 	 * Initialises the complete game.
@@ -88,10 +93,6 @@ public class GameStateManager extends Frame implements GLEventListener{
 		
 		// Initialize and set a UserInput Object
 		input = new UserInput(canvas, getSize());
-		
-		// create a blank cursor for ingame
-		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 	}
 	
 	
@@ -298,16 +299,25 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 */
 	@SuppressWarnings("deprecation")
 	private void updateGameState(GL gl) {
-		// setup new game if required
-		if (input.isNewGame()) {
-			mazeRunner = new MazeRunner(gl,input);
-			input.setNewGame(false);}
-		
 		// gameState initialisation 
 		if (gameState == null) {
 			menu = new MainMenu(input,0,0,0,0); 
-			mazeRunner.init(gl, screenWidth, screenHeight);
+			MazeRunner.init(gl, screenWidth, screenHeight);
 			input.setGameState(GameState.MENU);}
+		
+		// setup new game if required
+		if (input.isNewGame()) {
+			String mazeName = Maze.selectMaze(this);
+			
+			if (mazeName != null) {
+				mazeRunner = new MazeRunner(gl, input);
+				mazeRunner.initObjects(gl, mazeName);}
+			
+			else {
+				input.setGameState(GameState.MENU);
+				menu.menuState = MenuState.PLAY;}
+			
+			input.setNewGame(false);}
 		
 		// check if the gameState and is changed and update
 		if (gameState != input.getGameState()) {

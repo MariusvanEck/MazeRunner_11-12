@@ -47,8 +47,6 @@ public class MazeRunner {
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); 	// Used to calculate elapsed time.
 	
 	private static HashMap<String, Texture> textures;
-	// private DataBase dataBase;
-
 
 /*
  * **********************************************
@@ -59,10 +57,7 @@ public class MazeRunner {
 	/**
 	 * Initialises the the INGAME part of the game.
 	 */
-	public MazeRunner(GL gl,UserInput input) {
-		// init the DataBase
-		// this.dataBase = new DataBase();
-		
+	public MazeRunner(GL gl, UserInput input) {
 		// set input
 		this.input = input;
 		
@@ -71,9 +66,6 @@ public class MazeRunner {
 		
 		// load textures
 		loadTextures();
-		
-		// Initialise all the objects
-		initObjects(gl);
 	}
 	
 	/**
@@ -91,15 +83,14 @@ public class MazeRunner {
 	 * visualObjects list of MazeRunner through the add method, so it will be displayed 
 	 * automagically. 
 	 */
-	private void initObjects(GL gl)	{
+	public void initObjects(GL gl, String mazeFileName)	{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		//maze = new Maze(gl, "mazes\\traptest.maze", textures);
 		DataBase dataBase = new DataBase();
-		maze = new Maze(gl,dataBase,"test",textures);
+		maze = new Maze(gl, dataBase, mazeFileName, textures);
 		visibleObjects.add(maze);
 		
 		// Initialise the player.
@@ -111,14 +102,13 @@ public class MazeRunner {
 		
 
 		// Initialise the loot
-		lootController = new LootController(player,maze);
+		lootController = new LootController(gl, player, maze);
 		visibleObjects.add(lootController);
 		
 		// initialise enemies and add
 		enemyAI = new EnemyAI(gl,player, maze);
 		for(Enemy enemy: enemyAI.getEnemies()) {
-			visibleObjects.add(enemy);
-		}
+			visibleObjects.add(enemy);}
 		
 		// set up a camera
 		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
@@ -161,7 +151,7 @@ public class MazeRunner {
 	 * <p> 
 	 * It is <b>very important</b> to realize that there should be no drawing at all in this method.
 	 */
-	public void init(GL gl, int screenWidth, int screenHeight) {
+	public static void init(GL gl, int screenWidth, int screenHeight) {
         GLU glu = new GLU();
         
         gl.glClearColor(0, 0, 0, 0);								// Set the background color.
