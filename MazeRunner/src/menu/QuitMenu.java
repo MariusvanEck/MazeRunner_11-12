@@ -1,12 +1,9 @@
 package menu;
 
-import gamestate.GameStateManager;
-
 import java.io.File;
 
 import javax.media.opengl.GL;
 
-import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 

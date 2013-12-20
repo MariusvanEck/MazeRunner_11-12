@@ -4,14 +4,12 @@ import java.io.File;
 
 import javax.media.opengl.GL;
 
-import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
 public class OptionsMenu extends MenuObject{
 	
 	private Button buttons[];
-	private float[] buttonColor = {1,0,0};
 	
 	public static final byte BACK = 0;
 	
