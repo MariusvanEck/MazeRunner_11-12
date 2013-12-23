@@ -254,6 +254,13 @@ public class Level {
 	public int[][] getLevel() {
 		return level;
 	}
+	
+	public void set(int x,int y,int set){
+		level[x][y] = set;
+	}
+	public int get(int x,int y){
+		return level[x][y];
+	}
 
 	public int getX() {
 		return x;

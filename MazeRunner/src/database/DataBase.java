@@ -1,9 +1,12 @@
 package database;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.sql.*;
-
+import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import cast.Cast;
 import cast.InvalidByteArraySize;
 
@@ -52,7 +55,7 @@ public class DataBase {
 		}
 			catch(SQLException e)
 			{
-				System.err.println("DataBase: Closing the connection failed! " + e);
+				System.err.println("DataBase: Closing the connection failed!\n\t" + e);
 			}
 	}
 	
@@ -105,32 +108,115 @@ public class DataBase {
 		}
 	}
 	
-	public void importMap(String name,String fileLocation){
-		try{
-			FileInputStream in = new FileInputStream(fileLocation);
-			String data = "";
-			int bufferSize = in.available(); // estimation of the available bytes to read
-			byte[] buffer = new byte[bufferSize];
-			int readed = 0,totalReaded = 0;
-			while(readed != -1 && in.available() > 0){
-				readed = in.read(buffer, totalReaded, bufferSize);
-				
-				if(readed != -1){
-					data += new String(buffer);
-					totalReaded = readed;
-				}
-			}
-			in.close();
+	
+	public void importMap(){
+		JFileChooser chooser = new JFileChooser();
+		File file = new File("mazes\\test.maze");
+		chooser.setCurrentDirectory(file);
+		int returnVal = chooser.showOpenDialog(null);
+		if(returnVal != JFileChooser.APPROVE_OPTION) {
+				System.err.println("DataBase: Can't find file!");
+				return;
+		}
+		file = chooser.getSelectedFile();
+		String name = file.getAbsolutePath().split("\\\\")[file.getAbsolutePath().split("\\\\").length-1].split("\\.")[0];
 		
-			statement.executeUpdate("INSERT INTO Map(Name,Data) " +
-								"VALUES('" + name + "','" + data + "');");
-		}catch(IOException e){
-			System.err.println("DataBase: " + e.getMessage());
-		}catch(SQLException e){
+		int numLevels = 0,mazeSize = 0;
+		int[][][] levels = null;
+		try{	
+			if(doesMapNameExists(name)){
+				System.err.println("DataBase: Map name already in use");
+				return;
+			}
+			
+			
+			FileInputStream fmaze = new FileInputStream(file);
+			ObjectInputStream omaze = new ObjectInputStream(fmaze);
+			
+			numLevels = (Integer) omaze.readObject();
+			mazeSize = (Integer) omaze.readObject();
+			
+			
+			int[][] firstLevel = (int[][]) omaze.readObject();
+			int x = firstLevel.length;
+			
+			mazeSize = x;
+	
+			levels = new int[numLevels][][];
+			
+			int[][] nextLevel;
+			levels[0] = firstLevel;
+			for ( int n=1; n<numLevels; n++){
+				 nextLevel = (int[][]) omaze.readObject();
+				 if (nextLevel == null){
+					System.err.println("DataBase: Corrupted File!");
+					omaze.close();
+					return;
+				 }
+				levels[n] = nextLevel;
+			}
+			omaze.close();
+		}
+				
+		catch(SQLException e){
 			System.err.println("DataBase: " + e.getMessage());
 		}
+		catch(IOException e){
+			System.err.println("DataBase: " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			System.err.println("DataBase: " + e.getMessage());
+		}
+		
+		//mirror the levels
+		for(int n = 0; n < numLevels; n++){
+    		int[][] templevel = levels[n];
+    		levels[n] = new int[mazeSize][mazeSize]; 
+    		for(int x = 0; x<mazeSize; x++){
+    			for(int y = mazeSize-1; y>=0; y--){
+    				int oy = mazeSize-y-1;
+    				levels[n][x][oy] = templevel[x][y];
+    			}
+    		}
+    	}
+		
+		byte[][] res = new byte[7][];
+		res[6] = new byte[8];
+		byte[] temp = Cast.intToByteArray(numLevels); 
+		res[6][0] = temp[0];
+		res[6][1] = temp[1];
+		res[6][2] = temp[2];
+		res[6][3] = temp[3];
+		
+		temp = Cast.intToByteArray(mazeSize);
+		res[6][4] = temp[0];
+		res[6][5] = temp[1];
+		res[6][6] = temp[2];
+		res[6][7] = temp[3];
+		
+		
+		for(int y = 0; y < numLevels;y++){
+			ArrayList<Byte> list = new ArrayList<Byte>();
+			int[][] lvl = levels[y];
+			for(int z = 0; z < mazeSize; z++){
+				for(int x = 0; x < mazeSize; x++){
+					temp = Cast.intToByteArray(lvl[x][z]);
+					list.add(temp[0]);
+					list.add(temp[1]);
+					list.add(temp[2]);
+					list.add(temp[3]);
+				}
+			}
+			
+			res[y] = new byte[list.size()];
+				for(int i = 0; i  < list.size(); i++)
+					res[y][i] = list.get(i);
+		}
+		this.addMap(name, res);
+		
+		
+		
+		
 	}
-	
 	
 	public int[][] getMap(String name,int lvl){
 		if(lvl > 6){
@@ -204,6 +290,12 @@ public class DataBase {
 		if(rs.next())
 			return rs.getRow() == 1;
 		
+		return false;
+	}
+	private boolean doesMapNameExists(String name) throws SQLException{
+		ResultSet temp = statement.executeQuery("SELECT * FROM Map WHERE Name = '" + name + "';");
+		if(temp.next())
+			return true;
 		return false;
 	}
 	
