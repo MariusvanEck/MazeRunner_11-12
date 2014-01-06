@@ -51,3 +51,8 @@
 
 + Sound
 	- [TODO] background music (in menu)
+	
++ Trap
+	- [TODO] maak een TrapController
+	+ Projectile
+		- [TODO] Model toevoegen
