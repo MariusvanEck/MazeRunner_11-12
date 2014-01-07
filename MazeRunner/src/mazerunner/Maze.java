@@ -3,8 +3,6 @@ package mazerunner;
 import gamestate.GameStateManager;
 
 import java.awt.Point;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,34 +35,11 @@ public class Maze implements VisibleObject {
 	private ArrayList<Roof> roofs;
 	private ArrayList<Wall> walls;
 	
-	// old constructor
-	public Maze(GL gl, String mazeFile, HashMap<String,Texture> textures){
-		this.textures = textures;
-		this.load(gl, mazeFile);
-	}
-	
-	
 	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
 		this.textures = textures;
 		this.levels = new ArrayList<int[][]>();
-		this.stairs = new ArrayList<Stair>();
 		
 		this.load(gl,dataBase,name);
-	}
-	
-	private void load(GL gl,DataBase dataBase,String name){
-		mazeSize = dataBase.getMazeSize(name);
-		numLevels = dataBase.getNumLevels(name);
-		
-		for(int i = 0; i < numLevels; i++)
-			levels.add(dataBase.getMap(name, i));
-		
-		currentLevel = levels.get(0);
-		
-		loadCurrentLevelObjects();
-		
-		
-		
 	}
 	
 	
@@ -75,26 +50,14 @@ public class Maze implements VisibleObject {
 	 */
 	
 	/**
-	 * OLD LOADER
+	 * Load a maze from the database
 	 */
-	private void load(GL gl, String file) {
-		levels = new ArrayList<int[][]>();
+	private void load(GL gl,DataBase dataBase,String name){
+		mazeSize = dataBase.getMazeSize(name);
+		numLevels = dataBase.getNumLevels(name);
 		
-		try{     
-			FileInputStream fmaze = new FileInputStream(file);
-			ObjectInputStream omaze = new ObjectInputStream(fmaze);
-			
-			numLevels = (Integer) omaze.readObject();
-			mazeSize = (Integer) omaze.readObject();
-	      
-			for (int i=0; i<numLevels; i++) {
-				levels.add((int[][]) omaze.readObject());}
-	  
-			currentLevel = levels.get(currentLevelIndex);
-			loadCurrentLevelObjects();
-			omaze.close();
-		}
-        catch(Exception ex){ex.printStackTrace();}
+		for(int i = 0; i < numLevels; i++)
+			levels.add(dataBase.getMap(name, i));
 	}
 	
 	/**
@@ -334,7 +297,7 @@ public class Maze implements VisibleObject {
 	 */
 	public void changeLevel(int i) {
 		if (i < numLevels) {
-			currentLevel = levels.get(i);
+			setCurrentLevel(i);
 			loadCurrentLevelObjects();}
 	}
 	
@@ -411,6 +374,7 @@ public class Maze implements VisibleObject {
 	public void setCurrentLevel(int currentLevelIndex) {
 		this.currentLevelIndex = currentLevelIndex;
 		currentLevel = levels.get(currentLevelIndex);
+		
 	}
 	
 	/**

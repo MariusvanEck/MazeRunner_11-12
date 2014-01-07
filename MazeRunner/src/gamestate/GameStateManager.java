@@ -17,6 +17,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
+import mazerunner.InvalidSpawnLocationException;
 import mazerunner.Maze;
 import mazerunner.MazeRunner;
 import menu.MainMenu;
@@ -310,8 +311,12 @@ public class GameStateManager extends Frame implements GLEventListener{
 			String mazeName = Maze.selectMaze(this);
 			
 			if (mazeName != null) {
-				mazeRunner = new MazeRunner(gl, input);
-				mazeRunner.initObjects(gl, mazeName);}
+				try {
+					mazeRunner = new MazeRunner(gl, input);
+					mazeRunner.initObjects(gl, mazeName);}
+				catch(InvalidSpawnLocationException isle) {
+					isle.printStackTrace();
+					System.exit(0);}}
 			
 			else {
 				input.setGameState(GameState.MENU);

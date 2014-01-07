@@ -46,6 +46,8 @@ public class MazeRunner {
 	private UserInput input;												// user input object controls the game.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); 	// Used to calculate elapsed time.
 	
+	private int spawnLocationX, spawnLocationZ;								// store the spawn location of the player
+	
 	private static HashMap<String, Texture> textures;
 
 /*
@@ -83,7 +85,7 @@ public class MazeRunner {
 	 * visualObjects list of MazeRunner through the add method, so it will be displayed 
 	 * automagically. 
 	 */
-	public void initObjects(GL gl, String mazeFileName)	{
+	public void initObjects(GL gl, String mazeFileName)	throws InvalidSpawnLocationException{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
@@ -91,13 +93,15 @@ public class MazeRunner {
 		// Add the maze that we will be using.
 		DataBase dataBase = new DataBase();
 		maze = new Maze(gl, dataBase, mazeFileName, textures);
+		if(!setPlayerSpawn()) throw new InvalidSpawnLocationException("No Spawn Found");
 		visibleObjects.add(maze);
 		
 		// Initialise the player.
-		player = new Player(gl, 6 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	
-							Maze.SQUARE_SIZE / 2,							
-							5 * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	
-							90, 0, 100,										
+		player = new Player(gl, 
+							spawnLocationX * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x coordinate
+							Maze.SQUARE_SIZE / 2,										// y coordinate
+							spawnLocationZ * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// z coordinate
+							90, 0, 100,													
 							null);
 		
 
@@ -122,6 +126,27 @@ public class MazeRunner {
 		headsUpDisplay = new HeadsUpDisplay(player);
 	}
 	
+	/**
+	 * Checks for a player spawn location and sets it
+	 */
+	private boolean setPlayerSpawn() {
+		boolean foundSpawn = false;
+		
+		for (int i=0; i<maze.getLevelSize(); i++) {
+			int[][] level = maze.getLevel(i);
+			
+			for (int j=0; j<maze.getMazeSize(); j++) {
+				for (int k=0; k<maze.getMazeSize(); k++) {
+					if (level[j][k] == 97) {
+						spawnLocationX = j;
+						spawnLocationZ = k;
+						maze.changeLevel(i);
+						foundSpawn = true;
+						break;}}}}
+		
+		return foundSpawn;
+	}
+
 	/**
 	 * Loads the textures used for ingame display
 	 */
