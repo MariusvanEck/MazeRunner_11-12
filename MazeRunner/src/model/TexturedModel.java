@@ -1,6 +1,7 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -9,7 +10,11 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureIO;
 
 
 public class TexturedModel {
@@ -17,16 +22,19 @@ public class TexturedModel {
 	private int shaderProgramHandle;
 	private int vboVertexHandle[] = new int[1];
 	private int vboNormalHandle[] = new int [1];
+	private int vboTexCoordHandle[] = new int [1];
 	private int vertexShaderHandle;
 	private int fragmentShaderHandle;
 	private int diffuseModifierUniform;
-	
+	private Texture texture;
 	private  Model m;
 	
-	public TexturedModel(GL gl,Model model){
+	public TexturedModel(GL gl, Model model){
 		this.m = model;
 		this.setUpVBOs(gl);
-		this.setupShaders(gl);
+		//this.setupShaders(gl);//
+		this.setUpLighting(gl);
+		this.loadTexture(gl);
 	}
 	
 	protected void finalize(GL gl) throws Throwable{
@@ -37,20 +45,26 @@ public class TexturedModel {
 		}
 	}
 	
-	public void setUpVBOs(GL gl){
+	private void setUpVBOs(GL gl){
 		gl.glGenBuffers(1,vboVertexHandle,0);
 		gl.glGenBuffers(1,vboNormalHandle,0);
+		gl.glGenBuffers(1,vboTexCoordHandle,0);
 		
 		if(!m.isLoaded()) // draw nothing if there is no model loaded, so stop init VBO
 			return;
 		
-		int sizeOfBuffers = m.faces.size() *36; // 3*3*4
+		int sizeOfBuffers = m.faces.size() * 36; // 3*3*4
 		FloatBuffer vertices = reserveData(sizeOfBuffers); // allocate memory for buffer
 		FloatBuffer normals = reserveData(sizeOfBuffers); // allocate memory for buffer
+		FloatBuffer texcoords = reserveData(sizeOfBuffers); // allocate memory for buffer
 		for(Face face : m.faces){
 			vertices.put(asFloats(m.vertices.get((int) face.vertex.x-1)));
 			vertices.put(asFloats(m.vertices.get((int) face.vertex.y-1)));
 			vertices.put(asFloats(m.vertices.get((int) face.vertex.z-1)));
+			
+			texcoords.put(asFloats(m.texcoords.get((int) face.texcoord.x-1)));
+			texcoords.put(asFloats(m.texcoords.get((int) face.texcoord.y-1)));
+			texcoords.put(asFloats(m.texcoords.get((int) face.texcoord.z-1)));
 			
 			normals.put(asFloats(m.normals.get((int) face.normals.x-1)));
 			normals.put(asFloats(m.normals.get((int) face.normals.y-1)));
@@ -59,16 +73,29 @@ public class TexturedModel {
 		// make the buffers readable for GL
 		vertices.flip();
 		normals.flip();
+		texcoords.flip();
 		
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboVertexHandle[0]);
 		gl.glBufferData(GL.GL_ARRAY_BUFFER,sizeOfBuffers,vertices, GL.GL_STATIC_DRAW);
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER,vboNormalHandle[0]);
 		gl.glBufferData(GL.GL_ARRAY_BUFFER,sizeOfBuffers,normals, GL.GL_STATIC_DRAW);
+		gl.glBindBuffer(GL.GL_ARRAY_BUFFER,vboTexCoordHandle[0]);
+		gl.glBufferData(GL.GL_ARRAY_BUFFER,sizeOfBuffers,texcoords, GL.GL_STATIC_DRAW);
 		
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0); // unbind the buffer
 	}
 	
-	public void setupShaders(GL gl){
+	private void loadTexture(GL gl){
+		try {
+			texture = TextureIO.newTexture(new File("models/Lambent_Male/Lambent_Male_D.tga"), true);
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}	
+	}
+	
+	private void setupShaders(GL gl){
 		shaderProgramHandle = gl.glCreateProgram();
 		vertexShaderHandle = gl.glCreateShader(GL.GL_VERTEX_SHADER);
 		fragmentShaderHandle = gl.glCreateShader(GL.GL_FRAGMENT_SHADER);
@@ -138,6 +165,7 @@ public class TexturedModel {
 		
 		gl.glDeleteBuffers(1,vboVertexHandle,0);
 		gl.glDeleteBuffers(1,vboNormalHandle,0);
+		gl.glDeleteBuffers(1, vboTexCoordHandle, 0);
 		
 		gl.glDeleteShader(vertexShaderHandle);
 		gl.glDeleteShader(fragmentShaderHandle);
@@ -163,9 +191,9 @@ public class TexturedModel {
 		
 			gl.glTranslated(x, y, z);
 			gl.glRotated(angle, 0, 1, 0);
-			gl.glUseProgram(shaderProgramHandle);
-			gl.glUniform1f(diffuseModifierUniform, 1.0f);
-			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);
+//			gl.glUseProgram(shaderProgramHandle);//
+//			gl.glUniform1f(diffuseModifierUniform, 1.0f);//
+//			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);//
 			
 			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboVertexHandle[0]);
 			gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0L);
@@ -173,22 +201,33 @@ public class TexturedModel {
 			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboNormalHandle[0]);
 			gl.glNormalPointer(GL.GL_FLOAT, 0, 0L);
 			
+			texture.enable();
+			gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getTextureObject());
+			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboTexCoordHandle[0]);//
+			gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, 0);//
+			
 			gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 			gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
+			gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
 		
-			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10f);
+//			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10f);//
 			gl.glDrawArrays(GL.GL_TRIANGLES, 0, m.faces.size()*3);
 			
 			
 			gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
 			gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
+			gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
 			gl.glBindBuffer(GL.GL_ARRAY_BUFFER,0); // unbind the buffer
 			gl.glUseProgram(0); // unbind the program
 			
-		gl.glPopMatrix();
-		
+			texture.disable();
+			
+		gl.glPopMatrix();	
 	}
 	
+	private float[] asFloats(Vector2f v){
+		return new float[]{v.x,v.y};
+	}
 	
 	private float[] asFloats(Vector3f v){
 		return new float[]{v.x,v.y,v.z};
@@ -200,7 +239,6 @@ public class TexturedModel {
 		res.flip();
 		return res;
 	}
-	
 	
 	private FloatBuffer reserveData(int size){
 		ByteBuffer byteBuff = ByteBuffer.allocateDirect(size); // allocate memory

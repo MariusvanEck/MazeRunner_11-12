@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
 import mazerunner.Maze;
@@ -14,6 +15,7 @@ import mazerunner.Maze;
 public class Model {
 	protected List<Vector3f> vertices = new ArrayList<Vector3f>();
 	protected List<Vector3f> normals = new ArrayList<Vector3f>();
+	protected List<Vector2f> texcoords = new ArrayList<Vector2f>();
 	protected List<Face> faces = new ArrayList<Face>();
 	private float scale = 0;
 	
@@ -32,10 +34,12 @@ public class Model {
 	public void addNormal(Vector3f add){
 		normals.add(add);
 	}
+	public void addTexCoord(Vector2f add){
+		texcoords.add(add);
+	}
 	public void addFace(Face add){
 		faces.add(add);
 	}
-	
 	
 	public boolean isLoaded(){return loaded;}
 	
@@ -56,6 +60,7 @@ public class Model {
 			for(Vector3f vec3 : vertices)
 				vec3.scale(scale);
 			
+			texcoords = temp.texcoords;
 			normals = temp.normals;
 			faces = temp.faces;
 			loaded = true;

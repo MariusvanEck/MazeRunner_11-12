@@ -2,9 +2,15 @@
 
 varying vec3 color;
 
+//K layout(location = 0) in vec3 position;
+//K layout(location = 1) in vec2 texCoord;
+
+//K out vec2 texCoord0;
+
 uniform float diffuseIntensityModifier;
 
 void main(){
+	
 	// Retrieves the position of the vertex in eye space by
 	// multiplying the vertex in object space with the
 	// modelview matrix and stores it in a 3D vertex
@@ -54,5 +60,7 @@ void main(){
 	// Retrieves the position of the vertex in clip space my multiplying it by the modelviw-
 	// projection matrix and stores it in the built-in output variable gl_Position.
 	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+
+	//K texCoord0 = texCoord;
 
 }
