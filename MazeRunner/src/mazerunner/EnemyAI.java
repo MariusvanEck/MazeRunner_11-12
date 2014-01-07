@@ -47,7 +47,7 @@ public class EnemyAI{
 			// add an enemy
 			enemies.add(new Enemy(	gl, x, 0, z, 
 									rnd.nextDouble()*360 - 180,  
-									new Stick(gl), "models/test.obj"));}
+									new Stick(gl),  "models/Lambent_Male/Lambent_Male.obj"));}
 	}
 	
 	
