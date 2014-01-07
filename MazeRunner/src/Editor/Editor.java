@@ -472,7 +472,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                 }
                 mirror();
                 DataBase dataBase = new DataBase();
-                this.saveToDataBase(name, dataBase);
+                if(!this.saveToDataBase(name, dataBase))
+                	System.err.println("Can't save to dataBase");
                 
                 if(!path.endsWith(".maze")){
                 	file = new File(path + ".maze");

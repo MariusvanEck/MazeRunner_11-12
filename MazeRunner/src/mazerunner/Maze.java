@@ -38,6 +38,7 @@ public class Maze implements VisibleObject {
 	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
 		this.textures = textures;
 		this.levels = new ArrayList<int[][]>();
+		Stair.loadModel(gl);
 		
 		this.load(gl,dataBase,name);
 	}
@@ -348,7 +349,6 @@ public class Maze implements VisibleObject {
 		currentTexture.disable(); // disable roof texture
 	
 		//// stairs ////
-		Stair.loadModel(gl);
 		for(Stair s : stairs){
 				s.display(gl);}
 	}
