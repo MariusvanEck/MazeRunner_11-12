@@ -13,6 +13,7 @@ public class EnemyControl extends Control{
 	
 	private double targetAngle;				// angle of the current target
 	private int angleToRotate;				// angle to rotate
+	private boolean playerVisible;			// is the player visible
 	
 	
 	/*
@@ -51,12 +52,14 @@ public class EnemyControl extends Control{
 		if (	!targets.isEmpty() && 
 				Math.abs(angleToRotate) < 30) {
 			
-			moveDirection = 0;
-			
-			// set the speed
-			if (Math.abs(angleToRotate) > 10) {
-				enemy.setSpeed((10d/angleToRotate));}
-			else enemy.setSpeed(1);}
+			if (targets.size() == 1 && playerVisible && enemy.distanceTo(targetX, targetZ) < 2) 
+				moveDirection = null;
+			else {
+				moveDirection = 0;
+				// set the speed
+				if (Math.abs(angleToRotate) > 10) {
+					enemy.setSpeed((10d/angleToRotate));}
+				else enemy.setSpeed(1);}}
 		
 		else moveDirection = null;
 	}
@@ -123,4 +126,18 @@ public class EnemyControl extends Control{
 	public void setEnemy(Enemy enemy) {
 		this.enemy = enemy;
 	}	
+
+	/**
+	 * get the angle to rotate
+	 */
+	public int getAngleToRotate() {
+		return angleToRotate;
+	}
+
+	/**
+	 * set player visible
+	 */
+	public void setPlayerVisible(boolean playerVisible) {
+		this.playerVisible = playerVisible;
+	}
 }

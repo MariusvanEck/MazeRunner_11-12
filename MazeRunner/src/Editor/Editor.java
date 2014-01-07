@@ -32,7 +32,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import mazerunner.MazeRunner;
 import cast.Cast;
 
 import com.sun.opengl.util.Animator;
@@ -102,12 +101,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		setUndecorated(true);
 		setResizable(false);
 		setVisible(true);
-	}
-
-	public static void main(String[] args){
-		new Editor();
-		System.out.println("Level editor started\nGenerating maze...\n");
-		//_exit:;
 	}
 
 	public void drawLevel(GL gl){

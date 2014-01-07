@@ -85,7 +85,7 @@ public class EnemyAI{
 				if (wasPlayerVisible) {control.updateMainTarget(player.locationX, player.locationZ);}
 				// if the player is visible and was invisible update the main target
 				else {control.updateMainTarget(player.locationX, player.locationZ);}}
-			
+				
 			else if (!isPlayerVisible){
 				// if the player has just become invisible start the "aggro" timer
 				if (wasPlayerVisible) {
@@ -98,13 +98,13 @@ public class EnemyAI{
 					if (enemy.getTimePassed() >= 3000) {
 						nextTarget(enemy, control, memory);
 						enemy.setTimePassed(0);
-						enemy.setMemory(maze.currentGridPoint(enemy));}}}
-			
-			// If an enemy reached the next location in the list, delete this location 
-			// and add to the global memory
-			if (enemy.atTarget(Maze.SQUARE_SIZE/100d)) {
-				control.targets.remove(0);
-				memory.add(0, maze.currentGridPoint(enemy));}
+						enemy.setMemory(maze.currentGridPoint(enemy));}}
+				
+				// If an enemy reached the next location in the list, delete this location 
+				// and add to the global memory
+				if (enemy.atTarget(Maze.SQUARE_SIZE/100d)) {
+					control.targets.remove(0);
+					memory.add(0, maze.currentGridPoint(enemy));}}
 			
 			// if the target list is empty get a new target
 			if (control.targets.isEmpty()) {
@@ -112,9 +112,11 @@ public class EnemyAI{
 				enemy.setMemory(maze.currentGridPoint(enemy));}
 			
 			// damage the player with the enemies weapon
-			enemy.getWeapon().doDamage(player);
+			if (control.getAngleToRotate() < 15)
+				enemy.getWeapon().doDamage(player);
 			
 			// update the Enemy's control
+			control.setPlayerVisible(isPlayerVisible);
 			control.update();
 		}
 		

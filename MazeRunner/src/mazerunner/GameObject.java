@@ -64,10 +64,16 @@ public abstract class GameObject {
 	 * get the distance between this object and the passed object
 	 */
 	public double distanceTo(GameObject that) {
-		return Math.sqrt(	Math.pow(this.locationX - that.locationX, 2) +
-							Math.pow(this.locationX - that.locationX, 2));
+		return distanceTo(that.locationX, that.locationZ);
 	}
 	
+	/**
+	 * get the distance between this object and the passed coordinates
+	 */
+	public double distanceTo(double locationX, double locationZ) {
+		return Math.sqrt(	Math.pow(this.locationX - locationX, 2) +
+							Math.pow(this.locationZ - locationZ, 2));
+	}
 	
 	/*
 	 * **********************************************
