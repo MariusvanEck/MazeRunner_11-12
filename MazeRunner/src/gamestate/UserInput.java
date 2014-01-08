@@ -4,11 +4,16 @@ import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 
 import javax.media.opengl.GLCanvas;
 
@@ -27,7 +32,7 @@ import mazerunner.Control;
  *
  */
 public class UserInput extends Control 
-		implements MouseListener, MouseMotionListener, KeyListener {
+		implements MouseListener, MouseMotionListener, KeyListener,FocusListener {
 	
 	private GameState gameState;
 	
@@ -55,6 +60,7 @@ public class UserInput extends Control
 		canvas.addMouseListener(this);
 		canvas.addMouseMotionListener(this);
 		canvas.addKeyListener(this);
+		canvas.addFocusListener(this);
 		
 		this.mouseLocation = new Point(0, 0);
 		this.screenSize = screenSize;
@@ -168,6 +174,7 @@ public class UserInput extends Control
 		case KeyEvent.VK_D: right = false;	 	break;
 		
 		// pause/unpause
+		case KeyEvent.VK_PAUSE:
 		case KeyEvent.VK_P: 
 			if (gameState == GameState.INGAME) gameState = GameState.PAUSE;
 			else if (gameState == GameState.PAUSE) gameState = GameState.INGAME;
@@ -175,6 +182,11 @@ public class UserInput extends Control
 		
 		// to menu
 		case KeyEvent.VK_ESCAPE: 	gameState = GameState.MENU;		break;}
+	}
+	@Override
+	public void focusLost(FocusEvent e){
+		if(gameState == GameState.INGAME)
+			gameState = GameState.PAUSE;
 	}
 	
 
@@ -298,5 +310,11 @@ public class UserInput extends Control
 	@Override
 	public void mouseReleased(MouseEvent event)
 	{
+	}
+
+	@Override
+	public void focusGained(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
