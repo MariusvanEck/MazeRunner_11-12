@@ -75,7 +75,8 @@ public class Camera extends GameObject {
 	 * @param verAngle the verAngle to set
 	 */
 	public void setVerAngle(double verAngle) {
-		this.verAngle = verAngle;
+		if(verAngle < 90 && verAngle > -90)
+			this.verAngle = verAngle;
 	}
 
 	/**

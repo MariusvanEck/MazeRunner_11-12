@@ -65,7 +65,8 @@ public class Player extends Creature {
 			
 			// rotate the player, according to control
 			setHorAngle(getHorAngle() - rotationSpeed*control.dX);
-			setVerAngle(getVerAngle() - rotationSpeed*control.dY);
+			if(getVerAngle() - rotationSpeed*control.dY < 90 && getVerAngle() - rotationSpeed*control.dY > -90)
+				setVerAngle(getVerAngle() - rotationSpeed*control.dY);
 			
 			// move the player, according to control
 			if (control.moveDirection != null) {
