@@ -251,10 +251,9 @@ public class MazeRunner {
 	 */
 	public void update(GL gl) {
 		
-		// TEMP: if players health is 0 go to main menu and reset
+		// if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
-			input.setGameState(GameState.MENU);
-			input.setNewGame(true);}
+			input.setGameState(GameState.MENU);}
 		
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		
