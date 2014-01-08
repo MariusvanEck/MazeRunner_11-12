@@ -18,7 +18,7 @@ public class Stair extends GameObject implements VisibleObject {
 	}
 	
 	public static void loadModel(GL gl) {
-		texturedModel = new TexturedModel(gl, new Model(modelFileLocation, 1f));
+		texturedModel = new TexturedModel(gl, new Model(modelFileLocation, 1f),null);
 	}
 	
 	public void display(GL gl){
