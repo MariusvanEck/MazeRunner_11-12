@@ -40,7 +40,7 @@ public class Player extends Creature {
 	 * @param weapon	The weapon equipped by the player (null if not equipped)
 	 */
 	public Player(GL gl, double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
-		super(gl,x,y,z,hitpoints,weapon,null);
+		super(gl,x,y,z,hitpoints,weapon,null,null);
 		setHorAngle(h);
 		setVerAngle(v);
 		speed = 0.01;
