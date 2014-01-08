@@ -175,7 +175,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 		switch (gameState) {
 		case INGAME:
 			updateScreenCenter();
-			mazeRunner.update();							// update mazerunner game
+			mazeRunner.update(gl);							// update mazerunner game
 			mazeRunner.display(gl);							// display mazerunner game
 			break;
 		case MENU:

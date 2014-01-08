@@ -249,7 +249,7 @@ public class MazeRunner {
 	/**
 	 * update() updates the mazerunner game using the past time since the previous frame
 	 */
-	public void update() {
+	public void update(GL gl) {
 		
 		// TEMP: if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
@@ -263,7 +263,7 @@ public class MazeRunner {
 		previousTime = currentTime;
 		
 		// Update any movement since last frame.
-		updateMovement(deltaTime);
+		updateMovement(gl,deltaTime);
 		
 		// Update Loot
 		lootController.update();
@@ -279,10 +279,10 @@ public class MazeRunner {
 	 * updateMovement(int) updates the position of all objects that need moving.
 	 * This includes rudimentary collision checking and collision reaction.
 	 */
-	private void updateMovement(int deltaTime)
+	private void updateMovement(GL gl,int deltaTime)
 	{
 		// Update the player
-		updatePlayerMovement(deltaTime);
+		updatePlayerMovement(gl,deltaTime);
 		
 		// Update the enemies
 		updateEnemyMovement(deltaTime);
@@ -291,7 +291,7 @@ public class MazeRunner {
 	/**
 	 * updatePlayerMovement(int) updates the player position and oriention
 	 */
-	private void updatePlayerMovement(int deltaTime) {
+	private void updatePlayerMovement(GL gl,int deltaTime) {
 		// save current coordinates
 		double previousX = player.getLocationX();
 		double previousZ = player.getLocationZ();
@@ -304,7 +304,14 @@ public class MazeRunner {
 		
 		// go to the next level if a stair was hit
 		if (maze.isStair(player.getLocationX(), player.getLocationZ(), 0)) {
-			maze.changeLevel(maze.getCurrentLevel() + 1);}
+			maze.changeLevel(maze.getCurrentLevel() + 1);
+			for(Enemy e:enemyAI.getEnemies())
+				this.visibleObjects.remove(e);
+			enemyAI.loadRandomEnemys(gl);
+			for(Enemy e:enemyAI.getEnemies())
+				this.visibleObjects.add(e);
+		}
+		
 		
 		// set player back if a wall was hit
 		if (hitWall){

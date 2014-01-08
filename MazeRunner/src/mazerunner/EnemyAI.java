@@ -34,7 +34,12 @@ public class EnemyAI{
 		this.rnd = new Random();
 		
 		this.enemies = new ArrayList<Enemy>();
+		loadRandomEnemys(gl);
 		
+	}
+	
+	public void loadRandomEnemys(GL gl){
+		enemies.clear();
 		// add randomly initialised enemies 
 		int x, z;
 		for (int i=0; i<1; i++) {
@@ -46,10 +51,9 @@ public class EnemyAI{
 				
 			// add an enemy
 			enemies.add(new Enemy(	gl, x, 0, z, 
-									rnd.nextDouble()*360 - 180,  
-									new Stick(gl),  "models/Lambent_Male/Lambent_Male.obj"));}
+						rnd.nextDouble()*360 - 180,  
+						new Stick(gl),  "models/Lambent_Male/Lambent_Male.obj"));}
 	}
-	
 	
 	/*
 	 * **********************************************
