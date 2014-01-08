@@ -34,7 +34,7 @@ public class MazeRunner {
 	 * **********************************************
 	 */
 	
-	private ArrayList<VisibleObject> visibleObjects;						// A list of objects that will be displayed on screen.
+	private static ArrayList<VisibleObject> visibleObjects;					// A list of objects that will be displayed on screen.
 	
 	private Player player;													// the player
 	private EnemyAI enemyAI;												// the enemyAI with the enemies
@@ -93,7 +93,7 @@ public class MazeRunner {
 		// Add the maze that we will be using.
 		DataBase dataBase = new DataBase();
 		maze = new Maze(gl, dataBase, mazeFileName, textures);
-		if(!setPlayerSpawn()) throw new InvalidSpawnLocationException("No Spawn Found");
+		if(!setPlayerSpawn(gl)) throw new InvalidSpawnLocationException("No Spawn Found");
 		visibleObjects.add(maze);
 		
 		// Initialise the player.
@@ -104,15 +104,13 @@ public class MazeRunner {
 							90, 0, 100,													
 							null);
 		
-
 		// Initialise the loot
 		lootController = new LootController(gl, player, maze);
 		visibleObjects.add(lootController);
 		
 		// initialise enemies and add
-		enemyAI = new EnemyAI(gl,player, maze);
-		for(Enemy enemy: enemyAI.getEnemies()) {
-			visibleObjects.add(enemy);}
+		enemyAI = new EnemyAI(gl, player, maze);
+		visibleObjects.add(enemyAI);
 		
 		// set up a camera
 		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
@@ -121,7 +119,6 @@ public class MazeRunner {
 		// set player control
 		player.setControl(input);
 		
-		
 		// setup headsUpDisplay
 		headsUpDisplay = new HeadsUpDisplay(player);
 	}
@@ -129,7 +126,7 @@ public class MazeRunner {
 	/**
 	 * Checks for a player spawn location and sets it
 	 */
-	private boolean setPlayerSpawn() {
+	private boolean setPlayerSpawn(GL gl) {
 		boolean foundSpawn = false;
 		
 		for (int i=0; i<maze.getLevelSize(); i++) {
@@ -140,7 +137,7 @@ public class MazeRunner {
 					if (level[j][k] == 97) {
 						spawnLocationX = j;
 						spawnLocationZ = k;
-						maze.changeLevel(i);
+						maze.changeLevel(i, gl);
 						foundSpawn = true;
 						break;}}}}
 		
@@ -303,14 +300,7 @@ public class MazeRunner {
 		
 		// go to the next level if a stair was hit
 		if (maze.isStair(player.getLocationX(), player.getLocationZ(), 0)) {
-			maze.changeLevel(maze.getCurrentLevel() + 1);
-			for(Enemy e:enemyAI.getEnemies())
-				this.visibleObjects.remove(e);
-			enemyAI.loadRandomEnemys(gl);
-			for(Enemy e:enemyAI.getEnemies())
-				this.visibleObjects.add(e);
-		}
-		
+			maze.changeLevel(maze.getCurrentLevel() + 1, gl);}
 		
 		// set player back if a wall was hit
 		if (hitWall){

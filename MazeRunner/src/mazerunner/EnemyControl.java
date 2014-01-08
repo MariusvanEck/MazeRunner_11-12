@@ -52,7 +52,10 @@ public class EnemyControl extends Control{
 		if (	!targets.isEmpty() && 
 				Math.abs(angleToRotate) < 30) {
 			
-			if (targets.size() == 1 && playerVisible && enemy.distanceTo(targetX, targetZ) < 2) 
+			if (	targets.size() == 1 
+					&& playerVisible 
+					&& enemy.distanceTo(targetX, targetZ) < .15*Maze.SQUARE_SIZE  	) 
+				
 				moveDirection = null;
 			else {
 				moveDirection = 0;

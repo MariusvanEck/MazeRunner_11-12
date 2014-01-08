@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import javax.media.opengl.GL;
 
-import loot.Weapon;
+import loot.Stick;
 
 /**
  * Enemy represents enemies in the game
@@ -15,7 +15,7 @@ public class Enemy extends Creature implements VisibleObject{
 	
 	private final static int maxHP = 100;	// The maximum hp for the enemy
 	private final int rotationSpeed = 2;	// The enemy's rotation speed			
-	private final double maxSpeed = 0.005;	// the maximum speed for the enemy
+	private final double maxSpeed = 0.009;	// the maximum speed for the enemy
 	private double speed = maxSpeed;		// the enemy's speed
 	
 	private EnemyControl control;		// the enemies control
@@ -25,6 +25,9 @@ public class Enemy extends Creature implements VisibleObject{
 										// after a player disappears
 	
 	private Point memory; 				// holds the point previously visited in grid coordinates
+	
+	private static String 	modelFileLocation = "models/Lambent_Male/Lambent_Male.obj",
+							textureFileLocation = "models/Lambent_Male/Lambent_Male_D.tga";
 	
 	/**
 	 * The Enemy constructor.
@@ -37,11 +40,12 @@ public class Enemy extends Creature implements VisibleObject{
 	 * @param weapon			The weapon of the Enemy
 	 * @param modelFileLocation The location of the model file
 	 */
-	public Enemy(GL gl,int x, int y, int z, double horAngle, Weapon weapon, String modelFileLocation, String textureFileLocation) {
+	public Enemy(GL gl, int x, int z, double horAngle) {
 		super(gl,x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
-				y*Maze.SQUARE_SIZE, 
+				0, 
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
-				maxHP, weapon, modelFileLocation,textureFileLocation);
+				maxHP, new Stick(gl), 
+				modelFileLocation, textureFileLocation);
 		
 		setHorAngle(horAngle);
 		
@@ -66,11 +70,10 @@ public class Enemy extends Creature implements VisibleObject{
 	 */
 	@Override
 	public void display(GL gl) { 
-		if(getTexturedModel() == null)
+		if (getTexturedModel() == null)
 			System.out.println("null");
-		else
-		getTexturedModel().render(gl, getHorAngle()-180,locationX,locationY,locationZ);		
-		
+		else 
+			getTexturedModel().render(gl, getHorAngle()-180,locationX,locationY,locationZ);
 	}
 
 	

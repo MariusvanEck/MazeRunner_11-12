@@ -7,14 +7,12 @@ import java.util.Random;
 
 import javax.media.opengl.GL;
 
-import loot.Stick;
-
-public class EnemyAI{
+public class EnemyAI implements VisibleObject{
 	
 	private Maze maze;
 	private Player player;
 	
-	private ArrayList<Enemy> enemies;
+	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private Iterator<Enemy> it;
 	private ArrayList<Point> memory;
 	private Enemy enemy;
@@ -32,27 +30,6 @@ public class EnemyAI{
 		this.player = player;
 		this.memory = new ArrayList<Point>();
 		this.rnd = new Random();
-		
-		this.enemies = new ArrayList<Enemy>();
-		loadRandomEnemys(gl);
-		
-	}
-	
-	public void loadRandomEnemys(GL gl){
-		enemies.clear();
-		// add randomly initialised enemies 
-		int x, z;
-		for (int i=0; i<1; i++) {
-			// find a location
-			do {
-				x = rnd.nextInt(maze.getMazeSize()); 
-				z = rnd.nextInt(maze.getMazeSize());
-			} while (maze.isWall(x, z));
-				
-			// add an enemy
-			enemies.add(new Enemy(	gl, x, 0, z, 
-						rnd.nextDouble()*360 - 180,  
-						new Stick(gl),  "models/Lambent_Male/Lambent_Male.obj", "models/Lambent_Male/Lambent_Male_D.tga"));}
 	}
 	
 	/*
@@ -250,5 +227,19 @@ public class EnemyAI{
 	 */ 
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;
+	}
+	
+	/**
+	 * Set the ArrayList with all the enemies associated with this AI
+	 */ 
+	public static void setEnemies(ArrayList<Enemy> enemies) {
+		EnemyAI.enemies = enemies;
+	}
+
+	@Override
+	public void display(GL gl) {
+		for (Enemy enemy : enemies) {
+			enemy.display(gl);
+		}
 	}
 }

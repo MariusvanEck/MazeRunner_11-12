@@ -64,16 +64,16 @@ public class Maze implements VisibleObject {
 	/**
 	 * Get the object of the current level and fill the arraylists with active objects
 	 */
-	private void loadCurrentLevelObjects() {
+	private void loadCurrentLevelObjects(GL gl) {
 		
 		stairs = new ArrayList<Stair>();
 		roofs = new ArrayList<Roof>();
 		walls = new ArrayList<Wall>();
 		floors = new ArrayList<Floor>();
+		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		
 		for (int i=0; i<mazeSize; i++) {
 			for (int j=0; j<mazeSize; j++) {
-				
 				// check for a wall
 				if (currentLevel[i][j] == 1) 
 					walls.add(new Wall(i, j));
@@ -84,13 +84,22 @@ public class Maze implements VisibleObject {
 					roofs.add(new Roof(i, j));
 					floors.add(new Floor(i, j));
 					
-					// check for stairs
-					if (currentLevel[i][j] == 11) {
-						if 		(currentLevel[i+1][j] == 13) 	stairs.add(new Stair(i, j, 270));
-						else if (currentLevel[i-1][j] == 13)	stairs.add(new Stair(i+1, j+1, 90));
-						else if (currentLevel[i][j-1] == 13)	stairs.add(new Stair(i, j+1, 0));
-						else if (currentLevel[i][j+1] == 13)	stairs.add(new Stair(i+1, j, 180));}}}}
+					if (currentLevel[i][j] != 0) {
+						// check for stairs
+						if (currentLevel[i][j]%11 == 0) {
+							if 		(currentLevel[i+1][j]%13 == 0) 	stairs.add(new Stair(i, j, 270));
+							else if (currentLevel[i-1][j]%13 == 0)	stairs.add(new Stair(i+1, j+1, 90));
+							else if (currentLevel[i][j-1]%13 == 0)	stairs.add(new Stair(i, j+1, 0));
+							else if (currentLevel[i][j+1]%13 == 0)	stairs.add(new Stair(i+1, j, 180));}
+				
+						// check for enemies and add to the AI
+						if (currentLevel[i][j]%23 == 0)
+							enemies.add(new Enemy(gl, i, j, 0));}}}}
+		
+		EnemyAI.setEnemies(enemies);
 	}
+	
+	
 	
 	
 	/*
@@ -98,6 +107,7 @@ public class Maze implements VisibleObject {
 	 * *			  		Checks					*
 	 * **********************************************
 	 */
+	
 	
 	/**
 	 * isWall(int x, int y, int z) checks for a wall.
@@ -116,6 +126,7 @@ public class Maze implements VisibleObject {
 			return false;
 	}
 	
+	
 	/**
 	 * isStair(int x,int y,int z) checks for a stair
 	 * 
@@ -129,6 +140,7 @@ public class Maze implements VisibleObject {
 			return currentLevel[x][z] == 11;
 		return false;
 	}
+	
 	
 	/**
 	 * Checks if there is a wall on the line between the two points specified
@@ -183,6 +195,7 @@ public class Maze implements VisibleObject {
 		return false;
 	}
 	
+	
 	/**
 	 * isWall(double x, double z, double objectSize) checks for a wall in a square with edge 
 	 * objectSize*SQUARE_SIZE around the location by converting the double values to integer 
@@ -206,6 +219,7 @@ public class Maze implements VisibleObject {
 				isWall(gXmin, gZmin) || isWall(gXmax, gZmax) ||
 				isWall(gXmin, gZmax) || isWall(gXmax, gZmin);
 	}
+	
 	
 	/**
 	 * isStair(double x, double z, double objectSize) checks for a stair in a square with edge 
@@ -232,11 +246,14 @@ public class Maze implements VisibleObject {
 	}
 	
 	
+	
+	
 	/*
 	 * **********************************************
 	 * *			   GridConversion	 			*
 	 * **********************************************
 	 */
+	
 	
 	/**
 	 * getCurrentGridPoint takes a gameObject and returns a Point object with the 
@@ -245,6 +262,7 @@ public class Maze implements VisibleObject {
 	public Point currentGridPoint(GameObject gameObject) {
 		return new Point(convertToGridX(gameObject.locationX), convertToGridZ(gameObject.locationZ));
 	}
+	
 	
 	/**
 	 * Converts the double x-coordinate to its correspondent integer coordinate.
@@ -256,6 +274,7 @@ public class Maze implements VisibleObject {
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
 	
+	
 	/**
 	 * Converts the double x-coordinate to its correspondent integer coordinate.
 	 * @param y		the double y-coordinate
@@ -264,6 +283,7 @@ public class Maze implements VisibleObject {
 	public int convertToGridY(double y){
 		return (int)Math.floor( y / SQUARE_SIZE );
 	}
+	
 	
 	/**
 	 * Converts the double z-coordinate to its correspondent integer coordinate.
@@ -276,11 +296,14 @@ public class Maze implements VisibleObject {
 	}
 	
 	
+	
+	
 	/*
 	 * **********************************************
 	 * *				 miscelanous				*
 	 * **********************************************
 	 */
+	
 	
 	/**
 	 * Sets the specified location to wall or no wall
@@ -293,14 +316,16 @@ public class Maze implements VisibleObject {
 		currentLevel[x][z] = isWall? 1 : 0;
 	}
 	
+	
 	/**
 	 * load a new level of the maze
 	 */
-	public void changeLevel(int i) {
+	public void changeLevel(int i, GL gl) {
 		if (i < numLevels) {
 			setCurrentLevel(i);
-			loadCurrentLevelObjects();}
+			loadCurrentLevelObjects(gl);}
 	}
+	
 	
 	/**
 	 * Pick a file from the mazes directory
@@ -318,11 +343,14 @@ public class Maze implements VisibleObject {
 	}
 	
 	
+	
+	
 	/*
 	 * **********************************************
 	 * *			Drawing function				*
 	 * **********************************************
 	 */
+	
 	
 	/**
 	 * maze display function
@@ -354,11 +382,14 @@ public class Maze implements VisibleObject {
 	}
 	
 
+	
+	
 	/*
 	 * **********************************************
 	 * *			getters and setters 			*
 	 * **********************************************
 	 */
+	
 	
 	/**
 	 * get the current active level index
@@ -366,6 +397,7 @@ public class Maze implements VisibleObject {
 	public int getCurrentLevel() {
 		return currentLevelIndex;
 	}
+	
 	
 	/**
 	 * set the current active level
@@ -377,6 +409,7 @@ public class Maze implements VisibleObject {
 		
 	}
 	
+	
 	/**
 	 * set the texture hashmap
 	 */
@@ -384,6 +417,7 @@ public class Maze implements VisibleObject {
 		this.textures = textures;
 	}
 
+	
 	/**
 	 * set the currentTexture and bind
 	 */
@@ -393,12 +427,14 @@ public class Maze implements VisibleObject {
 		currentTexture.bind();
 	}
 	
+	
 	/** 
 	 * get the maze size
 	 */
 	public int getMazeSize(){
 		return mazeSize;
 	}
+	
 	
 	/** 
 	 * get the level size
@@ -407,12 +443,14 @@ public class Maze implements VisibleObject {
 		return numLevels;
 	}
 	
+	
 	/**
 	 * get a certain level
 	 */
 	public int[][] getLevel(int i){
 		return levels.get(i);
 	}
+	
 	
 	/**
 	 * print the levels
