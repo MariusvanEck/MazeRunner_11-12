@@ -22,12 +22,13 @@ public class Level {
 	private Texture[] textureMaze;
 	private int nTiles = 98; //this is the number of different tiles currently present in the maze
 	
-	private GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-	private int screenHeight =  gd.getDisplayMode().getHeight();
-	//Dit is compleet fout en zou niet nodig moeten zijn
-	private int screenWidth =  gd.getDisplayMode().getWidth();
-	private float mazeL = ((screenWidth-screenHeight)/3*2);					//Left bound of mazeDrawingWindow
-	private int mazeX = 20;
+
+
+	private static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	private static int screenHeight =  gd.getDisplayMode().getHeight();
+	private static int screenWidth =  gd.getDisplayMode().getWidth();
+	private static float mazeL = ((screenWidth-screenHeight)/3*2);					//Left bound of mazeDrawingWindow
+	private static int mazeX = 20;
 	
     static int primeNumbers[] = new int[100];
     private int aantalobjecten = 100;
@@ -186,7 +187,7 @@ public class Level {
 		}
 		
 		
-		//That red square, work in progress
+		//That yellow square, work in progress
 		PointerInfo a = MouseInfo.getPointerInfo();
 		Point b = a.getLocation();
 		int xm = (int) b.getX();
@@ -341,5 +342,13 @@ public class Level {
 			}
 		}
 		return false;
+	}
+	
+	public static void updateMazeL(float mazeL) {
+		Level.mazeL = mazeL;
+	}
+
+	public static void updateMazeX(int mazeX) {
+		Level.mazeX = mazeX;
 	}
 }

@@ -57,7 +57,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private int mazeX = 20;						//number of X-squares, 10 entered for testing
 	private int nlevels = 6;									//number of levels in the maze
 	private int buttonRow = 10;
-	private float mazeL = ((screenWidth-screenHeight)/3*2);					//Left bound of mazeDrawingWindow
+	public float mazeL = ((screenWidth-screenHeight)/3*2);					//Left bound of mazeDrawingWindow
 	private float mazeR = screenWidth-((screenWidth-screenHeight)/3);		//Right bound of mazeDrawingWindow
 	
 	//creates the initial levels with walls on the borders
@@ -711,7 +711,12 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
         try{nlevels = Integer.parseInt(nlev.getText());}
         catch (NumberFormatException ex){System.out.println("One or more invalid numbers were entered");}
         
-        try{mazeX = Integer.parseInt(size.getText());}
+        try{
+        	mazeX = Integer.parseInt(size.getText());
+        	Level.updateMazeX(mazeX);
+        	Level.updateMazeL(mazeL);
+        
+        }
         catch (NumberFormatException ex){System.out.println("One or more invalid numbers were entered");}
         
         if (mazeX < 3 || mazeX > 63){
