@@ -30,6 +30,8 @@ public class Level {
 	private static float mazeL = ((screenWidth-screenHeight)/3*2);					//Left bound of mazeDrawingWindow
 	private static int mazeX = 20;
 	
+	private float alpha = 1;
+	
     static int primeNumbers[] = new int[100];
     private int aantalobjecten = 100;
 	
@@ -61,11 +63,16 @@ public class Level {
 			textureMaze[2] = TextureIO.newTexture(new File("img\\TorchN.png"), false);
 			textureMaze[3] = TextureIO.newTexture(new File("img\\TorchE.png"), false);
 			textureMaze[5] = TextureIO.newTexture(new File("img\\TorchS.png"), false);
-			textureMaze[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
 			textureMaze[7] = TextureIO.newTexture(new File("img\\TorchW.png"), false);
+			textureMaze[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
 			textureMaze[13] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			textureMaze[19] = TextureIO.newTexture(new File("img\\Food.png"), false);
+			textureMaze[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
+			textureMaze[29] = TextureIO.newTexture(new File("img\\Coin.png"), false);
+			textureMaze[31] = TextureIO.newTexture(new File("img\\Chest.png"), false);
 			textureMaze[97] = TextureIO.newTexture(new File("img\\Player.png"), false);
-			//textureMaze[9] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			
+			
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -81,6 +88,8 @@ public class Level {
 		
 		for(int i = 0; i < x; i++){
 			for(int j = 0; j < y; j++){
+				alpha = 1;
+				boolean prime = false;
 				
 				//Drawing the floor color
 				//Also be sure to maintain the background color of the floor for specific textures, making it not white
@@ -119,7 +128,11 @@ public class Level {
 							textureMaze[k].enable();
 							textureMaze[k].bind();
 							//White background color for normal texture view
-							gl.glColor3f(255/255f, 255/255f, 255/255f);
+							if(prime){
+								alpha = 0.5f;
+							}
+							gl.glColor4f(255/255f, 255/255f, 255/255f,alpha);
+							prime = true;
 						}
 						
 

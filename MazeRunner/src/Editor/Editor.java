@@ -260,8 +260,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 				text[i] = "";
 			}
 		}
-		text[0] = "Wall"; text[3] = "Door"; text[4] = "Chest"; text[5] = "Food";
-		text[6] = "TorchN"; text[7] = "TorchE"; text[8] = "TorchS"; text[9] = "TorchW"; 
+		text[0] = "Wall"; text[3] = "Door"; text[4] = "Chest"; text[5] = "Coin";
+		text[6] = "TorchN"; text[7] = "TorchE"; text[8] = "TorchS"; text[9] = "TorchW"; text[10] = "Food"; text[11] = "Enemy";
 		text[25] = "LtoString"; text[26] = "Player"; text[27] = "Void"; text[28] = "Clear"; text[29] = "ClearAll";
 		
 		//Create the buttons on the left
@@ -657,6 +657,50 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			}
 			else{
 			    level.level[X][Y-1] *= 7;
+			}
+		}
+		
+		//Food draw button
+		else if (btn[10].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && 
+				level.level[X][Y-1] != 97 && level.check(X,Y-1,19) == false){
+			if(level.level[X][Y-1] == 0){
+			    level.level[X][Y-1] = 19;
+			}
+			else{
+			    level.level[X][Y-1] *= 19;
+			}
+		}
+		
+		//Enemy draw button
+		else if (btn[11].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && 
+				level.level[X][Y-1] != 97 && level.check(X,Y-1,23) == false){
+			if(level.level[X][Y-1] == 0){
+			    level.level[X][Y-1] = 23;
+			}
+			else{
+			    level.level[X][Y-1] *= 23;
+			}
+		}
+		
+		//Coin draw button
+		else if (btn[5].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && 
+				level.level[X][Y-1] != 97 && level.check(X,Y-1,29) == false){
+			if(level.level[X][Y-1] == 0){
+			    level.level[X][Y-1] = 29;
+			}
+			else{
+			    level.level[X][Y-1] *= 29;
+			}
+		}
+		
+		//Coin draw button
+		else if (btn[4].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && 
+				level.level[X][Y-1] != 97 && level.check(X,Y-1,31) == false){
+			if(level.level[X][Y-1] == 0){
+			    level.level[X][Y-1] = 31;
+			}
+			else{
+			    level.level[X][Y-1] *= 31;
 			}
 		}
 		
