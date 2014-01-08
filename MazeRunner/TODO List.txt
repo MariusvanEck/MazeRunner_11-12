@@ -1,59 +1,43 @@
-+ GLOBAL
-	- [TODO] Resource management (unload CPU if nothing changes)
-	- [DONE] Fix when the window is not focused, that the mouse robot stops setting the mouse to a specified point
-	- [DONE] Add glEnable(GL_CULL_FACE) and glCulllFace(GL_BACK); So there will be no backsides drawn 
-	- [DONE] Destroy all enemy's en maak de nieuwe enemy's aan
-	
-	+ File management
-		- [DONE] Set up a Database
-		- [inProgress] Store Levels, highscore, settings in database
-		- [DONE] Read the data from DataBase
++ File management
+	- [inProgress] Store Levels, highscore, settings in database
 
 + Models
 	+ Create different models
-		- [TODO] Enemy's
+		- [TODO] Enemy's als tijd over :P
 		- [TODO] Loot
-		- [InProgress] Textures
-	
-	+ Loader
-		- [DONE] Make a model loader
-		- [DONE] textures
-		- [DONE] lighting
-		- [DONE] Shaders
+		- [TODO] Traps
+		- [TODO] Stair
+		- [TODO] Torch
+		- [TODO] Weapons
+
++ HighScore
+	- [TODO] De tijd voor het voltooien van het level als score nemen
 
 + Loot
-	+ Food
-		- [TODO] create different kinds of food
 	+ Weapons
 		- [InProgress] Stick
 		- [TODO] Sword
 		- [TODO] Projectile weapon
 		- [TODO] More weapons
 		- [TODO] Models Load + render
-	+ Other
-		- [TODO] Do we want other kind of loot?
 
 + Menu
 	+Option Menu
 		- [TODO] Make a GUI to manipulate the settings
-		- [DONE] Pimp our menu
+		- [TODO] Moeilijkheidsgraad aanpassen
+		- [TODO] geluid aan of uit
 
-+ Level
-	+ Stair
-		- [DONE] Draw the stair
-		- [TODO] Create a stair model/texture
-		-
 + Creature
-	- [DONE] Make MAX_HP "protected double" instead of "public static final double"
-			 so it can be different per type of player/enemy
-	- [DONE] Give Creature a weapon slot (private Weapon weapon)
-	- [DONE] Give Creature a model
 	- [TODO] Fix that a creature can't walk through an other creature
-
-+ Sound
-	- [TODO] background music (in menu)
 	
 + Trap
 	- [TODO] maak een TrapController
 	+ Projectile
 		- [TODO] Model toevoegen
++ Editor
+	- [TODO] Voids boven stairs
+	- [TODO] textures moeten gefixed worden wanneer je op cancel klikt bij new, load, save
+	- [TODO] Spawns implementeren (loot ect)
+	- [TODO] Save naar dataBase (inc. naam)
+	- [TODO] meerde items in een vakje weergeen
+	
