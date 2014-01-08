@@ -41,3 +41,5 @@
 	- [TODO] Save naar dataBase (inc. naam)
 	- [TODO] meerde items in een vakje weergeen
 	
++ Levels
+	- Een aantal Maps maken
