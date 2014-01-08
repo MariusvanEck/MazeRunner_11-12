@@ -1,6 +1,6 @@
 + GLOBAL
 	- [TODO] Resource management (unload CPU if nothing changes)
-	- [TODO] Fix when the window is not focused, that the mouse robot stops setting the mouse to a specified point
+	- [DONE] Fix when the window is not focused, that the mouse robot stops setting the mouse to a specified point
 	- [DONE] Add glEnable(GL_CULL_FACE) and glCulllFace(GL_BACK); So there will be no backsides drawn 
 	- [DONE] Destroy all enemy's en maak de nieuwe enemy's aan
 	
@@ -13,7 +13,7 @@
 	+ Create different models
 		- [TODO] Enemy's
 		- [TODO] Loot
-		- [TODO] Textures
+		- [InProgress] Textures
 	
 	+ Loader
 		- [DONE] Make a model loader
