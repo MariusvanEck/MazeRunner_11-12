@@ -28,7 +28,7 @@ public abstract class Creature extends GameObject {
 	 * @param weapon			The weapon the creature has (null if no weapon)
 	 * @param modelFileLocation	The location of the model (.obj) file
 	 */
-	public Creature(GL gl,double x, double y, double z,int hitpoints,Weapon weapon,String modelFileLocation){
+	public Creature(GL gl,double x, double y, double z,int hitpoints,Weapon weapon,String modelFileLocation, String textureFileLocation){
 		super(x,y,z);
 		this.hitpoints = hitpoints;
 		
@@ -39,7 +39,7 @@ public abstract class Creature extends GameObject {
 		
 		// set the model
 		if(modelFileLocation != null) // if Creature has no model the string will be null
-			setTexturedModel(new TexturedModel(gl,new Model(modelFileLocation,0.75f)));
+			texturedModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f),textureFileLocation);
 	}
 	
 	

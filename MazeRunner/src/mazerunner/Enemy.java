@@ -37,11 +37,11 @@ public class Enemy extends Creature implements VisibleObject{
 	 * @param weapon			The weapon of the Enemy
 	 * @param modelFileLocation The location of the model file
 	 */
-	public Enemy(GL gl,int x, int y, int z, double horAngle, Weapon weapon, String modelFileLocation) {
+	public Enemy(GL gl,int x, int y, int z, double horAngle, Weapon weapon, String modelFileLocation, String textureFileLocation) {
 		super(gl,x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
 				y*Maze.SQUARE_SIZE, 
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
-				maxHP, weapon, modelFileLocation);
+				maxHP, weapon, modelFileLocation,textureFileLocation);
 		
 		setHorAngle(horAngle);
 		

@@ -4,6 +4,11 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.net.URL;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.BooleanControl;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.Mixer;
+
 public class Sound {
 
    private AudioClip clip;
@@ -57,6 +62,25 @@ public class Sound {
 	         soundThread.start();}
 	      catch(Throwable e){e.printStackTrace();}
  }
+   	
+   	/**
+   	 * mute/unmute sound;
+   	 */
+   	public static void setMute(boolean mute) {
+   		
+   		Mixer.Info[] infos = AudioSystem.getMixerInfo();
+   		for (Mixer.Info info: infos) {
+   		    Mixer mixer = AudioSystem.getMixer(info);
+   		    Line[] lines = mixer.getSourceLines();
+   		    
+   		    for(Line line : lines) {
+   		    	BooleanControl bc = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
+    			if (bc != null) {
+    			    bc.setValue(mute); // true to mute the line, false to unmute
+    			}
+   		    }
+   		}
+   	}
 }
 
 

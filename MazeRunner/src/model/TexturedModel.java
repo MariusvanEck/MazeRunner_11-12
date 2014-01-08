@@ -29,12 +29,12 @@ public class TexturedModel {
 	private Texture texture;
 	private  Model m;
 	
-	public TexturedModel(GL gl, Model model){
+	public TexturedModel(GL gl, Model model, String textureFileLocation){
 		this.m = model;
 		this.setUpVBOs(gl);
 		//this.setupShaders(gl);//
 		this.setUpLighting(gl);
-		this.loadTexture(gl);
+		this.loadTexture(gl, textureFileLocation);
 	}
 	
 	protected void finalize(GL gl) throws Throwable{
@@ -85,9 +85,12 @@ public class TexturedModel {
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0); // unbind the buffer
 	}
 	
-	private void loadTexture(GL gl){
+	private void loadTexture(GL gl, String textureFileLocation){
+		if (textureFileLocation == null)
+			return;
+		
 		try {
-			texture = TextureIO.newTexture(new File("models/Lambent_Male/Lambent_Male_D.tga"), true);
+			texture = TextureIO.newTexture(new File(textureFileLocation), true);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -201,26 +204,30 @@ public class TexturedModel {
 			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboNormalHandle[0]);
 			gl.glNormalPointer(GL.GL_FLOAT, 0, 0L);
 			
-			texture.enable();
-			gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getTextureObject());
-			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboTexCoordHandle[0]);//
-			gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, 0);//
+			if(texture != null){
+				texture.enable();
+				gl.glBindTexture(GL.GL_TEXTURE_2D, texture.getTextureObject());
+				gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboTexCoordHandle[0]);//
+				gl.glTexCoordPointer(2, GL.GL_FLOAT, 0, 0);//
+				gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+			}
 			
 			gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 			gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
-			gl.glEnableClientState(GL.GL_TEXTURE_COORD_ARRAY);
 		
 //			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10f);//
 			gl.glDrawArrays(GL.GL_TRIANGLES, 0, m.faces.size()*3);
 			
-			
 			gl.glDisableClientState(GL.GL_VERTEX_ARRAY);
 			gl.glDisableClientState(GL.GL_NORMAL_ARRAY);
-			gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+			
+			if(texture != null){
+				gl.glDisableClientState(GL.GL_TEXTURE_COORD_ARRAY);
+				texture.disable();
+			}
+			
 			gl.glBindBuffer(GL.GL_ARRAY_BUFFER,0); // unbind the buffer
 			gl.glUseProgram(0); // unbind the program
-			
-			texture.disable();
 			
 		gl.glPopMatrix();	
 	}

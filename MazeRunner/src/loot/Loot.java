@@ -22,7 +22,7 @@ public abstract class Loot extends GameObject implements VisibleObject {
 	public Loot(GL gl,double x,double y,double z,String modelFileLocation){
 		super(x, y, z);
 		if(modelFileLocation != null)
-			model = new TexturedModel(gl,new Model(modelFileLocation,.25f));
+			model = new TexturedModel(gl,new Model(modelFileLocation,.25f),null);
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public abstract class Loot extends GameObject implements VisibleObject {
 	public Loot(GL gl,String modelFileLocation) {
 		super();
 		if(modelFileLocation != null)
-			model = new TexturedModel(gl,new Model(modelFileLocation,.25f));
+			model = new TexturedModel(gl,new Model(modelFileLocation,.25f),null);
 	}
 	
 	public void render(GL gl,double angle){
