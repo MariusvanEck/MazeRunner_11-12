@@ -11,6 +11,7 @@ import mazerunner.Creature;
 public class Stick extends Weapon{
 
 	private final static String modelFileLocation = null; 		// specify the model file here
+	private final static String textureFileLocation = null; 		// specify the model file here
 	private final static Sound hit = new Sound("stick.wav");	// the hitting sound
 	
 	private int downTime = 1000;							// the weapon down time in ms
@@ -25,7 +26,7 @@ public class Stick extends Weapon{
 	 * @param z			z-coordinate
 	 */
 	public Stick(GL gl,double x, double y, double z){
-		super(gl,x, y, z, modelFileLocation);
+		super(gl,x, y, z, modelFileLocation,textureFileLocation);
 	}
 	
 	/**

@@ -17,8 +17,8 @@ public abstract class Weapon extends Loot {
 	 * @param equipped				Is this weapon equipped by a creature
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Weapon(GL gl,double x, double y, double z, String modelFileLocation){
-		super(gl,x, y, z, modelFileLocation);
+	public Weapon(GL gl,double x, double y, double z, String modelFileLocation, String textureFileLocation){
+		super(gl,x, y, z, modelFileLocation, textureFileLocation);
 	}
 	
 	/**

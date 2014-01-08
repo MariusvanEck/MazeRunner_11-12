@@ -19,10 +19,10 @@ public abstract class Loot extends GameObject implements VisibleObject {
 	 * @param z						The z-coordinate of the location
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Loot(GL gl,double x,double y,double z,String modelFileLocation){
+	public Loot(GL gl,double x,double y,double z,String modelFileLocation,String textureFileLocation){
 		super(x, y, z);
 		if(modelFileLocation != null)
-			model = new TexturedModel(gl,new Model(modelFileLocation,.25f),null);
+			model = new TexturedModel(gl,new Model(modelFileLocation,.25f), textureFileLocation);
 	}
 	
 	/**

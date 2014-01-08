@@ -17,8 +17,8 @@ public class Food extends Loot {
 	 * @param hpIncrease 			The HP that will be regenerated
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Food(GL gl,double x, double y, double z, int hpIncrease, String modelFileLocation){
-		super(gl,x, y, z, modelFileLocation);
+	public Food(GL gl,double x, double y, double z, int hpIncrease, String modelFileLocation,String textureFileLocation){
+		super(gl,x, y, z, modelFileLocation, modelFileLocation);
 		this.hpIncrease = hpIncrease;
 	}
 	

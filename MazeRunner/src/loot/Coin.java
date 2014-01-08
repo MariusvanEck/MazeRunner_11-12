@@ -1,6 +1,7 @@
 package loot;
 
 import javax.media.opengl.GL;
+
 import com.sun.opengl.util.GLUT;
 
 public class Coin extends Loot {
@@ -13,8 +14,8 @@ public class Coin extends Loot {
 	 * @param hpIncrease 			The HP that will be regenerated
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Coin(GL gl,double x, double y, double z, String modelFileLocation){
-		super(gl,x, y, z, modelFileLocation);
+	public Coin(GL gl,double x, double y, double z, String modelFileLocation,String textureFileLocation){
+		super(gl,x, y, z, modelFileLocation, textureFileLocation);
 	}
 	
 	/**
