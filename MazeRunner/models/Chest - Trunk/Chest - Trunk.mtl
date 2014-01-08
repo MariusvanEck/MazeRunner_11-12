@@ -1,0 +1,107 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+newmtl trunkMtl01
+Ka  0.3 0.3 0.3
+Kd  0.3 0.3 0.3
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  2.0
+illum 2
+#
+newmtl trunkMtl02
+Ka  0.7 0.7 0.7
+Kd  0.7 0.7 0.7
+Ks  0.6 0.6 0.6
+d  1.0
+Ns  0.0
+illum 2
+#
+newmtl trunkMtl03
+Ka  0.7 0.7 0.7
+Kd  0.7 0.7 0.7
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  8.9
+illum 2
+#
+newmtl trunkMtl04
+Ka  1.0 0.9 0.4
+Kd  1.0 0.9 0.4
+Ks  0.3 0.3 0.3
+d  1.0
+Ns  2.0
+illum 2
+#
+newmtl trunkMtl05
+Ka  0.7 0.7 0.7
+Kd  0.7 0.7 0.7
+Ks  0.6 0.6 0.6
+d  1.0
+Ns  0.0
+illum 2
+#
+newmtl trunkMtl06
+Ka  0.7 0.7 0.7
+Kd  0.7 0.7 0.7
+Ks  0.6 0.6 0.6
+d  1.0
+Ns  0.0
+illum 2
+#
+newmtl trunkMtl07
+Ka  1.0 0.9 0.4
+Kd  1.0 0.9 0.4
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  2.0
+illum 2
+#
+newmtl trunkMtl08
+Ka  0.8 0.0 0.0
+Kd  0.8 0.0 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  8.9
+illum 2
+#
+newmtl trunkMtl09
+Ka  1.0 0.9 0.3
+Kd  1.0 0.9 0.3
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  2.5
+illum 2
+#
+newmtl trunkMtl10
+Ka  1.0 0.9 0.4
+Kd  1.0 0.9 0.4
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  2.0
+illum 2
+#
+newmtl trunkMtl11
+Ka  1.0 0.9 0.4
+Kd  1.0 0.9 0.4
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  2.0
+illum 2
+#
+newmtl trunkMtl12
+Ka  0.7 0.7 0.7
+Kd  0.7 0.7 0.7
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  8.9
+illum 2
+#
+newmtl trunkMtl13
+Ka  1.0 0.9 0.4
+Kd  1.0 0.9 0.4
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  2.0
+illum 2
+#
+# EOF
