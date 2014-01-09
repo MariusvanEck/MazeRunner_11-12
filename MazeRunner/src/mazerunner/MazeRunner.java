@@ -135,21 +135,22 @@ public class MazeRunner {
 	 * Checks for a player spawn location and sets it
 	 */
 	private boolean setPlayerSpawn(GL gl) {
-		boolean foundSpawn = false;
-		
 		for (int i=0; i<maze.getLevelSize(); i++) {
 			int[][] level = maze.getLevel(i);
 			
 			for (int j=0; j<maze.getMazeSize(); j++) {
-				for (int k=0; k<maze.getMazeSize(); k++) {
+				for (int k=0; k<maze.getMazeSize(); k++){
 					if (level[j][k] == 97) {
 						spawnLocationX = j;
 						spawnLocationZ = k;
 						maze.changeLevel(i, gl);
-						foundSpawn = true;
-						break;}}}}
+						return true;
+					}
+				}
+			}
+		}
 		
-		return foundSpawn;
+		return false;
 	}
 
 	/**
