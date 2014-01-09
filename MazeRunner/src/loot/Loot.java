@@ -25,6 +25,12 @@ public abstract class Loot extends GameObject implements VisibleObject {
 			model = new TexturedModel(gl,new Model(modelFileLocation,.25f), textureFileLocation);
 	}
 	
+	//wielding loot
+	public Loot(GL gl,String modelFileLocation,String textureFileLocation){
+		if(modelFileLocation != null)
+			model = new TexturedModel(gl,new Model(modelFileLocation,.25f), textureFileLocation);
+	}
+	
 	/**
 	 * Loot constructor without location (associated with creature)
 	 */
@@ -32,6 +38,7 @@ public abstract class Loot extends GameObject implements VisibleObject {
 		super();
 		if(modelFileLocation != null)
 			model = new TexturedModel(gl,new Model(modelFileLocation,.25f),null);
+			System.out.println("model is niet null");
 	}
 	
 	public void render(GL gl,double angle){

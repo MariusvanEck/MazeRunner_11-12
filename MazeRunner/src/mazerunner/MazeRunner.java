@@ -13,6 +13,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import loot.LootController;
+import loot.Sword;
+import loot.Weapon;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
@@ -38,6 +40,7 @@ public class MazeRunner {
 	
 	private Player player;													// the player
 	private EnemyAI enemyAI;												// the enemyAI with the enemies
+	private Weapon weapon;
 	private LootController lootController;									// the loot
 	private Camera camera;													// the camera
 	private Maze maze; 														// the maze
@@ -101,8 +104,7 @@ public class MazeRunner {
 							spawnLocationX * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x coordinate
 							Maze.SQUARE_SIZE / 2,										// y coordinate
 							spawnLocationZ * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// z coordinate
-							90, 0, 100,													
-							null);
+							90, 0, 100, weapon);
 		
 		// Initialise the loot
 		lootController = new LootController(gl, player, maze);
@@ -115,6 +117,12 @@ public class MazeRunner {
 		// set up a camera
 		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
 				             player.getHorAngle(), player.getVerAngle() );
+		
+		weapon = new Sword(gl, "models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword.obj",
+				"models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword_D.tga",
+				player.getLocationX(),player.getLocationY(),player.getLocationZ(), player.getHorAngle());
+	
+		visibleObjects.add(weapon);
 		
 		// set player control
 		player.setControl(input);
@@ -269,6 +277,8 @@ public class MazeRunner {
 		
 		// Set camera according to the players position
 		updateCamera();
+		
+		updateWeaponLocation();
 	}
 	
 	/**
@@ -351,6 +361,17 @@ public class MazeRunner {
 		camera.setHorAngle( player.getHorAngle() );
 		camera.setVerAngle( player.getVerAngle() );
 		camera.calculateVRP();
+	}
+	
+	/**
+	 * updateWeaponLocation() updates the weapon location so that the player holds the weapon in his hands.
+	 */
+	private void updateWeaponLocation(){	
+		weapon.setWieldX(player.getLocationX()); //Math.cos(Math.abs(player.getHorAngle()))
+		weapon.setWieldY(player.getLocationY()-.25);
+		weapon.setWieldZ(player.getLocationZ());  //sin
+		weapon.setAngleY(player.getHorAngle()-180);
+		//TODO implement angles and strafe-positioning
 	}
 	
 	
