@@ -10,6 +10,7 @@ public class Projectile {
 	private char direction;
 	private double speed;
 	private TexturedModel model;
+	private double angle;
 	
 	private static String modelFileLocation = "models/box.obj";
 	private static String textureFileLocation = null;
@@ -24,6 +25,7 @@ public class Projectile {
 			this.direction = 0;
 		this.speed = speed;
 		this.model = new TexturedModel(gl,new Model(modelFileLocation,0.3f),textureFileLocation);
+		this.angle = 0;
 	}
 	
 	public void update(int deltaTime){
@@ -47,6 +49,7 @@ public class Projectile {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.angle = 0;
 	}
 	
 	public double getX(){return x;}
@@ -55,7 +58,8 @@ public class Projectile {
 	
 	
 	public void display(GL gl){
-		model.render(gl, 0, x, y, z);
+		
+		model.render(gl, angle+=5, x, y, z);
 	}
 	
 }
