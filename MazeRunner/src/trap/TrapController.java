@@ -12,9 +12,6 @@ public class TrapController implements VisibleObject {
 		this.list = new ArrayList<Trap>();
 	}
 	
-	
-	
-	
 	public void addTrap(Trap trap){
 		list.add(trap);
 	}

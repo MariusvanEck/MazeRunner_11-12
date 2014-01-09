@@ -18,7 +18,7 @@ public class Projectile {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		if(direction == 'N' || direction == 'O' || direction == 'S' || direction == 'W')
+		if(direction == 'N' || direction == 'E' || direction == 'S' || direction == 'W')
 			this.direction = direction;
 		else
 			this.direction = 0;
@@ -31,7 +31,7 @@ public class Projectile {
 			case 'N':
 				z -= speed*deltaTime;
 				break;
-			case 'O':
+			case 'E':
 				x += speed*deltaTime;
 				break;
 			case 'S':
