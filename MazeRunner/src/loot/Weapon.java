@@ -3,8 +3,9 @@ package loot;
 import javax.media.opengl.GL;
 
 import mazerunner.Creature;
+import mazerunner.VisibleObject;
 
-public abstract class Weapon extends Loot {
+public abstract class Weapon extends Loot implements VisibleObject{
 	
 	private Creature creature;
 	

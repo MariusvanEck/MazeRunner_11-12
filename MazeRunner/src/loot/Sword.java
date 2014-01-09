@@ -17,9 +17,10 @@ public class Sword extends Weapon{
 	public void display(GL gl) {
 		model.render(gl, 0, 13, 2, 13);
 	}
-	
+
 	@Override
 	public void doDamage(Creature creature) {
+		// TODO Auto-generated method stub	
 	}
 
 }
