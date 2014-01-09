@@ -367,9 +367,13 @@ public class MazeRunner {
 	 * updateWeaponLocation() updates the weapon location so that the player holds the weapon in his hands.
 	 */
 	private void updateWeaponLocation(){	
-		weapon.setWieldX(player.getLocationX()); //Math.cos(Math.abs(player.getHorAngle()))
+		weapon.setWieldX(player.getLocationX()+Math.cos(Math.abs(player.getHorAngle()*(Math.PI/180)))); //Math.cos(Math.abs(player.getHorAngle()))
+		//weapon.setWieldX(player.getLocationX()+1);
 		weapon.setWieldY(player.getLocationY()-.25);
-		weapon.setWieldZ(player.getLocationZ());  //sin
+		weapon.setWieldZ(player.getLocationZ()+Math.sin(Math.abs(player.getHorAngle()*(Math.PI/180))));  //sin
+		//weapon.setWieldZ(player.getLocationZ()+1);
+		System.out.println(player.getHorAngle());
+		System.out.println(Math.cos(player.getHorAngle()*Math.PI/180));
 		weapon.setAngleY(player.getHorAngle()-180);
 		//TODO implement angles and strafe-positioning
 	}
