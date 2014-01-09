@@ -16,10 +16,11 @@
 + Loot
 	+ Weapons
 		- [InProgress] Stick
-		- [TODO] Sword
+		- [DONE] Sword
 		- [TODO] Projectile weapon
 		- [TODO] More weapons
-		- [TODO] Models Load + render
+		- [DONE] Models Load + render
+		- [TODO} Weapon wielding
 
 + Menu
 	+Option Menu
@@ -39,7 +40,7 @@
 	- [TODO] textures moeten gefixed worden wanneer je op cancel klikt bij new, load, save
 	- [TODO] Spawns implementeren (loot ect)
 	- [TODO] Save naar dataBase (inc. naam)
-	- [TODO] meerde items in een vakje weergeen
+	- [TODO] meerdere items in een vakje weergeen
 	
 + Levels
 	- Een aantal Maps maken
