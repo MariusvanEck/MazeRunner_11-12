@@ -9,8 +9,8 @@ public class ProjectileTrap extends Trap {
 	private boolean triggered;
 	private Maze maze;
 	
-	private static String modelFileLocation = "models/box.obj";
-	private static String textureFileLocation = null;
+	private static String modelFileLocation = "models/trap/trapbase.obj";
+	private static String textureFileLocation = "models/textures/stone2.jpg";
 	
 	/**
 	 * @param gl			GL for the rendering
@@ -45,7 +45,7 @@ public class ProjectileTrap extends Trap {
 	}
 	@Override
 	public void display(GL gl) {
-		model.render(gl, 0, locationX, locationY, locationZ);
+		model.render(gl, 90, locationX, locationY, locationZ);
 		
 		projectile.display(gl);
 	}

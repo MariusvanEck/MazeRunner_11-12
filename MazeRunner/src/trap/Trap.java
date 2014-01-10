@@ -20,7 +20,7 @@ public abstract class Trap extends GameObject{
 		this.activationX = activationX;
 		this.activationY = activationY;
 		this.activationZ = activationZ;
-		this.model = new TexturedModel(gl,new Model(modelFileLocation,.5f),textureFileLocation);
+		this.model = new TexturedModel(gl,new Model(modelFileLocation, 0.05f),textureFileLocation);
 	}
 	
 	public abstract void display(GL gl);

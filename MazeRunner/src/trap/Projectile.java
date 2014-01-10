@@ -12,8 +12,8 @@ public class Projectile {
 	private TexturedModel model;
 	private double angle;
 	
-	private static String modelFileLocation = "models/box.obj";
-	private static String textureFileLocation = null;
+	private static String modelFileLocation = "models/trap/projectile.obj";
+	private static String textureFileLocation = "models/textures/stone1.jpg";
 	
 	public Projectile(GL gl,double x,double y,double z,char direction,double speed){
 		this.x = x;
@@ -24,7 +24,7 @@ public class Projectile {
 		else
 			this.direction = 0;
 		this.speed = speed;
-		this.model = new TexturedModel(gl,new Model(modelFileLocation,0.3f),textureFileLocation);
+		this.model = new TexturedModel(gl,new Model(modelFileLocation,0.025f),textureFileLocation);
 		this.angle = 0;
 	}
 	

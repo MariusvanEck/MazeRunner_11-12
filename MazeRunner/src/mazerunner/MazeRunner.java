@@ -115,9 +115,9 @@ public class MazeRunner {
 		
 		// Initialise the Traps
 		trapController = new TrapController();
-		trapController.addTrap(new ProjectileTrap(gl,player,maze,spawnLocationX * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2,Maze.SQUARE_SIZE / 2,
+		trapController.addTrap(new ProjectileTrap(gl,player,maze,spawnLocationX * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2,Maze.SQUARE_SIZE / 4,
 													spawnLocationZ * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2,spawnLocationX * Maze.SQUARE_SIZE,0,
-													spawnLocationZ * Maze.SQUARE_SIZE,'N',2));
+													spawnLocationZ * Maze.SQUARE_SIZE,'N',0.7));
 		visibleObjects.add(trapController);
 		
 		// initialise enemies and add
