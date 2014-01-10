@@ -5,12 +5,10 @@ import java.awt.GraphicsEnvironment;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
-import java.io.File;
 
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureIO;
 
 public class Level {
 	
@@ -19,8 +17,8 @@ public class Level {
 	private int y;
 	protected float buttonSize;
 	protected int lineWidth = 2;
-	private Texture[] textureMaze;
-	private int nTiles = 98; //this is the number of different tiles currently present in the maze
+	private static Texture[] textureMaze;
+	private int nTiles = 198; //this is the number of different tiles currently present in the maze
 	
 
 
@@ -48,29 +46,15 @@ public class Level {
 				}
 			}
 		}
+
 		
-		
-		//Loading all the textures in the maze
-		textureMaze = new Texture[nTiles];
-		//!!
 		try {
 			//textureMaze[0] = TextureIO.newTexture(new File("img\\Floor.png"), false); // do not use (yet) because of transparency issues
 			//only implement if there is time: putting textures over the floor texture
 			
 			// TODO: FIX it opgenGL current error iets ding Fix it Kevin!
 			
-			textureMaze[1] = TextureIO.newTexture(new File("img\\Wall.png"), false);
-			textureMaze[2] = TextureIO.newTexture(new File("img\\TorchN.png"), false);
-			textureMaze[3] = TextureIO.newTexture(new File("img\\TorchE.png"), false);
-			textureMaze[5] = TextureIO.newTexture(new File("img\\TorchS.png"), false);
-			textureMaze[7] = TextureIO.newTexture(new File("img\\TorchW.png"), false);
-			textureMaze[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
-			textureMaze[13] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
-			textureMaze[19] = TextureIO.newTexture(new File("img\\Food.png"), false);
-			textureMaze[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
-			textureMaze[29] = TextureIO.newTexture(new File("img\\Coin.png"), false);
-			textureMaze[31] = TextureIO.newTexture(new File("img\\Chest.png"), false);
-			textureMaze[97] = TextureIO.newTexture(new File("img\\Player.png"), false);
+
 			
 			
 		} 
@@ -85,7 +69,6 @@ public class Level {
 	public void draw(GL gl, float startx, float starty, float width, float height){
 				
 		buttonSize = height/y;
-		
 		for(int i = 0; i < x; i++){
 			for(int j = 0; j < y; j++){
 				alpha = 1;
@@ -198,7 +181,8 @@ public class Level {
 				}
 			}
 		}
-		
+	
+	
 		
 		//That yellow square, work in progress
 		PointerInfo a = MouseInfo.getPointerInfo();
@@ -363,5 +347,10 @@ public class Level {
 
 	public static void updateMazeX(int mazeX) {
 		Level.mazeX = mazeX;
+	}
+
+	
+	public static void setTextureMaze(Texture[] textureMaze) {
+		Level.textureMaze = textureMaze;
 	}
 }

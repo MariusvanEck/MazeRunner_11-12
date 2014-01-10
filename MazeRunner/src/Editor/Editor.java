@@ -84,6 +84,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private Texture[] textureLeft;
 	private Texture[] textureRight;
 	private Texture[] textureMaze;
+	
+	private Texture[] levelTextures;
 		
 	public Editor() {
 		super("Level Editor Beta v1.0");
@@ -104,10 +106,12 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	}
 
 	public void drawLevel(GL gl){
-		level.draw(gl, mazeL, 0, mazeR-mazeL, screenHeight);
-	   	if (mazeX > 19){
+		if (mazeX > 19){
 	   		level.lineWidth = 1;
 	   	}
+
+		
+		level.draw(gl, mazeL, 0, mazeR-mazeL, screenHeight);
 	}
 	
 	//Button definition
@@ -301,6 +305,25 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	   	btnr[3].setSelected(true);
 	   	//set default to walldraw
 	   	btn[0].setSelected(true);
+	   	
+	   	//load the textures
+	   	try {
+	   		levelTextures = new Texture[100];
+			levelTextures[1] = TextureIO.newTexture(new File("img\\Wall.png"), false);
+			levelTextures[2] = TextureIO.newTexture(new File("img\\TorchN.png"), false);
+			levelTextures[3] = TextureIO.newTexture(new File("img\\TorchE.png"), false);
+			levelTextures[5] = TextureIO.newTexture(new File("img\\TorchS.png"), false);
+			levelTextures[7] = TextureIO.newTexture(new File("img\\TorchW.png"), false);
+			levelTextures[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
+			levelTextures[13] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			levelTextures[19] = TextureIO.newTexture(new File("img\\Food.png"), false);
+			levelTextures[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
+			levelTextures[29] = TextureIO.newTexture(new File("img\\Coin.png"), false);
+			levelTextures[31] = TextureIO.newTexture(new File("img\\Chest.png"), false);
+			levelTextures[97] = TextureIO.newTexture(new File("img\\Player.png"), false);}
+	   	catch(Exception e) {e.printStackTrace();}
+	   	
+	   	Level.setTextureMaze(levelTextures);
 	}
 	
 	public boolean saveToDataBase(String name,DataBase dataBase){
@@ -427,8 +450,10 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	   		}
 	   	}
 		
+		// new maze
 		if (k == 0){
 			toFront();
+			setSize(1,1);
 			frame.setAlwaysOnTop(true);
 		    frame.setSize(250, 120);
 		    frame.setVisible(true);
@@ -455,6 +480,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		
 		//Saving a file
 		else if (k == 1){
+			setSize(1,1);
             System.out.println("Starting Save");
             chooser.setFileFilter(filter);
             chooser.setCurrentDirectory(file);
@@ -490,20 +516,23 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                     int[][] writeLevel = levels[n].getLevel();
                     omaze.writeObject(writeLevel);
                 }
-                mirror();
                 omaze.flush();
                 omaze.close();
          
                }catch(Exception ex){
                    ex.printStackTrace();
                }
+
+            mirror();
             
             System.out.println("Save Completed!");
             btnr[1].setSelected(false);
+            setSize(screenWidth,screenHeight);
         }
         
         //Loading a file
         else if (k == 2){
+
         	toFront();
             System.out.println("Start Loading...");
             chooser.setFileFilter(filter);
@@ -526,7 +555,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                 int x = firstLevel.length;
                 
                 mazeX = x;
-            
+                Level.updateMazeX(x);
                 level = new Level(mazeX,mazeX);
                 levels = new Level[nlevels];
                 
@@ -571,6 +600,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		if(k == 9){
 			System.out.println(level.toString());
 			new GameStateManager();
+			Level.updateMazeX(20);
 			dispose();
 		}
 		
@@ -748,7 +778,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("Button Pressed");
-        
+        setSize(screenWidth,screenHeight);
         mazeX = 0;
         nlevels = 0;
         
