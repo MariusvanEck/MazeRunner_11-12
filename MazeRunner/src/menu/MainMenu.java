@@ -251,13 +251,16 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			
 		case PLAY:
 			switch(playMenu.getButton(x, y)) {
+			case PlayMenu.BACK: 	menuState = MenuState.MAIN; break;
+			case PlayMenu.CONTINUE: 
+				if (GameStateManager.mazeRunnerStarted) {
+					input.setGameState(GameState.INGAME); break;
+				}
 			case PlayMenu.NEW:		
 				input.setGameState(GameState.INGAME); 
 				input.setNewGame(true);
 				menuState = MenuState.MAIN;
-				break;
-			case PlayMenu.CONTINUE: input.setGameState(GameState.INGAME);
-			case PlayMenu.BACK: 	menuState = MenuState.MAIN; break;}
+				break;}
 			break;
 			
 		case QUIT:

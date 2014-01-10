@@ -47,6 +47,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * **********************************************
 	 */
 
+	public static boolean mazeRunnerStarted	= false;				// boolean to check if mazeRunner is available
 	public static int screenWidth = 800, screenHeight = 500;		// screenSize
 	private GLCanvas canvas;										// canvas for drawing
 	private GameState gameState;									// current GameState
@@ -308,6 +309,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 		
 		// setup new game if required
 		if (input.isNewGame()) {
+			mazeRunnerStarted = true;
 			String mazeName = Maze.selectMaze(this);
 			
 			if (mazeName != null) {

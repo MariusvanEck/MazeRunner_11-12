@@ -11,6 +11,8 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
 
+import menu.OptionsMenu;
+
 public class Sound {
 
    private AudioClip clip;
@@ -34,8 +36,9 @@ public class Sound {
    			soundThread = 	new Thread(){
         	 				public void run(){clip.play();}
            					};
-         
-           	soundThread.start();}
+           					
+           	soundThread.start();
+           	setVolume();}
    		catch(Throwable e){e.printStackTrace();}
    	}
    
@@ -47,8 +50,9 @@ public class Sound {
 	         soundThread = 	new Thread(){
 	        	 			public void run(){clip.loop();}
 	         				};
-	         				
-	         soundThread.start();}
+	         
+	         soundThread.start();
+	         setVolume();}
 	      catch(Throwable e){e.printStackTrace();}
    }
    	
@@ -87,6 +91,13 @@ public class Sound {
    	}
    	
    	/**
+   	 * set the volume to the value in optionsmenu
+   	 */
+   	public static void setVolume() {
+   		Sound.setVolume(OptionsMenu.getVolume());
+   	}
+   	
+   	/**
    	 * mute/unmute sound;
    	 */
    	public static void setMute(boolean mute) {
@@ -103,6 +114,25 @@ public class Sound {
     			}
    		    }
    		}
+   	}
+
+   	public void printLinesAndControls() {
+
+   		Mixer.Info[] infos = AudioSystem.getMixerInfo();
+   		for (Mixer.Info info: infos) {
+   		    Mixer mixer = AudioSystem.getMixer(info);
+   		    Line[] lines = mixer.getSourceLines();
+   		    
+   		    for(Line line : lines) {
+   		    	System.out.println(line);
+   		    	Control[] controls = line.getControls();
+   		    	for (Control c : controls) {
+   		    		System.out.println(c);
+   		    	}
+   		    }
+   		}
+	    	
+	    	
    	}
 }
 

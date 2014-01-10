@@ -89,4 +89,8 @@ public class Slider extends MenuObject{
 	public void setFraction(float fraction) {
 		this.fraction = fraction;
 	}
+	
+	public float getFraction() {
+		return fraction;
+	}
 }
