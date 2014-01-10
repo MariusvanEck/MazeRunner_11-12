@@ -6,6 +6,8 @@ import java.net.URL;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.BooleanControl;
+import javax.sound.sampled.Control;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
 
@@ -62,6 +64,27 @@ public class Sound {
 	         soundThread.start();}
 	      catch(Throwable e){e.printStackTrace();}
  }
+   	
+   	/**
+   	 * set the volume for all sounds
+   	 */
+   	public static void setVolume(float volume) {
+   		
+   		Mixer.Info[] infos = AudioSystem.getMixerInfo();
+   		for (Mixer.Info info: infos) {
+   		    Mixer mixer = AudioSystem.getMixer(info);
+   		    Line[] lines = mixer.getSourceLines();
+   		    
+   		    for(Line line : lines) {
+   		    	
+   		    	if (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+	   		    	FloatControl fc = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+	    			if (fc != null) {
+	    			    fc.setValue(-20 + volume*(20));
+	    			}}
+   		    }
+   		}
+   	}
    	
    	/**
    	 * mute/unmute sound;

@@ -1,5 +1,7 @@
 package menu;
 
+import gamestate.Sound;
+
 import java.io.File;
 
 import javax.media.opengl.GL;
@@ -9,11 +11,13 @@ import com.sun.opengl.util.texture.TextureIO;
 
 public class OptionsMenu extends MenuObject{
 	
-	private Button buttons[];
-	
+	private Button[] buttons;
+	private Slider[] sliders;
 	public static final byte BACK = 0;
+	public static final byte VOLUME = 1;
 	
 	private Texture[] textures;
+	private Texture[] sliderTextures;
 	
 	/**
 	 * Constructor creates menu objects
@@ -22,16 +26,21 @@ public class OptionsMenu extends MenuObject{
 		super(minX,maxX,minY,maxY);
 		
 		textures = new Texture[1];
-		
+		sliderTextures = new Texture[3];
 		loadTextures();
 		
 		buttons = new Button[1];
+		sliders = new Slider[1];
 		buttons[0] = new Button(minX,maxX,minY,minY+(maxY-minY)/3, textures[0]);		//Back
+		sliders[0] = new Slider(minX, maxX, minY + 2*(maxY-minY)/3, maxY, sliderTextures);
 	}
 	
 	public void loadTextures(){
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures\\back.png"), false);
+			sliderTextures[0] = TextureIO.newTexture(new File("textures\\slider1.png"), false);
+			sliderTextures[1] = TextureIO.newTexture(new File("textures\\slider2.png"), false);
+			sliderTextures[2] = TextureIO.newTexture(new File("textures\\volume.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -45,6 +54,8 @@ public class OptionsMenu extends MenuObject{
 	public int getButton(int x,int y){
 		if(buttons[0].minX < x && x < buttons[0].maxX && buttons[0].minY < y && y < buttons[0].maxY)
 			return BACK;
+		else if (sliders[0].minX < x && x < sliders[0].maxX && sliders[0].minY < y && y < sliders[0].minY + (sliders[0].maxY - sliders[0].minY)/2)
+			return VOLUME;
 		return -1;
 	}
 	
@@ -54,7 +65,8 @@ public class OptionsMenu extends MenuObject{
 		this.minY = minY;
 		this.maxY = maxY;
 		
-		buttons[0].update(minX,maxX,minY,minY+(maxY-minY)/3);
+		buttons[0].update(minX, maxX, minY, minY+(maxY-minY)/3);
+		sliders[0].update(minX, maxX, minY + 2*(maxY-minY)/3, maxY);
 	}
 	
 	/**
@@ -63,6 +75,8 @@ public class OptionsMenu extends MenuObject{
 	public void display(GL gl) {		
 		for(int i=0; i<buttons.length; i++)
 			buttons[i].display(gl);
+		for(int i=0; i<sliders.length; i++)
+			sliders[i].display(gl);	
 	}
 	
 	/**
@@ -77,5 +91,17 @@ public class OptionsMenu extends MenuObject{
 		// set selected button to true
 		switch(getButton(x,y)){
 		case BACK: 		buttons[BACK].setSelected(true);		break;}
+	}
+
+	/**
+	 * This method sets the volume
+	 */
+	public void setVolume(int x) {
+		float volumeFraction = ((float) (x - sliders[0].minX)) / ((float) (sliders[0].maxX - sliders[0].minX));
+		
+		System.out.println(volumeFraction);
+		
+		Sound.setVolume(volumeFraction);
+		sliders[0].setFraction(volumeFraction);
 	}
 }

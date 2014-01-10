@@ -11,9 +11,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 
 import javax.media.opengl.GLCanvas;
 
@@ -183,6 +180,7 @@ public class UserInput extends Control
 		// to menu
 		case KeyEvent.VK_ESCAPE: 	gameState = GameState.MENU;		break;}
 	}
+	
 	@Override
 	public void focusLost(FocusEvent e){
 		if(gameState == GameState.INGAME)
