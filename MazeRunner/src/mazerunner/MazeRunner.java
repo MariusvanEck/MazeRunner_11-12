@@ -12,6 +12,8 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import trap.ProjectileTrap;
+import trap.TrapController;
 import loot.LootController;
 import loot.Sword;
 import loot.Weapon;
@@ -42,6 +44,7 @@ public class MazeRunner {
 	private EnemyAI enemyAI;												// the enemyAI with the enemies
 	private Weapon weapon;
 	private LootController lootController;									// the loot
+	private TrapController trapController;									// the traps
 	private Camera camera;													// the camera
 	private Maze maze; 														// the maze
 	
@@ -110,6 +113,13 @@ public class MazeRunner {
 		lootController = new LootController(gl, player, maze);
 		visibleObjects.add(lootController);
 		
+		// Initialise the Traps
+		trapController = new TrapController();
+		trapController.addTrap(new ProjectileTrap(gl,player,maze,spawnLocationX * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2,Maze.SQUARE_SIZE / 2,
+													spawnLocationZ * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2,spawnLocationX * Maze.SQUARE_SIZE,0,
+													spawnLocationZ * Maze.SQUARE_SIZE,'N',2));
+		visibleObjects.add(trapController);
+		
 		// initialise enemies and add
 		enemyAI = new EnemyAI(gl, player, maze);
 		visibleObjects.add(enemyAI);
@@ -135,21 +145,22 @@ public class MazeRunner {
 	 * Checks for a player spawn location and sets it
 	 */
 	private boolean setPlayerSpawn(GL gl) {
-		boolean foundSpawn = false;
-		
 		for (int i=0; i<maze.getLevelSize(); i++) {
 			int[][] level = maze.getLevel(i);
 			
 			for (int j=0; j<maze.getMazeSize(); j++) {
-				for (int k=0; k<maze.getMazeSize(); k++) {
+				for (int k=0; k<maze.getMazeSize(); k++){
 					if (level[j][k] == 97) {
 						spawnLocationX = j;
 						spawnLocationZ = k;
 						maze.changeLevel(i, gl);
-						foundSpawn = true;
-						break;}}}}
+						return true;
+					}
+				}
+			}
+		}
 		
-		return foundSpawn;
+		return false;
 	}
 
 	/**
@@ -292,6 +303,9 @@ public class MazeRunner {
 		
 		// Update the enemies
 		updateEnemyMovement(deltaTime);
+		
+		//update traps
+		trapController.update(deltaTime);
 	}
 	
 	/**

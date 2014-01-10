@@ -32,7 +32,8 @@
 	- [TODO] Fix that a creature can't walk through an other creature
 	
 + Trap
-	- [TODO] maak een TrapController
+	- [TODO] Model toevoegen
+	- [TODO] Zorg dat de player damage krijgt als hij geraakt word door de trap/projectile
 	+ Projectile
 		- [TODO] Model toevoegen
 + Editor
