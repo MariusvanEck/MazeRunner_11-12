@@ -59,7 +59,7 @@ public class Projectile {
 	
 	public void display(GL gl){
 		
-		model.render(gl, angle+=5, x, y, z);
+		model.render(gl, angle-=5, x, y, z);
 	}
 	
 }
