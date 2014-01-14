@@ -47,6 +47,7 @@ public class MazeRunner {
 	private TrapController trapController;									// the traps
 	private Camera camera;													// the camera
 	private Maze maze; 														// the maze
+	private DataBase dataBase;
 	
 	private HeadsUpDisplay headsUpDisplay;									// the headsUpDisplay overlay
 	private UserInput input;												// user input object controls the game.
@@ -97,7 +98,7 @@ public class MazeRunner {
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
-		DataBase dataBase = new DataBase();
+		dataBase = new DataBase();
 		maze = new Maze(gl, dataBase, mazeFileName, textures);
 		if(!setPlayerSpawn(gl)) throw new InvalidSpawnLocationException("No Spawn Found");
 		visibleObjects.add(maze);
@@ -269,7 +270,9 @@ public class MazeRunner {
 		
 		// if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
-			input.setGameState(GameState.MENU);}
+			dataBase.addScore(player.getName(),headsUpDisplay.getTime());
+			input.setGameState(GameState.MENU);
+		}
 		
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		

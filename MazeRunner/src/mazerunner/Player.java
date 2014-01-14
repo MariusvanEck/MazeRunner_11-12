@@ -29,6 +29,8 @@ public class Player extends Creature {
 	private double rotationSpeed;
 	private Control control;
 	
+	private String name;
+	
 	/**
 	 * The Player constructor.
 	 * @param x			The x-coordinate of the location
@@ -136,4 +138,6 @@ public class Player extends Creature {
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
+	
+	public String getName(){return name;}
 }

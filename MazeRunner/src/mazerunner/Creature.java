@@ -11,12 +11,12 @@ import model.TexturedModel;
  */
 public abstract class Creature extends GameObject {
 	
-	private double horAngle;						// the horizontal angle
-	private int hitpoints;							// the number of hitpoints
-	public int maxHP;								// the maximum number of hitpoints
+	protected double horAngle;						// the horizontal angle
+	protected int hitpoints;							// the number of hitpoints
+	protected int maxHP;								// the maximum number of hitpoints
 	
-	private Weapon weapon;							// the weapon of the creature
-	private TexturedModel texturedModel;			// the model of the Creature
+	protected Weapon weapon;							// the weapon of the creature
+	protected TexturedModel texturedModel;			// the model of the Creature
 	
 	/**
 	 * The Creature constructor.

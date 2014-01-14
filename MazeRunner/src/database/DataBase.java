@@ -6,7 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.swing.JFileChooser;
+
+import com.sun.opengl.util.texture.Texture;
+
 import cast.Cast;
 import cast.InvalidByteArraySize;
 
@@ -36,6 +41,9 @@ public class DataBase {
 				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT," + // create table with an ID, Name (max 255 byte)
 											"Data BLOB,lvl0 LONGBLOB,lvl1 LONGBLOB,lvl2 LONGBLOB,lvl3 LONGBLOB, lvl4 LONGBLOB, lvl5 LONGBLOB);"); //  and Data (max 4GB per lvl)
 				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
+				
+				statement.executeUpdate("CREATE TABLE IF NOT EXISTS HighScore(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT,Score INTEGER");
+				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON HighScore(ID);"); // create index for faster search
 				
 				
 				// TODO:adds the default lvl's to the database if the database was empty
@@ -337,4 +345,59 @@ public class DataBase {
 			return 0;
 		}
 	}
+	
+	public void addScore(String name,int score){
+		try{
+			boolean update = false;
+			Scores scores = getScores();
+			ArrayList<String> nameList = new ArrayList<String>();
+			ArrayList<Integer> scoreList = new ArrayList<Integer>();
+			for(int i = 0; i < scores.scores.size(); i++){
+				if(score < scores.scores.get(i)){
+					nameList.add(name);
+					scoreList.add(score);
+					i++;
+					update = true;
+				}
+				nameList.add(scores.names.get(i));
+				scoreList.add(scores.scores.get(i));
+			}
+			if(update){
+				statement.executeUpdate("DELETE TABLE IF EXISTS HighScore");
+				statement.executeUpdate("CREATE TABLE IF NOT EXISTS HighScore(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT,Score INTEGER");
+				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON HighScore(ID);"); // create index for faster search
+				
+				PreparedStatement prep = connection.prepareStatement("INSERT INTO HighScore(Name,Score) VALUES(?, ?,);");
+				
+				
+				for(int i = 0; i < nameList.size() || i < 10; i++){
+					prep.setString(1, nameList.get(i));
+					prep.setInt(2, scoreList.get(i));
+				}
+			}
+			
+			
+		}catch(SQLException e){
+			System.err.println("DataBase: " + e.getMessage());
+		}
+		
+	}
+	
+	public Scores getScores(){
+		try{
+			ResultSet temp = statement.executeQuery("SELECT * FROM HighScore");
+			Scores res = new Scores();
+			while(temp.next()){
+				res.names.add(temp.getString("Name"));
+				res.scores.add(temp.getInt("Score"));
+			}
+			
+			return res;
+			
+		}catch(SQLException e){
+			System.err.println("DataBase: " + e.getMessage());
+			return null;
+		}
+	}
+	
 }

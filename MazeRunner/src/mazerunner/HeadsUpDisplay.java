@@ -166,4 +166,8 @@ public class HeadsUpDisplay {
 		    gl.glEnd();
 		    gl.glPopMatrix();
 	}
+	
+	public int getTime(){
+		return time;
+	}
 }
