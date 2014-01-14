@@ -9,6 +9,9 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 import javax.swing.JFileChooser;
 
+import loot.*;
+import trap.*;
+
 import com.sun.opengl.util.texture.Texture;
 
 import database.DataBase;
@@ -71,6 +74,8 @@ public class Maze implements VisibleObject {
 		walls = new ArrayList<Wall>();
 		floors = new ArrayList<Floor>();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		ArrayList<Trap> traps = new ArrayList<Trap>();
+		ArrayList<Loot> loot = new ArrayList<Loot>();
 		
 		for (int i=0; i<mazeSize; i++) {
 			for (int j=0; j<mazeSize; j++) {
@@ -90,13 +95,35 @@ public class Maze implements VisibleObject {
 							if 		(currentLevel[i+1][j]%13 == 0) 	stairs.add(new Stair(i, j, 270));
 							else if (currentLevel[i-1][j]%13 == 0)	stairs.add(new Stair(i+1, j+1, 90));
 							else if (currentLevel[i][j-1]%13 == 0)	stairs.add(new Stair(i, j+1, 0));
-							else if (currentLevel[i][j+1]%13 == 0)	stairs.add(new Stair(i+1, j, 180));}
+							else if (currentLevel[i][j+1]%13 == 0)	stairs.add(new Stair(i+1, j, 180));
+						}
 				
 						// check for enemies and add to the AI
 						if (currentLevel[i][j]%23 == 0)
-							enemies.add(new Enemy(gl, i, j, 0));}}}}
+							enemies.add(new Enemy(gl, i, j, 0));
+						
+						// check for Food
+						if(currentLevel[i][j]%19 == 0){
+							loot.add(new Food(gl,i, currentLevelIndex,j, 10, "/models/box.obj",null));
+						}
+						// check for Coin
+						if(currentLevel[i][j]%29 == 0){
+							loot.add(new Coin(gl,i,currentLevelIndex,j,"/models/box.obj",null));
+						}
+						
+						// check for Traps
+						// TODO: fix dit moeten ook nog wat bedenken voor de activation plaats iets als (same x or same Z)
+/*						if(currentLevel[i][j]% == 0){
+							traps.add(new ProjectileTrap(gl,player,this,i,Maze.SQUARE_SIZE / 4,j,activeX,activeY,activeZ,'N',0.7));
+						}*/
+					}
+				}
+			}
+		}
 		
 		EnemyAI.setEnemies(enemies);
+		TrapController.setTraps(traps);
+		LootController.setLoot(loot);
 	}
 	
 	

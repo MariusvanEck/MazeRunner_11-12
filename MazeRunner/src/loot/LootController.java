@@ -5,13 +5,14 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
+import trap.Trap;
 import mazerunner.Maze;
 import mazerunner.Player;
 import mazerunner.VisibleObject;
 
 public class LootController implements VisibleObject {
 	
-	private ArrayList<Loot> lootList;
+	private static ArrayList<Loot> lootList;
 	private Player player;
 	public static int primeNumbers[] = new int[100];
     // private int aantalobjecten = 100;
@@ -136,5 +137,9 @@ public class LootController implements VisibleObject {
 				if(currentLoot.near(player, .2)){
 					player.addHP(50);
 					lootIterator.remove();}}}
+	}
+	
+	public static void setLoot(ArrayList<Loot> loot) {
+		lootList = loot;
 	}
 }
