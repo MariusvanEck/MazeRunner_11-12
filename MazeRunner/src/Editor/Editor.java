@@ -82,8 +82,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
     int returnVal;
 	
 	private Texture[] textureLeft;
-	private Texture[] textureRight;
-	private Texture[] textureMaze;
+	// private Texture[] textureRight;
+	// private Texture[] textureMaze;
 	
 	private Texture[] levelTextures;
 		
@@ -220,7 +220,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		btn = new Button[buttonRow*3];
 		btnr = new Button[buttonRow];
 		textureLeft = new Texture[buttonRow*3];
-		textureRight = new Texture[buttonRow];
+		// textureRight = new Texture[buttonRow];
 		
 		
 		//Loading all the textures

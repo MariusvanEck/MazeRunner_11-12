@@ -1,13 +1,9 @@
 package model;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
 import javax.vecmath.Vector2f;
@@ -25,7 +21,7 @@ public class TexturedModel {
 	private int vboTexCoordHandle[] = new int [1];
 	private int vertexShaderHandle;
 	private int fragmentShaderHandle;
-	private int diffuseModifierUniform;
+	// private int diffuseModifierUniform;
 	private Texture texture;
 	private  Model m;
 	
@@ -98,70 +94,70 @@ public class TexturedModel {
 		}	
 	}
 	
-	private void setupShaders(GL gl){
-		shaderProgramHandle = gl.glCreateProgram();
-		vertexShaderHandle = gl.glCreateShader(GL.GL_VERTEX_SHADER);
-		fragmentShaderHandle = gl.glCreateShader(GL.GL_FRAGMENT_SHADER);
-		
-		String vertexShaderSource = new String();
-		String fragmentShaderSource = new String();
-		
-		try{
-			BufferedReader reader = new BufferedReader(new FileReader("src/model/shader.vert"));
-			String line;
-			
-			while((line = reader.readLine()) != null){
-				vertexShaderSource += line;
-				vertexShaderSource += "\n";
-			}
-			reader.close();
-			
-		}catch(IOException e){
-			System.err.println("Vertex shader wassn't loaded properly.");
-			return;
-		}
-		
-		try{
-			BufferedReader reader = new BufferedReader(new FileReader("src/model/shader.frag"));
-			String line;
-			
-			while((line = reader.readLine()) != null){
-				fragmentShaderSource += line;
-				fragmentShaderSource += "\n";
-			}
-			reader.close();
-			
-		}catch(IOException e){
-			System.err.println("Fragment shader wassn't loaded properly.");
-			return;
-		}
-		IntBuffer temp = IntBuffer.allocate(1);
-		gl.glShaderSource(vertexShaderHandle, 1, new String[]{vertexShaderSource},null);
-		gl.glCompileShader(vertexShaderHandle);
-		
-		gl.glGetShaderiv(vertexShaderHandle, GL.GL_COMPILE_STATUS, temp);
-		if(temp.get(0) == GL.GL_FALSE) {
-			System.err.println("Vertex shader wasn't able to be compiled corectly.");
-			return;}
-		
-		gl.glShaderSource(fragmentShaderHandle,1,new String[]{fragmentShaderSource},null);
-		gl.glCompileShader(fragmentShaderHandle);
-		
-		gl.glGetShaderiv(fragmentShaderHandle, GL.GL_COMPILE_STATUS, temp);
-		if(temp.get(0) == GL.GL_FALSE) {
-			System.err.println("Fragment shader wasn't able to be compiled corectly.");
-			return;}
-		
-		gl.glAttachShader(shaderProgramHandle, vertexShaderHandle);
-		gl.glAttachShader(shaderProgramHandle, fragmentShaderHandle);
-		
-		gl.glLinkProgram(shaderProgramHandle);
-		gl.glValidateProgram(shaderProgramHandle);
-		
-		diffuseModifierUniform = gl.glGetUniformLocation(shaderProgramHandle, "diffuseIntensityModifier");
-		
-		setUpLighting(gl);
-	}
+//	private void setupShaders(GL gl){
+//		shaderProgramHandle = gl.glCreateProgram();
+//		vertexShaderHandle = gl.glCreateShader(GL.GL_VERTEX_SHADER);
+//		fragmentShaderHandle = gl.glCreateShader(GL.GL_FRAGMENT_SHADER);
+//		
+//		String vertexShaderSource = new String();
+//		String fragmentShaderSource = new String();
+//		
+//		try{
+//			BufferedReader reader = new BufferedReader(new FileReader("src/model/shader.vert"));
+//			String line;
+//			
+//			while((line = reader.readLine()) != null){
+//				vertexShaderSource += line;
+//				vertexShaderSource += "\n";
+//			}
+//			reader.close();
+//			
+//		}catch(IOException e){
+//			System.err.println("Vertex shader wassn't loaded properly.");
+//			return;
+//		}
+//		
+//		try{
+//			BufferedReader reader = new BufferedReader(new FileReader("src/model/shader.frag"));
+//			String line;
+//			
+//			while((line = reader.readLine()) != null){
+//				fragmentShaderSource += line;
+//				fragmentShaderSource += "\n";
+//			}
+//			reader.close();
+//			
+//		}catch(IOException e){
+//			System.err.println("Fragment shader wassn't loaded properly.");
+//			return;
+//		}
+//		IntBuffer temp = IntBuffer.allocate(1);
+//		gl.glShaderSource(vertexShaderHandle, 1, new String[]{vertexShaderSource},null);
+//		gl.glCompileShader(vertexShaderHandle);
+//		
+//		gl.glGetShaderiv(vertexShaderHandle, GL.GL_COMPILE_STATUS, temp);
+//		if(temp.get(0) == GL.GL_FALSE) {
+//			System.err.println("Vertex shader wasn't able to be compiled corectly.");
+//			return;}
+//		
+//		gl.glShaderSource(fragmentShaderHandle,1,new String[]{fragmentShaderSource},null);
+//		gl.glCompileShader(fragmentShaderHandle);
+//		
+//		gl.glGetShaderiv(fragmentShaderHandle, GL.GL_COMPILE_STATUS, temp);
+//		if(temp.get(0) == GL.GL_FALSE) {
+//			System.err.println("Fragment shader wasn't able to be compiled corectly.");
+//			return;}
+//		
+//		gl.glAttachShader(shaderProgramHandle, vertexShaderHandle);
+//		gl.glAttachShader(shaderProgramHandle, fragmentShaderHandle);
+//		
+//		gl.glLinkProgram(shaderProgramHandle);
+//		gl.glValidateProgram(shaderProgramHandle);
+//		
+//		diffuseModifierUniform = gl.glGetUniformLocation(shaderProgramHandle, "diffuseIntensityModifier");
+//		
+//		setUpLighting(gl);
+//	}
 	
 	public void cleanUp(GL gl){
 		gl.glDeleteProgram(shaderProgramHandle);

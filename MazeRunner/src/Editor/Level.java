@@ -31,7 +31,7 @@ public class Level {
 	private float alpha = 1;
 	
     static int primeNumbers[] = new int[100];
-    private int aantalobjecten = 100;
+    // private int aantalobjecten = 100;
 	
 	//creates a level with borders at the edges of the matrix
 	public Level(int x, int y){

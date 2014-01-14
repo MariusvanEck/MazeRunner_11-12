@@ -1,8 +1,9 @@
 package trap;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL;
-import mazerunner.Player;
+
 import mazerunner.VisibleObject;
 
 public class TrapController implements VisibleObject {
