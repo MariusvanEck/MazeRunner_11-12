@@ -37,8 +37,7 @@ public class Sound {
         	 				public void run(){clip.play();}
            					};
            					
-           	soundThread.start();
-           	setVolume();}
+           	soundThread.start();}
    		catch(Throwable e){e.printStackTrace();}
    	}
    
@@ -51,8 +50,7 @@ public class Sound {
 	        	 			public void run(){clip.loop();}
 	         				};
 	         
-	         soundThread.start();
-	         setVolume();}
+	         soundThread.start();}
 	      catch(Throwable e){e.printStackTrace();}
    }
    	

@@ -169,6 +169,9 @@ public class GameStateManager extends Frame implements GLEventListener{
 		// update the game status
 		updateGameState(gl);
 		
+		// set the right volume
+		Sound.setVolume();
+		
 		// clear the color buffer
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
