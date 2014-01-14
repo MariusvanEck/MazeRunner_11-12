@@ -86,4 +86,8 @@ public abstract class Weapon extends Loot implements VisibleObject{
 	public void setAngleZ(double angleZ) {
 		this.angleZ = angleZ;
 	}
+	
+	public double getAngleY() {
+		return angleY;
+	}
 }
