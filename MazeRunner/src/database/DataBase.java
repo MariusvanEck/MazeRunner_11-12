@@ -40,18 +40,16 @@ public class DataBase {
 			statement = connection.createStatement();
 			statement.setQueryTimeout(30); // timeout to 30 sec
 			
-			if(!doesTableExists("Map",connection)){
-				statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT," + // create table with an ID, Name (max 255 byte)
-											"Data BLOB,lvl0 LONGBLOB,lvl1 LONGBLOB,lvl2 LONGBLOB,lvl3 LONGBLOB, lvl4 LONGBLOB, lvl5 LONGBLOB);"); //  and Data (max 4GB per lvl)
-				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT," + // create table with an ID, Name (max 255 byte)
+										"Data BLOB,lvl0 LONGBLOB,lvl1 LONGBLOB,lvl2 LONGBLOB,lvl3 LONGBLOB, lvl4 LONGBLOB, lvl5 LONGBLOB);"); //  and Data (max 4GB per lvl)
+			statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
 				
-				statement.executeUpdate("CREATE TABLE IF NOT EXISTS HighScore(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT,Score INTEGER");
-				statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON HighScore(ID);"); // create index for faster search
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS HighScore(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT,Score INTEGER);");
+			statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON HighScore(ID);"); // create index for faster search
 				
 				
 				// TODO:adds the default lvl's to the database if the database was empty
 				
-			}
 		}
 		catch(SQLException e){
 			System.err.println("DataBase: " + e.getMessage());
@@ -353,6 +351,9 @@ public class DataBase {
 		try{
 			boolean update = false;
 			Scores scores = getScores();
+			if(scores == null){
+				scores = new Scores();
+			}
 			ArrayList<String> nameList = new ArrayList<String>();
 			ArrayList<Integer> scoreList = new ArrayList<Integer>();
 			for(int i = 0; i < scores.scores.size(); i++){
