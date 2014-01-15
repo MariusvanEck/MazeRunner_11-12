@@ -4,15 +4,13 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import mazerunner.Enemy;
-import mazerunner.EnemyAI;
 import mazerunner.VisibleObject;
 
 public class TrapController implements VisibleObject {
 	private static ArrayList<Trap> list;
 	
 	public TrapController(){
-		this.list = new ArrayList<Trap>();
+		list = new ArrayList<Trap>();
 	}
 	
 	public void addTrap(Trap trap){

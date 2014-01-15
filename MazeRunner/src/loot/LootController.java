@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import trap.Trap;
 import mazerunner.Maze;
 import mazerunner.Player;
 import mazerunner.VisibleObject;
