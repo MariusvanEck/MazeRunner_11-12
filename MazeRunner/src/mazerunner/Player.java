@@ -29,6 +29,11 @@ public class Player extends Creature {
 	private double rotationSpeed;
 	private Control control;
 	private int score;
+	double t = 0;
+	int fx = 5;
+	int fy = 2*fx;
+	double Ax = 0.4;
+	double Ay = Ax/2;
 	
 	private String name;
 	
@@ -78,8 +83,28 @@ public class Player extends Creature {
 						Math.sin((getHorAngle() + control.moveDirection)*(Math.PI/180));
 				locationZ -= speed*deltaTime*
 						Math.cos((getHorAngle() + control.moveDirection)*(Math.PI/180));
+				
+				// makes the camera bob
+				t = t + 0.01;
+				
+				setVerAngle(getVerAngle() + Ax*Math.sin(fx*t));
+				setHorAngle(getHorAngle() + Ay*Math.sin(fy*t));
+				
+				if(t > GCD(fx,fy)){
+					t = 0;
+				}
 			}
+			
+			
 		}
+	}
+	
+	// greatest common divisor, needed to calculate the period of the lissajous figure the headbob makes
+	private static int GCD(int fx, int fy){
+		if(fy == 0){
+			return fx;
+		}
+		return GCD(fy, fx%fy);
 	}
 	
 	
