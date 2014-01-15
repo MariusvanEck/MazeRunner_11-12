@@ -21,7 +21,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	private OptionsMenu optionsMenu;
 	private QuitMenu quitMenu;
 	
-	public MenuState menuState;
+	public static MenuState menuState;
 	public Sound theme = new Sound("theme.wav");
 	
 	public static final byte PLAY = 0;
@@ -258,9 +258,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 					input.setGameState(GameState.INGAME); break;
 				}
 			case PlayMenu.NEW:		
-				input.setGameState(GameState.INGAME); 
-				input.setNewGame(true);
-				menuState = MenuState.MAIN;
+				menuState = MenuState.NEW;
 				break;}
 			break;
 			

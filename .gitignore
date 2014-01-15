@@ -12,6 +12,8 @@ local.properties
 .loadpath
 .classpath
 .project
+.db
+mazes/
 
 # External tool builders
 .externalToolBuilders/

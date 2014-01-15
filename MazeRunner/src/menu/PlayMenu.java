@@ -1,5 +1,7 @@
 package menu;
 
+import gamestate.GameStateManager;
+
 import java.io.File;
 
 import javax.media.opengl.GL;
@@ -9,6 +11,8 @@ import com.sun.opengl.util.texture.TextureIO;
 
 public class PlayMenu extends MenuObject{
 	private Button buttons[];
+	
+	private LevelSelector levelSelector;
 	
 	public static final byte NEW = 0;
 	public static final byte CONTINUE = 1;
@@ -61,9 +65,25 @@ public class PlayMenu extends MenuObject{
 	/**
 	 * Draw the menu
 	 */
-	public void display(GL gl){
+	public void displayPlayMenu(GL gl){
 		for(int i=0; i<buttons.length; i++)
 			buttons[i].display(gl);
+		
+	}
+	
+	public void display(GL gl){
+		System.out.println("PlayMenu: " + MainMenu.menuState);
+		switch(MainMenu.menuState) {
+		case PLAY:
+			displayPlayMenu(gl);
+			break;
+		case NEW:
+			levelSelector.display(gl);
+			break;
+		default:
+			break;
+		}
+		
 	}
 	
 	public void reshape(int minX, int maxX,int minY,int maxY){

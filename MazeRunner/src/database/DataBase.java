@@ -404,4 +404,26 @@ public class DataBase {
 		}
 	}
 	
+	public String[] getMapNames(){
+		
+		try{
+			ResultSet temp = statement.executeQuery("SELECT Name FROM Map");
+			ArrayList<String> resList = new ArrayList<String>();
+			while(temp.next()){
+				resList.add(temp.getString("Name"));
+			}
+			String res[] = new String[resList.size()];
+			
+			for(int i = 0; i < resList.size();i++){
+				res[i] = resList.get(i);
+			}
+			return res;
+			
+		}catch(SQLException e){
+			System.err.println("DataBase: " + e.getMessage());
+			return null;
+		}
+		
+	}
+	
 }
