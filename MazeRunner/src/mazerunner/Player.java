@@ -28,6 +28,7 @@ public class Player extends Creature {
 	private double speed;
 	private double rotationSpeed;
 	private Control control;
+	private int score;
 	
 	private String name;
 	
@@ -47,6 +48,7 @@ public class Player extends Creature {
 		setVerAngle(v);
 		speed = 0.01;
 		rotationSpeed = 1;
+		score = 0;
 	}
 	
 	
@@ -140,4 +142,5 @@ public class Player extends Creature {
 	}
 	
 	public String getName(){return name;}
+	public int getScore(){return score;}
 }

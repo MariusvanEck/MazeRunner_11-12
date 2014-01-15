@@ -50,10 +50,11 @@ public abstract class Creature extends GameObject {
 	 */
 	
 	/**
-	 * Get current the HP
-	 * @return the current hp
+	 * Get the hitpoints
 	 */
-	public double getHP(){return hitpoints;}
+	public int getHitpoints() {
+		return hitpoints;
+	}
 	
 	/**
 	 * Add HP
@@ -128,19 +129,5 @@ public abstract class Creature extends GameObject {
 	 */
 	public void setTexturedModel(TexturedModel texturedModel) {
 		this.texturedModel = texturedModel;
-	}
-
-	/**
-	 * Get the hitpoints
-	 */
-	public int getHitpoints() {
-		return hitpoints;
-	}
-
-	/**
-	 * Set the hitpoints
-	 */
-	public void setHitpoints(int hitpoints) {
-		this.hitpoints = hitpoints;
 	}
 }
