@@ -106,11 +106,11 @@ public class Maze implements VisibleObject {
 						
 						// check for Food
 						if(currentLevel[i][j]%19 == 0)
-							loot.add(new Food(gl,i, currentLevelIndex,j, 10, "/models/box.obj",null));
+							loot.add(new Food(gl,i, currentLevelIndex,j, 10));
 						
 						// check for Coin
 						if(currentLevel[i][j]%29 == 0)
-							loot.add(new Coin(gl,i,currentLevelIndex,j,"/models/box.obj",null));
+							loot.add(new Coin(gl,i,currentLevelIndex,j,"models/box.obj",null));
 						
 						// check for sliding walls {
 						if (currentLevel[i][j]%37 == 0)
