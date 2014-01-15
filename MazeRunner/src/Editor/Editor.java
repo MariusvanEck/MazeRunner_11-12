@@ -40,6 +40,31 @@ import com.sun.opengl.util.texture.TextureIO;
 
 import database.DataBase;
 
+/* List of used PrimeNumbers
+ * 0 - Floor
+ * 1 - Wall
+ * 2 - TorchN
+ * 3 - TorchE
+ * 5 - TorchS
+ * 7 - TorchW
+ * 11 - Stair Low
+ * 13 - Stair High
+ * 19 - Food
+ * 23 - Enemy
+ * 29 - Coin
+ * 31 - Chest
+ * 97 - Player
+ * 35 - 
+ * 37 - 
+ * 41 -
+ * 43 -  
+ */
+
+/*
+ * TODO
+ * - void draw eruit slopen
+ * - alle functies beschrijven 
+ */
 public class Editor extends JFrame implements GLEventListener, MouseListener, MouseMotionListener, ActionListener {
 
 	/**
@@ -723,7 +748,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			}
 		}
 		
-		//Coin draw button
+		//Chest draw button
 		else if (btn[4].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && 
 				level.level[X][Y-1] != 97 && level.check(X,Y-1,31) == false){
 			if(level.level[X][Y-1] == 0){
