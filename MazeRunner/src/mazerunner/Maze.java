@@ -37,6 +37,7 @@ public class Maze implements VisibleObject {
 	private ArrayList<Floor> floors;
 	private ArrayList<Roof> roofs;
 	private ArrayList<Wall> walls;
+	private HashMap<Point,SlidingWall> slidingWalls;
 	
 	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
 		this.textures = textures;
@@ -72,6 +73,7 @@ public class Maze implements VisibleObject {
 		stairs = new ArrayList<Stair>();
 		roofs = new ArrayList<Roof>();
 		walls = new ArrayList<Wall>();
+		slidingWalls = new HashMap<Point,SlidingWall>();
 		floors = new ArrayList<Floor>();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		ArrayList<Trap> traps = new ArrayList<Trap>();
@@ -99,17 +101,20 @@ public class Maze implements VisibleObject {
 						}
 				
 						// check for enemies and add to the AI
-						if (currentLevel[i][j]%23 == 0)
+						if (currentLevel[i][j]%23 == 0) 
 							enemies.add(new Enemy(gl, i, j, 0));
 						
 						// check for Food
-						if(currentLevel[i][j]%19 == 0){
+						if(currentLevel[i][j]%19 == 0)
 							loot.add(new Food(gl,i, currentLevelIndex,j, 10, "/models/box.obj",null));
-						}
+						
 						// check for Coin
-						if(currentLevel[i][j]%29 == 0){
+						if(currentLevel[i][j]%29 == 0)
 							loot.add(new Coin(gl,i,currentLevelIndex,j,"/models/box.obj",null));
-						}
+						
+						// check for sliding walls {
+						if (currentLevel[i][j]%37 == 0)
+							slidingWalls.put(new Point(i,j), new SlidingWall(i,j));
 						
 						// check for Traps
 						// TODO: fix dit moeten ook nog wat bedenken voor de activation plaats iets als (same x or same Z)
@@ -127,14 +132,11 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-	
-	
 	/*
 	 * **********************************************
 	 * *			  		Checks					*
 	 * **********************************************
 	 */
-	
 	
 	/**
 	 * isWall(int x, int y, int z) checks for a wall.
@@ -147,12 +149,14 @@ public class Maze implements VisibleObject {
 	 * @return		whether there is a wall at maze[x][z]
 	 */
 	public boolean isWall( int x, int z ) {
-		if( x >= 0 && x < mazeSize && z >= 0 && z < mazeSize )
-			return currentLevel[x][z] == 1 || currentLevel[x][z] == 13;
-		else
-			return false;
+		if( x >= 0 && x < mazeSize && z >= 0 && z < mazeSize ) {
+			if (currentLevel[x][z] == 1 || currentLevel[x][z] == 13) return true;
+			else if (currentLevel[x][z] == 37) {
+				if (slidingWalls.get(new Point(x,z)).isWall()) return true;
+			}
+		}
+		return false;
 	}
-	
 	
 	/**
 	 * isStair(int x,int y,int z) checks for a stair
@@ -167,7 +171,6 @@ public class Maze implements VisibleObject {
 			return currentLevel[x][z] == 11;
 		return false;
 	}
-	
 	
 	/**
 	 * Checks if there is a wall on the line between the two points specified
@@ -222,7 +225,6 @@ public class Maze implements VisibleObject {
 		return false;
 	}
 	
-	
 	/**
 	 * isWall(double x, double z, double objectSize) checks for a wall in a square with edge 
 	 * objectSize*SQUARE_SIZE around the location by converting the double values to integer 
@@ -246,7 +248,6 @@ public class Maze implements VisibleObject {
 				isWall(gXmin, gZmin) || isWall(gXmax, gZmax) ||
 				isWall(gXmin, gZmax) || isWall(gXmax, gZmin);
 	}
-	
 	
 	/**
 	 * isStair(double x, double z, double objectSize) checks for a stair in a square with edge 
@@ -273,14 +274,11 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-	
-	
 	/*
 	 * **********************************************
 	 * *			   GridConversion	 			*
 	 * **********************************************
 	 */
-	
 	
 	/**
 	 * getCurrentGridPoint takes a gameObject and returns a Point object with the 
@@ -289,7 +287,6 @@ public class Maze implements VisibleObject {
 	public Point currentGridPoint(GameObject gameObject) {
 		return new Point(convertToGridX(gameObject.locationX), convertToGridZ(gameObject.locationZ));
 	}
-	
 	
 	/**
 	 * Converts the double x-coordinate to its correspondent integer coordinate.
@@ -301,7 +298,6 @@ public class Maze implements VisibleObject {
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
 	
-	
 	/**
 	 * Converts the double x-coordinate to its correspondent integer coordinate.
 	 * @param y		the double y-coordinate
@@ -310,7 +306,6 @@ public class Maze implements VisibleObject {
 	public int convertToGridY(double y){
 		return (int)Math.floor( y / SQUARE_SIZE );
 	}
-	
 	
 	/**
 	 * Converts the double z-coordinate to its correspondent integer coordinate.
@@ -323,14 +318,11 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-	
-	
 	/*
 	 * **********************************************
 	 * *				 miscelanous				*
 	 * **********************************************
 	 */
-	
 	
 	/**
 	 * Sets the specified location to wall or no wall
@@ -343,7 +335,6 @@ public class Maze implements VisibleObject {
 		currentLevel[x][z] = isWall? 1 : 0;
 	}
 	
-	
 	/**
 	 * load a new level of the maze
 	 */
@@ -352,7 +343,6 @@ public class Maze implements VisibleObject {
 			setCurrentLevel(i);
 			loadCurrentLevelObjects(gl);}
 	}
-	
 	
 	/**
 	 * Pick a file from the mazes directory
@@ -369,7 +359,14 @@ public class Maze implements VisibleObject {
 			return null;
 	}
 	
-	
+	/**
+	 * update the sliding walls
+	 */
+	public void updateSlidingWalls(int deltaTime, Player player) {
+		for (SlidingWall sw : slidingWalls.values()) {
+			sw.update(deltaTime, player);
+		}
+	}
 	
 	
 	/*
@@ -377,7 +374,6 @@ public class Maze implements VisibleObject {
 	 * *			Drawing function				*
 	 * **********************************************
 	 */
-	
 	
 	/**
 	 * maze display function
@@ -389,12 +385,16 @@ public class Maze implements VisibleObject {
 		bindCurrentTexture("wall"); // bind wall texture
 		for (Wall w : walls) {
 			w.display(gl);}
+		for (SlidingWall sw : slidingWalls.values()) {
+			sw.display(gl);}
 		currentTexture.disable(); // disable wall texture
 		
 		//// floors ////
 		bindCurrentTexture("floor"); // bind floor texture
 		for(Floor f : floors) {
 			f.display(gl);}
+		for (SlidingWall sw : slidingWalls.values()) {
+			sw.displayFloor(gl);}
 		currentTexture.disable(); // disable floor texture
 		
 		//// roofs ////
@@ -409,14 +409,11 @@ public class Maze implements VisibleObject {
 	}
 	
 
-	
-	
 	/*
 	 * **********************************************
 	 * *			getters and setters 			*
 	 * **********************************************
 	 */
-	
 	
 	/**
 	 * get the current active level index
@@ -424,7 +421,6 @@ public class Maze implements VisibleObject {
 	public int getCurrentLevel() {
 		return currentLevelIndex;
 	}
-	
 	
 	/**
 	 * set the current active level
@@ -436,7 +432,6 @@ public class Maze implements VisibleObject {
 		
 	}
 	
-	
 	/**
 	 * set the texture hashmap
 	 */
@@ -444,7 +439,6 @@ public class Maze implements VisibleObject {
 		this.textures = textures;
 	}
 
-	
 	/**
 	 * set the currentTexture and bind
 	 */
@@ -454,14 +448,12 @@ public class Maze implements VisibleObject {
 		currentTexture.bind();
 	}
 	
-	
 	/** 
 	 * get the maze size
 	 */
 	public int getMazeSize(){
 		return mazeSize;
 	}
-	
 	
 	/** 
 	 * get the level size
@@ -470,14 +462,12 @@ public class Maze implements VisibleObject {
 		return numLevels;
 	}
 	
-	
 	/**
 	 * get a certain level
 	 */
 	public int[][] getLevel(int i){
 		return levels.get(i);
 	}
-	
 	
 	/**
 	 * print the levels

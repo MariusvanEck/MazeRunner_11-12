@@ -280,27 +280,6 @@ public class MazeRunner {
 		int deltaTime = (int)(currentTime - previousTime);
 		previousTime = currentTime;
 		
-		// Update any movement since last frame.
-		updateMovement(gl,deltaTime);
-		
-		// Update Loot
-		lootController.update();
-		
-		// Update headsUpDisplay
-		headsUpDisplay.update(deltaTime);
-		
-		// Set camera according to the players position
-		updateCamera();
-		
-		updateWeaponLocation();
-	}
-	
-	/**
-	 * updateMovement(int) updates the position of all objects that need moving.
-	 * This includes rudimentary collision checking and collision reaction.
-	 */
-	private void updateMovement(GL gl,int deltaTime)
-	{
 		// Update the player
 		updatePlayerMovement(gl,deltaTime);
 		
@@ -309,6 +288,20 @@ public class MazeRunner {
 		
 		//update traps
 		trapController.update(deltaTime);
+		
+		// Update Loot
+		lootController.update();
+		
+		// update slidingWalls
+		maze.updateSlidingWalls(deltaTime, player);
+		
+		// Update headsUpDisplay
+		headsUpDisplay.update(deltaTime);
+		
+		// Set camera according to the players position
+		updateCamera();
+		
+		updateWeaponLocation();
 	}
 	
 	/**
