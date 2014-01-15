@@ -8,6 +8,7 @@ public class ProjectileTrap extends Trap {
 	private Projectile projectile = null;
 	private boolean triggered;
 	private Maze maze;
+	private int lastUpdate = 0;
 	
 	private static String modelFileLocation = "models/trap/trapbase.obj";
 	private static String textureFileLocation = "models/textures/stone2.jpg";
@@ -28,7 +29,7 @@ public class ProjectileTrap extends Trap {
 	public ProjectileTrap(GL gl,Player player,Maze maze,double x,double y,double z,double activationX,double activationY,double activationZ,char direction,double speed){
 		super(gl,player,x,y,z,activationX,activationY,activationZ,modelFileLocation,textureFileLocation);
 		this.maze = maze;
-		projectile = new Projectile(gl, x,y,z,direction,speed*player.getSpeed());
+		projectile = new Projectile(gl,x,y,z,direction,speed*player.getSpeed());
 		this.triggered = false;
 	}
 	
@@ -37,10 +38,19 @@ public class ProjectileTrap extends Trap {
 		double z = projectile.getZ();
 		projectile.update(deltaTime);
 		
+		//TODO: klopt niet moet gewoon per x of z coord active coord skippen
 		if(this.near(player, Maze.SQUARE_SIZE/2))
 			triggered = true;
 		if(triggered && maze.isWall(projectile.getX(),projectile.getZ(),Math.abs(x-projectile.getX())) || maze.isStair(projectile.getX(), projectile.getZ(),Math.abs(z-projectile.getZ())))
 				projectile.setLocation(this.locationX, this.locationY, this.locationZ);
+		
+		if(projectile.near(player, Maze.SQUARE_SIZE/16) && lastUpdate > 500){
+			player.removeHP(projectile.getDamage());
+			projectile.setLocation(this.locationX, this.locationY, this.locationZ);
+			lastUpdate = 0;
+		}else{
+			lastUpdate += deltaTime;
+		}
 		
 	}
 	@Override

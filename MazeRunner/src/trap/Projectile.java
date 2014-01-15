@@ -2,23 +2,24 @@ package trap;
 
 import javax.media.opengl.GL;
 
+import mazerunner.GameObject;
 import model.Model;
 import model.TexturedModel;
 
-public class Projectile {
-	private double x,y,z;
+public class Projectile extends GameObject{
 	private char direction;
 	private double speed;
 	private TexturedModel model;
 	private double angle;
+	private final int damage = 10;
 	
 	private static String modelFileLocation = "models/trap/projectile.obj";
 	private static String textureFileLocation = "models/textures/stone1.jpg";
 	
 	public Projectile(GL gl,double x,double y,double z,char direction,double speed){
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.locationX = x;
+		this.locationY = y;
+		this.locationZ = z;
 		if(direction == 'N' || direction == 'E' || direction == 'S' || direction == 'W')
 			this.direction = direction;
 		else
@@ -29,37 +30,39 @@ public class Projectile {
 	}
 	
 	public void update(int deltaTime){
+		
 		switch(direction){
 			case 'N':
-				z -= speed*deltaTime;
+				locationZ -= speed*deltaTime;
 				break;
 			case 'E':
-				x += speed*deltaTime;
+				locationX += speed*deltaTime;
 				break;
 			case 'S':
-				z+= speed*deltaTime;
+				locationZ+= speed*deltaTime;
 				break;
 			case 'W':
-				x -= speed*deltaTime;
+				locationX -= speed*deltaTime;
 				break;
 		}
 	}
 	
 	public void setLocation(double x,double y,double z){
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.locationX = x;
+		this.locationY = y;
+		this.locationZ = z;
 		this.angle = 0;
 	}
 	
-	public double getX(){return x;}
-	public double getY(){return y;}
-	public double getZ(){return z;}
+	public double getX(){return locationX;}
+	public double getY(){return locationY;}
+	public double getZ(){return locationZ;}
+	public int getDamage(){return damage;}
 	
 	
 	public void display(GL gl){
 		
-		model.render(gl, angle-=5, x, y, z);
+		model.render(gl, angle-=5, locationX, locationY, locationZ);
 	}
 	
 }
