@@ -6,6 +6,8 @@ import java.io.File;
 
 import javax.media.opengl.GL;
 
+import mazerunner.Enemy;
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
@@ -13,8 +15,10 @@ public class OptionsMenu extends MenuObject{
 	
 	private Button[] buttons;
 	private static Slider volumeSlider;
+	private static Slider difficultySlider;
 	public static final byte BACK = 0;
 	public static final byte VOLUME = 1;
+	public static final byte DIFFICULTY = 2;
 	
 	private Texture[] textures;
 	private Texture[] sliderTextures;
@@ -25,21 +29,24 @@ public class OptionsMenu extends MenuObject{
 	public OptionsMenu(int minX, int maxX, int minY,int maxY){
 		super(minX,maxX,minY,maxY);
 		
-		textures = new Texture[1];
-		sliderTextures = new Texture[3];
+		textures = new Texture[3];
+		sliderTextures = new Texture[2];
 		loadTextures();
 		
 		buttons = new Button[1];
-		buttons[0] = new Button(minX,maxX,minY,minY+(maxY-minY)/3, textures[0]);		//Back
-		volumeSlider = new Slider(minX, maxX, minY + 2*(maxY-minY)/3, maxY, sliderTextures);
+		
+		volumeSlider = new Slider(minX, maxX, minY + 2*(maxY-minY)/3, maxY, sliderTextures, textures[0]);
+		difficultySlider = new Slider(minX, maxX, minY + (maxY-minY)/3, minY + 2*(maxY-minY)/3, sliderTextures, textures[1]);
+		buttons[0] = new Button(minX,maxX,minY,minY+(maxY-minY)/3, textures[2]);
 	}
 	
 	public void loadTextures(){
 		try {
-			textures[0] = TextureIO.newTexture(new File("textures\\back.png"), false);
+			textures[0] = TextureIO.newTexture(new File("textures\\volume.png"), false);
+			textures[1] = TextureIO.newTexture(new File("textures\\difficulty.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures\\back.png"), false);
 			sliderTextures[0] = TextureIO.newTexture(new File("textures\\slider1.png"), false);
 			sliderTextures[1] = TextureIO.newTexture(new File("textures\\slider2.png"), false);
-			sliderTextures[2] = TextureIO.newTexture(new File("textures\\volume.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -55,6 +62,8 @@ public class OptionsMenu extends MenuObject{
 			return BACK;
 		else if (volumeSlider.minX < x && x < volumeSlider.maxX && volumeSlider.minY < y && y < volumeSlider.minY + (volumeSlider.maxY - volumeSlider.minY)/2)
 			return VOLUME;
+		else if (difficultySlider.minX < x && x < difficultySlider.maxX && difficultySlider.minY < y && y < difficultySlider.minY + (difficultySlider.maxY - difficultySlider.minY)/2)
+			return DIFFICULTY;
 		return -1;
 	}
 	
@@ -65,6 +74,7 @@ public class OptionsMenu extends MenuObject{
 		this.maxY = maxY;
 		
 		buttons[0].update(minX, maxX, minY, minY+(maxY-minY)/3);
+		difficultySlider.update(minX, maxX, minY + (maxY-minY)/3, minY + 2*(maxY-minY)/3);
 		volumeSlider.update(minX, maxX, minY + 2*(maxY-minY)/3, maxY);
 	}
 	
@@ -76,6 +86,7 @@ public class OptionsMenu extends MenuObject{
 			buttons[i].display(gl);
 
 		volumeSlider.display(gl);
+		difficultySlider.display(gl);
 	}
 	
 	/**
@@ -110,5 +121,15 @@ public class OptionsMenu extends MenuObject{
 			return volumeSlider.getFraction();
 		
 		return 1;
+	}
+	
+	/**
+	 * This method sets the difficulty
+	 */
+	public void setDifficulty(int x) {
+		float difficultyFraction = ((float) (x - difficultySlider.minX)) / ((float) (difficultySlider.maxX - difficultySlider.minX));
+		
+		Enemy.setMaxSpeed(difficultyFraction);
+		difficultySlider.setFraction(difficultyFraction);
 	}
 }

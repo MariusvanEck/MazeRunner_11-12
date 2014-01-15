@@ -246,7 +246,8 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		case OPTIONS:
 			switch(optionsMenu.getButton(x, y)) {
 			case OptionsMenu.BACK:	menuState = MenuState.MAIN; break;
-			case OptionsMenu.VOLUME: optionsMenu.setVolume(x); break;}
+			case OptionsMenu.VOLUME: optionsMenu.setVolume(x); break;
+			case OptionsMenu.DIFFICULTY: optionsMenu.setDifficulty(x); break;}
 			break;
 			
 		case PLAY:

@@ -7,23 +7,25 @@ import com.sun.opengl.util.texture.Texture;
 public class Slider extends MenuObject{
 	
 	private float fraction;
-	private Texture[] textures;
+	private Texture[] sliderTextures;
+	private Texture nameTexture;
 	
-	public Slider(int minX, int maxX, int minY, int maxY, Texture[] textures) {
+	public Slider(int minX, int maxX, int minY, int maxY, Texture[] sliderTextures, Texture nameTexture) {
 		super(minX, maxX, minY, maxY);
 		
-		this.textures = textures;
+		this.nameTexture = nameTexture;
+		this.sliderTextures = sliderTextures;
 		fraction = 1f;
 	}
 
 	@Override
 	public void display(GL gl) {
 		
-		if (textures[0] != null){
+		if (sliderTextures[0] != null){
 			gl.glEnable(GL.GL_BLEND);
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-			textures[0].enable();
-			textures[0].bind();
+			sliderTextures[0].enable();
+			sliderTextures[0].bind();
 			//White background color for normal texture view
 			gl.glColor3f(255/255f, 255/255f, 255/255f);
 			gl.glBegin(GL.GL_QUADS);
@@ -36,13 +38,13 @@ public class Slider extends MenuObject{
 				gl.glTexCoord2f(0,1);
 				gl.glVertex2f(minX, minY);
 			gl.glEnd();
-			textures[0].disable();}
+			sliderTextures[0].disable();}
 			
-		if (textures[1] != null){
+		if (sliderTextures[1] != null){
 			gl.glEnable(GL.GL_BLEND);
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-			textures[1].enable();
-			textures[1].bind();
+			sliderTextures[1].enable();
+			sliderTextures[1].bind();
 			//White background color for normal texture view
 			gl.glColor3f(255/255f, 255/255f, 255/255f);
 			gl.glBegin(GL.GL_QUADS);
@@ -55,13 +57,13 @@ public class Slider extends MenuObject{
 				gl.glTexCoord2f(0,1);
 				gl.glVertex2f(minX, minY);
 			gl.glEnd();
-			textures[1].disable();}
+			sliderTextures[1].disable();}
 		
-		if (textures[2] != null){
+		if (nameTexture != null){
 			gl.glEnable(GL.GL_BLEND);
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-			textures[2].enable();
-			textures[2].bind();
+			nameTexture.enable();
+			nameTexture.bind();
 			//White background color for normal texture view
 			gl.glColor3f(255/255f, 255/255f, 255/255f);
 			gl.glBegin(GL.GL_QUADS);
@@ -74,7 +76,7 @@ public class Slider extends MenuObject{
 				gl.glTexCoord2f(0,1);
 				gl.glVertex2f(minX, minY + (maxY-minY)/2);
 			gl.glEnd();
-			textures[2].disable();}
+			nameTexture.disable();}
 		
 		
 	}

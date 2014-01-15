@@ -14,8 +14,8 @@ import loot.Stick;
 public class Enemy extends Creature implements VisibleObject{
 	
 	private final static int maxHP = 100;	// The maximum hp for the enemy
-	private final int rotationSpeed = 2;	// The enemy's rotation speed			
-	private final double maxSpeed = 0.009;	// the maximum speed for the enemy
+	private final int rotationSpeed = 3;	// The enemy's rotation speed			
+	private static double maxSpeed = 0.008;	// the maximum speed for the enemy
 	private double speed = maxSpeed;		// the enemy's speed
 	
 	private EnemyControl control;		// the enemies control
@@ -189,5 +189,9 @@ public class Enemy extends Creature implements VisibleObject{
 
 	protected void setControl(EnemyControl control) {
 		this.control = control;	
+	}
+	
+	public static void setMaxSpeed (double maxSpeedFraction) {
+		maxSpeed = 0.011*maxSpeedFraction;
 	}
 }
