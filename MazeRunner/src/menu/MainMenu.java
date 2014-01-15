@@ -20,6 +20,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	private PlayMenu playMenu;
 	private OptionsMenu optionsMenu;
 	private QuitMenu quitMenu;
+	private String mapName = null;
 	
 	public static MenuState menuState;
 	public Sound theme = new Sound("theme.wav");
@@ -143,6 +144,13 @@ public class MainMenu extends MenuObject implements MenuInterface{
 					GameStateManager.screenHeight/2+(GameStateManager.screenHeight/8));
 			playMenu.display(gl);
 			break;
+		case NEW:
+			playMenu.getLevelSelector().reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/8),
+					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/8),
+					GameStateManager.screenHeight/2-(GameStateManager.screenHeight/8),
+					GameStateManager.screenHeight/2+(GameStateManager.screenHeight/8));
+			playMenu.getLevelSelector().display(gl);
+			break;
 		case QUIT:
 			quitMenu.reshape(GameStateManager.screenWidth/2-(GameStateManager.screenWidth/16),
 					GameStateManager.screenWidth/2+(GameStateManager.screenWidth/16),
@@ -192,6 +200,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 		case MAIN:		updateMain(x,y); break;
 		case OPTIONS:	optionsMenu.update(x,y); break;
 		case PLAY:		playMenu.update(x,y); break;
+		case NEW:		playMenu.getLevelSelector().update(x,y); break;
 		case QUIT:		quitMenu.update(x,y); break;
 		default:
 			break;}
@@ -252,16 +261,25 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			
 		case PLAY:
 			switch(playMenu.getButton(x, y)) {
-			case PlayMenu.BACK: 	menuState = MenuState.MAIN; break;
-			case PlayMenu.CONTINUE: 
-				if (GameStateManager.mazeRunnerStarted) {
-					input.setGameState(GameState.INGAME); break;
-				}
-			case PlayMenu.NEW:		
-				menuState = MenuState.NEW;
-				break;}
+				case PlayMenu.BACK: 	menuState = MenuState.MAIN; break;
+				case PlayMenu.CONTINUE: 
+					if (GameStateManager.mazeRunnerStarted) {
+						input.setGameState(GameState.INGAME); break;
+					}
+				case PlayMenu.NEW:		
+					menuState = MenuState.NEW;
+					break;
+			}
 			break;
-			
+		case NEW:
+			if(playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)).equals("back"))
+				menuState = MenuState.PLAY;
+			else if(playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)) != null){
+				mapName = playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y));
+				input.setGameState(GameState.INGAME);
+				input.setNewGame(true);
+			}
+			break;
 		case QUIT:
 			switch(quitMenu.getButton(x, y)) {
 			case QuitMenu.YES: 		System.exit(0);	break;			
@@ -272,4 +290,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 
 		}
 	}
+	
+	public String getMapName(){return mapName;}
+	
 }

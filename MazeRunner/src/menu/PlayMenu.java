@@ -1,7 +1,5 @@
 package menu;
 
-import gamestate.GameStateManager;
-
 import java.io.File;
 
 import javax.media.opengl.GL;
@@ -35,6 +33,8 @@ public class PlayMenu extends MenuObject{
 		buttons[0] = new Button(minX,maxX,minY+(maxY-minY)*2/3,maxY, textures[0]);						//New
 		buttons[1] = new Button(minX,maxX,minY+(maxY-minY)/3,minY+(maxY-minY)*2/3, textures[1]);		//Continue
 		buttons[2] = new Button(minX,maxX,minY,minY+(maxY-minY)/3, textures[2]);							//Back
+		
+		levelSelector = new LevelSelector(minX,maxX,minY,maxY);
 	}
 	
 	public void loadTextures(){
@@ -65,25 +65,9 @@ public class PlayMenu extends MenuObject{
 	/**
 	 * Draw the menu
 	 */
-	public void displayPlayMenu(GL gl){
+	public void display(GL gl){
 		for(int i=0; i<buttons.length; i++)
 			buttons[i].display(gl);
-		
-	}
-	
-	public void display(GL gl){
-		System.out.println("PlayMenu: " + MainMenu.menuState);
-		switch(MainMenu.menuState) {
-		case PLAY:
-			displayPlayMenu(gl);
-			break;
-		case NEW:
-			levelSelector.display(gl);
-			break;
-		default:
-			break;
-		}
-		
 	}
 	
 	public void reshape(int minX, int maxX,int minY,int maxY){
@@ -113,4 +97,7 @@ public class PlayMenu extends MenuObject{
 		case CONTINUE: 		buttons[CONTINUE].setSelected(true);		break;
 		case BACK:		buttons[BACK].setSelected(true);		break;}
 	}
+	
+	public LevelSelector getLevelSelector(){return levelSelector;}
+	
 }

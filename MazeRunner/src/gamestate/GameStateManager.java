@@ -313,7 +313,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 		// setup new game if required
 		if (input.isNewGame()) {
 			mazeRunnerStarted = true;
-			String mazeName = Maze.selectMaze(this);
+			String mazeName = menu.getMapName();
 			
 			if (mazeName != null) {
 				try {

@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -292,15 +291,15 @@ public class DataBase {
 		}
 	}
 	
-	private boolean doesTableExists(String tableName,Connection conn) throws SQLException{
-		DatabaseMetaData dbmd = conn.getMetaData(); 
-		ResultSet rs = dbmd.getTables(null, null, tableName, null);
-		
-		if(rs.next())
-			return rs.getRow() == 1;
-		
-		return false;
-	}
+//	private boolean doesTableExists(String tableName,Connection conn) throws SQLException{
+//		DatabaseMetaData dbmd = conn.getMetaData(); 
+//		ResultSet rs = dbmd.getTables(null, null, tableName, null);
+//		
+//		if(rs.next())
+//			return rs.getRow() == 1;
+//		
+//		return false;
+//	}
 	private boolean doesMapNameExists(String name) throws SQLException{
 		ResultSet temp = statement.executeQuery("SELECT * FROM Map WHERE Name = '" + name + "';");
 		if(temp.next())

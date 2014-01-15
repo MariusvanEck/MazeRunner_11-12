@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLException;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
@@ -125,7 +124,32 @@ public class Button extends MenuObject{
 	 * Draw the button
 	 */
 	public void display(GL gl){
-		for(int i = 0; i < texture.length; i++){
+		if(texture.length == 1){
+				if(texture[0] != null){
+					gl.glEnable(GL.GL_BLEND);
+					gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+					texture[0].enable();
+					texture[0].bind();
+					//White background color for normal texture view
+					gl.glColor3f(255/255f, 255/255f, 255/255f);
+					if(selected){
+						gl.glColor3f(128/255f, 128/255f, 128/255f);
+					}
+					gl.glBegin(GL.GL_QUADS);
+						gl.glTexCoord2f(0,0);
+						gl.glVertex2f(minX, maxY);
+						gl.glTexCoord2f(1,0);
+						gl.glVertex2f(maxX, maxY);
+						gl.glTexCoord2f(1,1);
+						gl.glVertex2f(maxX, minY);
+						gl.glTexCoord2f(0,1);
+						gl.glVertex2f(minX, minY);
+					gl.glEnd();
+					texture[0].disable();
+				}
+				return;
+		}
+		for(int i = 0; i < texture.length && i < 8; i++){
 			if (texture[i] != null){
 				gl.glEnable(GL.GL_BLEND);
 				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -136,15 +160,16 @@ public class Button extends MenuObject{
 				if(selected){
 					gl.glColor3f(128/255f, 128/255f, 128/255f);
 				}
+				int sizeX = (maxX-minX)/8;
 				gl.glBegin(GL.GL_QUADS);
 					gl.glTexCoord2f(0,0);
-					gl.glVertex2f(minX, maxY);
+					gl.glVertex2f(minX+sizeX*i, maxY);
 					gl.glTexCoord2f(1,0);
-					gl.glVertex2f(maxX, maxY);
+					gl.glVertex2f(minX+sizeX*(i+1), maxY);
 					gl.glTexCoord2f(1,1);
-					gl.glVertex2f(maxX, minY);
+					gl.glVertex2f(minX+sizeX*(i+1), minY);
 					gl.glTexCoord2f(0,1);
-					gl.glVertex2f(minX, minY);
+					gl.glVertex2f(minX+sizeX*i, minY);
 				gl.glEnd();
 				texture[i].disable();
 			}
