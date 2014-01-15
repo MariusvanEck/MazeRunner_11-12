@@ -30,8 +30,8 @@ public class Player extends Creature {
 	private Control control;
 	private int score;
 	double t = 0;
-	int fx = 5;
-	int fy = 2*fx;
+	int fx = 10;
+	int fy = fx/2;
 	double Ax = 0.4;
 	double Ay = Ax/2;
 	
