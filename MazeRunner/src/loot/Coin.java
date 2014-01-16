@@ -16,7 +16,7 @@ public class Coin extends Loot {
 	 * @param modelFileLocation		The location of the model file
 	 */
 	public Coin(GL gl, int x, int z){
-		super(gl, x, z, modelFileLocation, textureFileLocation);
+		super(gl, x, z, 0.25f,modelFileLocation, textureFileLocation);
 	}
 	
 	/**

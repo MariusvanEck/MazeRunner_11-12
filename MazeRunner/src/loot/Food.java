@@ -3,11 +3,12 @@ package loot;
 import javax.media.opengl.GL;
 
 import mazerunner.Creature;
+import mazerunner.Maze;
 
 public class Food extends Loot {
 	private int hpIncrease;
-	private final static String 	modelFileLocation = "models/box.obj",
-									textureFileLocation = null;
+	private final static String 	modelFileLocation = "models/food/food.obj",
+									textureFileLocation = "models/food/food.png";
 	
 	
 	/**
@@ -19,7 +20,8 @@ public class Food extends Loot {
 	 * @param modelFileLocation		The location of the model file
 	 */
 	public Food(GL gl, int x, int z, int hpIncrease){
-		super(gl, x, z, modelFileLocation, textureFileLocation);
+		super(gl, x, z, 0.10f, modelFileLocation, textureFileLocation);
+		setLocationY(getLocationY() - Maze.SQUARE_SIZE/3);
 		this.hpIncrease = hpIncrease;
 	}
 	
