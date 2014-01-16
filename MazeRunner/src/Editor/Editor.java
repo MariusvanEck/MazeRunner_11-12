@@ -54,6 +54,10 @@ import database.DataBase;
  * 29 - Coin
  * 31 - Chest
  * 37 - SlidingWall
+ * 41 - TrapN
+ * 43 - TrapE
+ * 47 - TrapS
+ * 53 - TrapW
  * 97 - Player
  */
 
@@ -61,6 +65,7 @@ import database.DataBase;
  * TODO
  * - void draw eruit slopen
  * - alle functies beschrijven 
+ * - Het priemgetal van de traps word niet in lvl gezet
  */
 public class Editor extends JFrame implements GLEventListener, MouseListener, MouseMotionListener, ActionListener {
 
@@ -287,7 +292,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			}
 		}
 		text[0] = "Wall"; text[3] = "Door"; text[4] = "Chest"; text[5] = "Coin"; text[6] = "TorchN"; 
-		text[7] = "TorchE"; text[8] = "TorchS"; text[9] = "TorchW"; text[10] = "Food"; text[11] = "Enemy"; text[12] = "SlidingWall";
+		text[7] = "TorchE"; text[8] = "TorchS"; text[9] = "TorchW"; text[10] = "Food"; text[11] = "Enemy"; text[12] = "SlidingWall";text[13] ="TrapN";
+		text[14] ="TrapE";text[15] ="TrapS";text[16] ="TrapW";
 		text[25] = "LtoString"; text[26] = "Player"; text[27] = "Void"; text[28] = "Clear"; text[29] = "ClearAll";
 		
 		//Create the buttons on the left
@@ -332,18 +338,29 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	   	try {
 	   		levelTextures = new Texture[100];
 			levelTextures[1] = TextureIO.newTexture(new File("img\\Wall.png"), false);
+			levelTextures[37] = TextureIO.newTexture(new File("img\\SlidingWall.png"), false);
+			
 			levelTextures[2] = TextureIO.newTexture(new File("img\\TorchN.png"), false);
 			levelTextures[3] = TextureIO.newTexture(new File("img\\TorchE.png"), false);
 			levelTextures[5] = TextureIO.newTexture(new File("img\\TorchS.png"), false);
 			levelTextures[7] = TextureIO.newTexture(new File("img\\TorchW.png"), false);
+			
 			levelTextures[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
 			levelTextures[13] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			
 			levelTextures[19] = TextureIO.newTexture(new File("img\\Food.png"), false);
-			levelTextures[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
 			levelTextures[29] = TextureIO.newTexture(new File("img\\Coin.png"), false);
 			levelTextures[31] = TextureIO.newTexture(new File("img\\Chest.png"), false);
+			
+			levelTextures[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
 			levelTextures[97] = TextureIO.newTexture(new File("img\\Player.png"), false);
-			levelTextures[37] = TextureIO.newTexture(new File("img\\SlidingWall.png"), false);}
+			
+			
+	   		levelTextures[41] = TextureIO.newTexture(new File("img/TrapN.png"), false);
+	    	levelTextures[43] = TextureIO.newTexture(new File("img/TrapE.png"), false);
+	    	levelTextures[47] = TextureIO.newTexture(new File("img/TrapS.png"), false);
+	    	levelTextures[53] = TextureIO.newTexture(new File("img/TrapW.png"), false);
+	   	}
 	   	catch(Exception e) {e.printStackTrace();}
 	   	
 	   	Level.setTextureMaze(levelTextures);
@@ -658,13 +675,28 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		
 		//The wall draw button
 		if (btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
-			//System.out.println("Hier kan getekent worden");
 			level.level[X][Y-1] = 1;
 		}
 		
+		// TrapN draw button
+		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+			level.level[X][Y-1] = 41;
+		}
+		//TrapE draw button
+		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+			level.level[X][Y-1] = 43;
+		}
+		//TrapS draw button
+		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+			level.level[X][Y-1] = 47;
+		}
+		//TrapW draw button
+		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+			level.level[X][Y-1] = 53;
+		}
+		
 		//The slidingwall draw button
-		if (btn[12].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
-			//System.out.println("Hier kan getekent worden");
+		else if (btn[12].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 37;
 		}
 		
