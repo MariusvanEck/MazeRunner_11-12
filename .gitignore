@@ -1,7 +1,8 @@
 *.pydevproject
 .metadata
 .gradle
-bin/
+MazeRunner/bin/
+MazeRunner/mazerunner.db
 tmp/
 *.tmp
 *.bak
@@ -12,8 +13,7 @@ local.properties
 .loadpath
 .classpath
 .project
-.db
-mazes/
+
 
 # External tool builders
 .externalToolBuilders/
