@@ -17,9 +17,7 @@ public class Projectile extends GameObject{
 	private static String textureFileLocation = "models/textures/stone1.jpg";
 	
 	public Projectile(GL gl,double x,double y,double z,char direction,double speed){
-		this.locationX = x;
-		this.locationY = y;
-		this.locationZ = z;
+		super(x,y,z);
 		if(direction == 'N' || direction == 'E' || direction == 'S' || direction == 'W')
 			this.direction = direction;
 		else
@@ -30,7 +28,6 @@ public class Projectile extends GameObject{
 	}
 	
 	public void update(int deltaTime){
-		
 		switch(direction){
 			case 'N':
 				locationZ -= speed*deltaTime;
@@ -61,7 +58,6 @@ public class Projectile extends GameObject{
 	
 	
 	public void display(GL gl){
-		
 		model.render(gl, angle-=5, locationX, locationY, locationZ);
 	}
 	

@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import mazerunner.Player;
 import mazerunner.VisibleObject;
 
 public class TrapController implements VisibleObject {
-	private static ArrayList<Trap> list;
+	private static ArrayList<Trap> list = new ArrayList<Trap>();
+	private Player player;
 	
-	public TrapController(){
-		list = new ArrayList<Trap>();
+	
+	public TrapController(Player player){
+		this.player = player;
 	}
 	
 	public void addTrap(Trap trap){
@@ -28,7 +31,7 @@ public class TrapController implements VisibleObject {
 	
 	public void update(int deltaTime){
 		for(Trap t:list)
-			t.update(deltaTime);
+			t.update(deltaTime,player);
 	}
 	
 	public static void setTraps(ArrayList<Trap> traps) {

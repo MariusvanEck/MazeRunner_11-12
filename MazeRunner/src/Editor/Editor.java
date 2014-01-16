@@ -64,8 +64,7 @@ import database.DataBase;
 /*
  * TODO
  * - void draw eruit slopen
- * - alle functies beschrijven 
- * - Het priemgetal van de traps word niet in lvl gezet
+ * - alle functies beschrijven
  */
 public class Editor extends JFrame implements GLEventListener, MouseListener, MouseMotionListener, ActionListener {
 
@@ -355,13 +354,14 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			levelTextures[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
 			levelTextures[97] = TextureIO.newTexture(new File("img\\Player.png"), false);
 			
-			
 	   		levelTextures[41] = TextureIO.newTexture(new File("img/TrapN.png"), false);
 	    	levelTextures[43] = TextureIO.newTexture(new File("img/TrapE.png"), false);
 	    	levelTextures[47] = TextureIO.newTexture(new File("img/TrapS.png"), false);
 	    	levelTextures[53] = TextureIO.newTexture(new File("img/TrapW.png"), false);
 	   	}
-	   	catch(Exception e) {e.printStackTrace();}
+	   	catch(Exception e) {
+	   		e.printStackTrace();
+	   	}
 	   	
 	   	Level.setTextureMaze(levelTextures);
 	}
@@ -466,9 +466,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		 */
 		int k;
 		k = getButtonR(me.getX(),screenHeight-me.getY());
-		//DEV: System.out.println(k);
-		//DEV: System.out.println("Dit is knop "+ k + " aan de rechter kant");
-
 		//set 1 selected button to true for the level buttons
 		if(k >= 3 && k < nlevels+3){
 			btnr[k].setSelected(true);
@@ -679,19 +676,19 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		// TrapN draw button
-		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[13].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 41;
 		}
 		//TrapE draw button
-		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[14].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 43;
 		}
 		//TrapS draw button
-		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[15].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 47;
 		}
 		//TrapW draw button
-		else if(btn[0].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[16].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 53;
 		}
 		

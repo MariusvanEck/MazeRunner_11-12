@@ -1,14 +1,17 @@
 package trap;
 
 import javax.media.opengl.GL;
+
+import mazerunner.Creature;
 import mazerunner.Maze;
-import mazerunner.Player;
 
 public class ProjectileTrap extends Trap {
 	private Projectile projectile = null;
 	private boolean triggered;
 	private Maze maze;
 	private int lastUpdate = 0;
+	private char direction;
+	private double angle;
 	
 	private static String modelFileLocation = "models/trap/trapbase.obj";
 	private static String textureFileLocation = "models/textures/stone2.jpg";
@@ -26,39 +29,89 @@ public class ProjectileTrap extends Trap {
 	 * @param direction		The direction the Projectile goes (N,E,S,W)
 	 * @param speed			The speed relative to the player
 	 */
-	public ProjectileTrap(GL gl,Player player,Maze maze,double x,double y,double z,double activationX,double activationY,double activationZ,char direction,double speed){
-		super(gl,player,x,y,z,activationX,activationY,activationZ,modelFileLocation,textureFileLocation);
+	public ProjectileTrap(GL gl,Maze maze,double x,double z,char direction,double speed){
+		super(gl,x,z,modelFileLocation,textureFileLocation);
 		this.maze = maze;
-		projectile = new Projectile(gl,x,y,z,direction,speed*player.getSpeed());
+		this.direction = direction;
+		
+		switch(direction){
+			case 'N':
+			case 'n':
+				angle = 90;
+				break;
+			case 'E':
+			case 'e':
+				angle = 0;
+				break;
+			case 'S':
+			case 's':
+				angle = 270;
+				break;
+			case 'W':
+			case 'w':
+				angle = 180;
+		}
+		
+		
+		projectile = new Projectile(gl,locationX,locationY,locationZ,direction,speed);
 		this.triggered = false;
 	}
 	
-	public void update(int deltaTime){
-		double x = projectile.getX();
-		double z = projectile.getZ();
-		projectile.update(deltaTime);
+	public void update(int deltaTime,Creature creature){
 		
-		//TODO: klopt niet moet gewoon per x of z coord active coord skippen
-		if(this.near(player, Maze.SQUARE_SIZE/2))
-			triggered = true;
-		if(triggered && maze.isWall(projectile.getX(),projectile.getZ(),Math.abs(x-projectile.getX())) || maze.isStair(projectile.getX(), projectile.getZ(),Math.abs(z-projectile.getZ())))
-				projectile.setLocation(this.locationX, this.locationY, this.locationZ);
-		
-		if(projectile.near(player, Maze.SQUARE_SIZE/16) && lastUpdate > 500){
-			player.removeHP(projectile.getDamage());
-			projectile.setLocation(this.locationX, this.locationY, this.locationZ);
-			lastUpdate = 0;
+		if(!triggered){
+		// TODO: only Trigger if no wall is between the creature and the trap
+			double temp; // just for the warning
+			switch(direction){
+				case 'N':
+					if(creature.getLocationX() <= locationX && nearAxis(locationX,creature.getLocationX(),0.20))
+						this.triggered = true;
+					break;
+				case 'E':
+					if(creature.getLocationZ() >= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20))
+						this.triggered = true;
+					break;
+				case 'S':
+					if(creature.getLocationX() >= locationX && nearAxis(locationX,creature.getLocationX(),0.20))
+						this.triggered = true;
+					break;
+				case 'W':
+					if(creature.getLocationZ() <= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20))
+						this.triggered = true;
+					break;
+			}
 		}else{
-			lastUpdate += deltaTime;
-		}
 		
+			double x = projectile.getX();
+			double z = projectile.getZ();
+			projectile.update(deltaTime);
+			
+			if(triggered && maze.isWall(projectile.getX(),projectile.getZ(),Math.abs(x-projectile.getX())) || maze.isStair(projectile.getX(), projectile.getZ(),Math.abs(z-projectile.getZ())))
+					projectile.setLocation(this.locationX, this.locationY, this.locationZ);
+			
+			if(projectile.near(creature, Maze.SQUARE_SIZE/16) && lastUpdate > 500){
+				creature.removeHP(projectile.getDamage());
+				projectile.setLocation(this.locationX, this.locationY, this.locationZ);
+				lastUpdate = 0;
+			}else{
+				lastUpdate += deltaTime;
+			}
+		}
 	}
 	@Override
 	public void display(GL gl) {
-		model.render(gl, 90, locationX, locationY, locationZ);
+		model.render(gl, angle, locationX, locationY, locationZ);
 		
-		projectile.display(gl);
+		if(triggered)
+			projectile.display(gl);
 	}
 	
+	private double distanceToAxis(double axis,double pos){
+		return Math.abs(axis-pos);
+	}
+	
+	private boolean nearAxis(double axis,double pos,double near){
+		return (distanceToAxis(axis,pos) < near);
+	}
 	
 }
