@@ -13,7 +13,6 @@ import loot.Stick;
  */
 public class Enemy extends Creature implements VisibleObject{
 	
-	private final static int maxHP = 100;	// The maximum hp for the enemy
 	private final int rotationSpeed = 3;	// The enemy's rotation speed			
 	private static double maxSpeed = 0.008;	// the maximum speed for the enemy
 	private double speed = maxSpeed;		// the enemy's speed
@@ -44,10 +43,11 @@ public class Enemy extends Creature implements VisibleObject{
 		super(gl,x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
 				0, 
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 
-				maxHP, new Stick(gl), 
+				100, new Stick(gl), 
 				modelFileLocation, textureFileLocation);
 		
 		setHorAngle(horAngle);
+		setMaxHP(100);
 		
 		// create and set a control
 		setControl(new EnemyControl());

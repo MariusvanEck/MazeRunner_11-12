@@ -12,11 +12,10 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import trap.ProjectileTrap;
-import trap.TrapController;
 import loot.LootController;
 import loot.Sword;
 import loot.Weapon;
+import trap.TrapController;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
@@ -70,9 +69,6 @@ public class MazeRunner {
 		// set input
 		this.input = input;
 		
-		// set primes
-		LootController.primes();
-		
 		// load textures
 		loadTextures();
 	}
@@ -111,14 +107,11 @@ public class MazeRunner {
 							90, 0, 100, weapon);
 		
 		// Initialise the loot
-		lootController = new LootController(gl, player, maze);
+		lootController = new LootController(gl, player);
 		visibleObjects.add(lootController);
 		
 		// Initialise the Traps
 		trapController = new TrapController();
-		trapController.addTrap(new ProjectileTrap(gl,player,maze,spawnLocationX * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2,Maze.SQUARE_SIZE / 4,
-													spawnLocationZ * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2,spawnLocationX * Maze.SQUARE_SIZE,0,
-													spawnLocationZ * Maze.SQUARE_SIZE,'N',0.7));
 		visibleObjects.add(trapController);
 		
 		// initialise enemies and add
@@ -301,6 +294,7 @@ public class MazeRunner {
 		// Set camera according to the players position
 		updateCamera();
 		
+		// update the weapon location
 		updateWeaponLocation();
 	}
 	
@@ -308,6 +302,7 @@ public class MazeRunner {
 	 * updatePlayerMovement(int) updates the player position and oriention
 	 */
 	private void updatePlayerMovement(GL gl,int deltaTime) {
+		
 		// save current coordinates
 		double previousX = player.getLocationX();
 		double previousZ = player.getLocationZ();

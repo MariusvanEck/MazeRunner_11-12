@@ -24,7 +24,7 @@ public class SlidingWall extends Wall {
 	 * update function
 	 */
 	public void update(int deltaTime, Player player) {
-		if (this.near(player, 1)) {
+		if (this.near(player, 1.5)) {
 			if (locationY > locationYdown) {
 				locationY -= slidingspeed*deltaTime*Maze.SQUARE_SIZE;
 			}

@@ -23,7 +23,6 @@ import loot.Weapon;
  */
 public class Player extends Creature {
 	
-	public static final int maxHP = 200;
 	private double verAngle;
 	private double speed;
 	private double rotationSpeed;
@@ -49,6 +48,7 @@ public class Player extends Creature {
 	 */
 	public Player(GL gl, double x,double y,double z,double h,double v,int hitpoints,Weapon weapon){
 		super(gl,x,y,z,hitpoints,weapon,null,null);
+		setMaxHP(200);
 		setHorAngle(h);
 		setVerAngle(v);
 		speed = 0.01;

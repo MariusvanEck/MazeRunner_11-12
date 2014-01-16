@@ -11,12 +11,12 @@ import model.TexturedModel;
  */
 public abstract class Creature extends GameObject {
 	
-	protected double horAngle;						// the horizontal angle
+	protected double horAngle;							// the horizontal angle
 	protected int hitpoints;							// the number of hitpoints
 	protected int maxHP;								// the maximum number of hitpoints
 	
 	protected Weapon weapon;							// the weapon of the creature
-	protected TexturedModel texturedModel;			// the model of the Creature
+	protected TexturedModel texturedModel;				// the model of the Creature
 	
 	/**
 	 * The Creature constructor.
@@ -28,7 +28,8 @@ public abstract class Creature extends GameObject {
 	 * @param weapon			The weapon the creature has (null if no weapon)
 	 * @param modelFileLocation	The location of the model (.obj) file
 	 */
-	public Creature(GL gl,double x, double y, double z,int hitpoints,Weapon weapon,String modelFileLocation, String textureFileLocation){
+	public Creature(GL gl, double x, double y, double z, int hitpoints, 
+			Weapon weapon, String modelFileLocation, String textureFileLocation){
 		super(x,y,z);
 		this.hitpoints = hitpoints;
 		
@@ -61,13 +62,14 @@ public abstract class Creature extends GameObject {
 	 * @param add the amount to add
 	 * @return true if addHP was successful false otherwise
 	 */
-	public boolean addHP(int add){
+	public boolean addHP(int add) {
 		if(add <= 0 || hitpoints == maxHP)
 			return false;
 		if(hitpoints + add <= maxHP)
 			hitpoints += add;
 		else
 			hitpoints = maxHP;
+		
 		return true;
 	}
 	
@@ -75,7 +77,7 @@ public abstract class Creature extends GameObject {
 	 * Remove HP
 	 * @param remove amount to remove
 	 */
-	public void removeHP(int remove){
+	public void removeHP(int remove) {
 		if (hitpoints - remove > 0)
 			hitpoints -= remove;
 		else 
@@ -129,5 +131,20 @@ public abstract class Creature extends GameObject {
 	 */
 	public void setTexturedModel(TexturedModel texturedModel) {
 		this.texturedModel = texturedModel;
+	}
+
+	/**
+	 * Get the maximum HP
+	 */
+	public int getMaxHP() {
+		return maxHP;
+	}
+
+	/**
+	 * Set the maximum HP
+	 * @param maxHP
+	 */
+	public void setMaxHP(int maxHP) {
+		this.maxHP = maxHP;
 	}
 }
