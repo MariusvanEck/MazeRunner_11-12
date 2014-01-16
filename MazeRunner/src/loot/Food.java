@@ -35,7 +35,6 @@ public class Food extends Loot {
 	 * the display function
 	 */
 	public void display(GL gl) {
-		System.out.println("hier");
 		if (model == null) {
 			System.err.println("food model is null");
 		}
