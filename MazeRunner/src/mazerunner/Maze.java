@@ -39,6 +39,16 @@ public class Maze implements VisibleObject {
 	private ArrayList<Wall> walls;
 	private HashMap<Point,SlidingWall> slidingWalls;
 	
+	
+	
+	/**
+	 * The Maze Constructor loads the map from the DataBase into the memory
+	 * @param gl			GL for rendering the models
+	 * @param player		Player so the traps can react when a player is in range, and deal damage to the player
+	 * @param dataBase		DataBase is needed to load from
+	 * @param name			String Name of the Map  which will be loaded
+	 * @param textures		HashMap<> Contains the needed textures
+	 */
 	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
 		this.textures = textures;
 		this.levels = new ArrayList<int[][]>();
@@ -117,10 +127,18 @@ public class Maze implements VisibleObject {
 							slidingWalls.put(new Point(i,j), new SlidingWall(i,j));
 						
 						// check for Traps
-						// TODO: fix dit moeten ook nog wat bedenken voor de activation plaats iets als (same x or same Z)
-/*						if(currentLevel[i][j]% == 0){
-							traps.add(new ProjectileTrap(gl,player,this,i,Maze.SQUARE_SIZE / 4,j,activeX,activeY,activeZ,'N',0.7));
-						}*/
+						// Trap N
+						if(currentLevel[i][j]%41 == 0)
+							traps.add(new ProjectileTrap(gl,this,i,j,'N',0.01));
+						// Trap E
+						else if(currentLevel[i][j]%43 == 0)
+							traps.add(new ProjectileTrap(gl,this,i,j,'E',0.01));
+						// Trap S
+						else if(currentLevel[i][j]%47 == 0)
+							traps.add(new ProjectileTrap(gl,this,i,j,'S',0.01));
+						// Trap W
+						else if(currentLevel[i][j]%53 == 0)
+							traps.add(new ProjectileTrap(gl,this,i,j,'W',0.01));
 					}
 				}
 			}
