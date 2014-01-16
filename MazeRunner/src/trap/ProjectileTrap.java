@@ -60,8 +60,6 @@ public class ProjectileTrap extends Trap {
 	public void update(int deltaTime,Creature creature){
 		
 		if(!triggered){
-		// TODO: only Trigger if no wall is between the creature and the trap
-			double temp; // just for the warning
 			switch(direction){
 				case 'N':
 					if(creature.getLocationX() <= locationX && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))

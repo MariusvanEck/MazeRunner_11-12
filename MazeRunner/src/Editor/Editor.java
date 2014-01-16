@@ -97,11 +97,16 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	//New Maze Menu variables
 	private JTextField size = new JTextField();
 	private JTextField nlev = new JTextField();
+	private JTextField mapName = new JTextField();
 	private JFrame frame = new JFrame("Create New Maze");
+	private JFrame saveFrame = new JFrame("Save Map");
 	private JButton newmaze = new JButton("Create New Maze");
+	private JButton saveMap = new JButton("Save");
 	private JPanel paneln = new JPanel(); //the north panel
+	private JPanel savePanel = new JPanel();
 	private JLabel sizel = new JLabel("Level size(3-63): ");
 	private JLabel nlevl = new JLabel("Number of levels (1-12): ");
+	private JLabel mapNamel = new JLabel("name");
 	private JFileChooser chooser = new JFileChooser();
     File file = new File("mazes\\test.maze");
     FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", "maze");
@@ -516,7 +521,33 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Saving a file
-		else if (k == 1){
+		// TODO: blkaj
+		else if(k == 1){
+			toFront();
+			setSize(1,1);
+			saveFrame.setAlwaysOnTop(true);
+		    saveFrame.setSize(250, 120);
+		    saveFrame.setVisible(true);
+		    saveFrame.setResizable(false);
+		    saveFrame.toFront();
+		    
+		    saveMap.addActionListener(new saveActionListener(this));
+		    
+		    mapName.setPreferredSize(new Dimension(150,20));
+		    
+		    savePanel.setBackground(Color.WHITE);
+		    savePanel.add(mapNamel);
+		    savePanel.add(mapName);
+		    savePanel.add(saveMap);
+		    //add the panel to the frame
+		    saveFrame.add(savePanel);
+		    
+			btnr[1].setSelected(false);
+			saveFrame.toFront();
+			
+			
+		}
+/*		else if (k == 1){
 			setSize(1,1);
             System.out.println("Starting Save");
             chooser.setFileFilter(filter);
@@ -565,7 +596,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
             System.out.println("Save Completed!");
             btnr[1].setSelected(false);
             setSize(screenWidth,screenHeight);
-        }
+        }*/
         
         //Loading a file
         else if (k == 2){
@@ -824,6 +855,18 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 	}
 	
+	protected void resetSize(){
+		setSize(screenWidth,screenHeight);
+	}
+	
+	protected String getMapName(){
+		return mapName.getText();
+	}
+	
+	protected JFrame getSaveFrame(){
+		return saveFrame;
+	}
+	
 	@Override
 	public void mouseDragged(MouseEvent me) {
 		//The wall and floor draw buttons can be dragged for easier drawing
@@ -837,19 +880,15 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("Button Pressed");
         setSize(screenWidth,screenHeight);
-        mazeX = 0;
-        nlevels = 0;
-        
-        try{nlevels = Integer.parseInt(nlev.getText());}
-        catch (NumberFormatException ex){System.out.println("One or more invalid numbers were entered");}
-        
+        // TODO: 
         try{
+        	nlevels = Integer.parseInt(nlev.getText());
         	mazeX = Integer.parseInt(size.getText());
         	Level.updateMazeX(mazeX);
         	Level.updateMazeL(mazeL);
-        
+        }catch (NumberFormatException ex){
+        	System.out.println("One or more invalid numbers were entered");
         }
-        catch (NumberFormatException ex){System.out.println("One or more invalid numbers were entered");}
         
         if (mazeX < 3 || mazeX > 63){
             mazeX = 63;
