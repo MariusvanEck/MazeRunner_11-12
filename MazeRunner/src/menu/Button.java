@@ -132,7 +132,7 @@ public class Button extends MenuObject{
 					texture[0].bind();
 					//White background color for normal texture view
 					gl.glColor3f(255/255f, 255/255f, 255/255f);
-					if(selected){
+					if(!selected){
 						gl.glColor3f(128/255f, 128/255f, 128/255f);
 					}
 					gl.glBegin(GL.GL_QUADS);
@@ -146,6 +146,7 @@ public class Button extends MenuObject{
 						gl.glVertex2f(minX, minY);
 					gl.glEnd();
 					texture[0].disable();
+					gl.glColor3f(255/255f, 255/255f, 255/255f);
 				}
 				return;
 		}
@@ -157,7 +158,7 @@ public class Button extends MenuObject{
 				texture[i].bind();
 				//White background color for normal texture view
 				gl.glColor3f(255/255f, 255/255f, 255/255f);
-				if(selected){
+				if(!selected){
 					gl.glColor3f(128/255f, 128/255f, 128/255f);
 				}
 				int sizeX = (maxX-minX)/8;
@@ -172,6 +173,7 @@ public class Button extends MenuObject{
 					gl.glVertex2f(minX+sizeX*i, minY);
 				gl.glEnd();
 				texture[i].disable();
+				gl.glColor3f(255/255f, 255/255f, 255/255f);
 			}
 		}
 	}
