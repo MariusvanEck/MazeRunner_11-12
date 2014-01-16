@@ -64,19 +64,19 @@ public class ProjectileTrap extends Trap {
 			double temp; // just for the warning
 			switch(direction){
 				case 'N':
-					if(creature.getLocationX() <= locationX && nearAxis(locationX,creature.getLocationX(),0.20))
+					if(creature.getLocationX() <= locationX && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'E':
-					if(creature.getLocationZ() >= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20))
+					if(creature.getLocationZ() >= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'S':
-					if(creature.getLocationX() >= locationX && nearAxis(locationX,creature.getLocationX(),0.20))
+					if(creature.getLocationX() >= locationX && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'W':
-					if(creature.getLocationZ() <= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20))
+					if(creature.getLocationZ() <= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 			}
