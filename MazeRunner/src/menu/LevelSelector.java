@@ -99,7 +99,6 @@ public class LevelSelector extends MenuObject{
 	
 	
 	public String getName(int index){
-		System.out.println(index + "\t" + names.length);
 		if(index == 0)
 			return"up";
 		if(index < names.length+1)
