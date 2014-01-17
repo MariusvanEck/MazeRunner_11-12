@@ -90,7 +90,7 @@ public class Player extends Creature {
 				setVerAngle(getVerAngle() + Ax*Math.sin(fx*t));
 				setHorAngle(getHorAngle() + Ay*Math.sin(fy*t));
 				
-				if(t > GCD(fx,fy)){
+				if(t > 5){ // t > GCD(fx,fy) dus als ze een veelvoud van elkaar zijn, het laagste getal.
 					t = 0;
 				}
 			}
@@ -98,15 +98,7 @@ public class Player extends Creature {
 			
 		}
 	}
-	
-	// greatest common divisor, needed to calculate the period of the lissajous figure the headbob makes
-	private static int GCD(int fx, int fy){
-		if(fy == 0){
-			return fx;
-		}
-		return GCD(fy, fx%fy);
-	}
-	
+
 	
 	/*
 	 * **********************************************
