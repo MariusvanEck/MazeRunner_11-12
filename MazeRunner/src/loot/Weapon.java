@@ -64,7 +64,7 @@ public abstract class Weapon extends Loot implements VisibleObject{
 	}
 
 	public void setWieldX(double wieldX) {
-		this.wieldX = wieldX;
+		this.wieldX = wieldX; 
 	}
 
 	public void setWieldY(double wieldY) {
@@ -76,18 +76,26 @@ public abstract class Weapon extends Loot implements VisibleObject{
 	}
 
 	public void setAngleX(double angleX) {
-		this.angleX = angleX;
+		this.angleX = angleX; // up and down when looking sideways
 	}
 
 	public void setAngleY(double angleY) {
-		this.angleY = angleY;
+		this.angleY = angleY; // sideways, without effects
 	}
 
 	public void setAngleZ(double angleZ) {
-		this.angleZ = angleZ;
+		this.angleZ = angleZ; // twists the sword
 	}
 	
 	public double getAngleY() {
 		return angleY;
+	}
+	
+	public double getAngleX() {
+		return angleX;
+	}
+	
+	public double getAngleZ() {
+		return angleZ;
 	}
 }
