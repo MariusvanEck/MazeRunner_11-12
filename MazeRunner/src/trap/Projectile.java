@@ -14,7 +14,7 @@ public class Projectile extends GameObject{
 	private final int damage = 10;
 	
 	private static String modelFileLocation = "models/trap/projectile.obj";
-	private static String textureFileLocation = "models/textures/stone1.jpg";
+	private static String textureFileLocation = "models/trap/projectile.png";
 	
 	public Projectile(GL gl,double x,double y,double z,char direction,double speed){
 		super(x,y,z);

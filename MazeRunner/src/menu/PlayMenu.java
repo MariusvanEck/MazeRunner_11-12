@@ -39,9 +39,9 @@ public class PlayMenu extends MenuObject{
 	
 	public void loadTextures(){
 		try {
-			textures[0] = TextureIO.newTexture(new File("textures\\new.png"), false);
-			textures[1] = TextureIO.newTexture(new File("textures\\continue.png"), false);
-			textures[2] = TextureIO.newTexture(new File("textures\\back.png"), false);
+			textures[0] = TextureIO.newTexture(new File("textures/menu/new.png"), false);
+			textures[1] = TextureIO.newTexture(new File("textures/menu/continue.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures/menu/back.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

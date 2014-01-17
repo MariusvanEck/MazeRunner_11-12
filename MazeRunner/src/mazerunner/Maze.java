@@ -428,7 +428,7 @@ public class Maze implements VisibleObject {
 		currentTexture.disable(); // disable floor texture
 		
 		//// roofs ////
-		bindCurrentTexture("floor"); // bind roof texture
+		bindCurrentTexture("roof"); // bind roof texture
 		for(Roof r : roofs) {
 			r.display(gl);}
 		currentTexture.disable(); // disable roof texture
