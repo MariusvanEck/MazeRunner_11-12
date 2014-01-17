@@ -28,7 +28,7 @@ public class LevelSelector extends MenuObject{
 		
 		
 		try {
-			back = TextureIO.newTexture(new File("textures/back.png"), false);
+			back = TextureIO.newTexture(new File("textures/Menu/back.png"), false);
 			arrowU = TextureIO.newTexture(new File("textures/Alfabet/arrowU.png"), false);
 			arrowD = TextureIO.newTexture(new File("textures/Alfabet/arrowD.png"), false);
 		} catch (GLException e) {

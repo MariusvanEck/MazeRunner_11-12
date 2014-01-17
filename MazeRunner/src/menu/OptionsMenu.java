@@ -42,11 +42,11 @@ public class OptionsMenu extends MenuObject{
 	
 	public void loadTextures(){
 		try {
-			textures[0] = TextureIO.newTexture(new File("textures\\volume.png"), false);
-			textures[1] = TextureIO.newTexture(new File("textures\\difficulty.png"), false);
-			textures[2] = TextureIO.newTexture(new File("textures\\back.png"), false);
-			sliderTextures[0] = TextureIO.newTexture(new File("textures\\slider1.png"), false);
-			sliderTextures[1] = TextureIO.newTexture(new File("textures\\slider2.png"), false);
+			textures[0] = TextureIO.newTexture(new File("textures/menu/volume.png"), false);
+			textures[1] = TextureIO.newTexture(new File("textures/menu/difficulty.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures/menu/back.png"), false);
+			sliderTextures[0] = TextureIO.newTexture(new File("textures/menu/slider1.png"), false);
+			sliderTextures[1] = TextureIO.newTexture(new File("textures/menu/slider2.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

@@ -1,11 +1,15 @@
 package mazerunner;
 
+import gamestate.UserInput;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
 import javax.media.opengl.GL;
+
+import loot.Sword;
 
 public class EnemyAI implements VisibleObject{
 	
@@ -51,41 +55,19 @@ public class EnemyAI implements VisibleObject{
 			enemy = it.next();
 			control = (EnemyControl) enemy.getControl();
 			
+			// when the enemy has 0 health remove and continue
+			if (enemy.getHitpoints() <= 0) {it.remove();}
+			
 			// when the enemy hit a wall add an in between target//
 			if(enemy.hasHitWall() && control.targets.size() < 2) {
 				Location inBetweenTarget = 
 						avoidWall(enemy, control.targets.get(control.targets.size()-1), 0.2);
 				control.targets.add(0, inBetweenTarget);}
 			
+			// Update enemy Aggro
 			boolean wasPlayerVisible = enemy.isPlayerVisible();
 			boolean isPlayerVisible = derivePlayerVisible();			
-			
-			if (isPlayerVisible) {
-				// if the player is and was visible update the targets player location
-				// (last member of targets arraylist)
-				if (wasPlayerVisible) {control.updateMainTarget(player.locationX, player.locationZ);}
-				// if the player is visible and was invisible update the main target
-				else {control.updateMainTarget(player.locationX, player.locationZ);}}
-				
-			else if (!isPlayerVisible){
-				// if the player has just become invisible start the "aggro" timer
-				if (wasPlayerVisible) {
-					enemy.setTimePassed(deltaTime);}
-				
-				// if the player stays invisible increment the "aggro" timer
-				else if (enemy.getTimePassed() > 0 && enemy.getTimePassed() < 3000) {
-					enemy.setTimePassed(enemy.getTimePassed() + deltaTime);
-					//after a certain time set the next target (lose "aggro")
-					if (enemy.getTimePassed() >= 3000) {
-						nextTarget(enemy, control, memory);
-						enemy.setTimePassed(0);
-						enemy.setMemory(maze.currentGridPoint(enemy));}}
-				
-				// If an enemy reached the next location in the list, delete this location 
-				// and add to the global memory
-				if (enemy.atTarget(Maze.SQUARE_SIZE/100d)) {
-					control.targets.remove(0);
-					memory.add(0, maze.currentGridPoint(enemy));}}
+			updateEnemyAgro(isPlayerVisible, wasPlayerVisible, deltaTime);
 			
 			// if the target list is empty get a new target
 			if (control.targets.isEmpty()) {
@@ -96,19 +78,61 @@ public class EnemyAI implements VisibleObject{
 			if (control.getAngleToRotate() < 15)
 				enemy.getWeapon().doDamage(player);
 			
+			// damage the enemy with the players weapon
+			if (UserInput.wasMousePressed())
+				damageEnemy();
+			
 			// update the Enemy's control
 			control.setPlayerVisible(isPlayerVisible);
 			control.update();
 		}
 		
+		// reset wasMousePressed
+		UserInput.resetMousePressed();
 	}
 
+
+
+	/**
+	 * Update the enemy's targets according to the current aggresive state tov the player
+	 */
+	private void updateEnemyAgro(boolean ipv, boolean wpv, int deltaTime) {
+		
+		
+		if (ipv) {
+			// if the player is and was visible update the targets player location
+			// (last member of targets arraylist)
+			if (wpv) {control.updateMainTarget(player.locationX, player.locationZ);}
+			// if the player is visible and was invisible update the main target
+			else {control.updateMainTarget(player.locationX, player.locationZ);}}
+			
+		else if (!ipv){
+			// if the player has just become invisible start the "aggro" timer
+			if (wpv) {
+				enemy.setTimePassed(deltaTime);}
+			
+			// if the player stays invisible increment the "aggro" timer
+			else if (enemy.getTimePassed() > 0 && enemy.getTimePassed() < 3000) {
+				enemy.setTimePassed(enemy.getTimePassed() + deltaTime);
+				//after a certain time set the next target (lose "aggro")
+				if (enemy.getTimePassed() >= 3000) {
+					nextTarget(enemy, control, memory);
+					enemy.setTimePassed(0);
+					enemy.setMemory(maze.currentGridPoint(enemy));}}
+			
+			// If an enemy reached the next location in the list, delete this location 
+			// and add to the global memory
+			if (enemy.atTarget(Maze.SQUARE_SIZE/100d)) {
+				control.targets.remove(0);
+				memory.add(0, maze.currentGridPoint(enemy));}}
+	}
+	
 	/**
 	 * derivePlayerVisible() checks for the current enemy if it can see the player
 	 * 
 	 * @return
 	 */
-	public boolean derivePlayerVisible() {
+	private boolean derivePlayerVisible() {
 		// is the player in the enemy's viewing cone
 		boolean inCone = enemy.derivePlayerInCone(player);
 		// is the player close to the enemy
@@ -126,7 +150,7 @@ public class EnemyAI implements VisibleObject{
 	/**
 	 * returns an in between location to avoid a wall in the way of an enemy's target
 	 */
-	public Location avoidWall(Enemy enemy, Location target, double objectSize) {
+	private Location avoidWall(Enemy enemy, Location target, double objectSize) {
 		
 		double xSign = Math.signum(target.locationX - enemy.locationX);
 		double zSign = Math.signum(target.locationZ - enemy.locationZ);
@@ -153,7 +177,7 @@ public class EnemyAI implements VisibleObject{
 	 * Sets the next target for an enemy when the player is not visible
 	 * randomly
 	 */
-	public void nextTarget(Enemy enemy, EnemyControl control, ArrayList<Point> memory) {
+	private void nextTarget(Enemy enemy, EnemyControl control, ArrayList<Point> memory) {
 		
 		// the possible locations list for the enemy
 		ArrayList<Point> possibleLocations = new ArrayList<Point>();
@@ -215,6 +239,17 @@ public class EnemyAI implements VisibleObject{
 							((double) nextLocation.y + 0.5) * Maze.SQUARE_SIZE);
 	}
 	
+	/** 
+	 * damage the enemy
+	 */
+	private void damageEnemy() {
+		double enemyAngle = (180/Math.PI)*
+				Math.atan2(player.locationX - enemy.locationX, player.locationZ - enemy.locationZ);
+		
+		boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(player.getHorAngle())) < 10;
+			
+		((Sword) player.getWeapon()).swingSword(enemy, incone);
+	}
 	
 	/*
 	 * **********************************************
@@ -236,6 +271,9 @@ public class EnemyAI implements VisibleObject{
 		EnemyAI.enemies = enemies;
 	}
 
+	/**
+	 * Display the enemies
+	 */
 	@Override
 	public void display(GL gl) {
 		for (Enemy enemy : enemies) {

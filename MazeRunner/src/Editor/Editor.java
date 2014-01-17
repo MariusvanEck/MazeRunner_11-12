@@ -253,32 +253,30 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		
 		//Loading all the textures
 		try {
-			textureLeft[1] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
-			textureLeft[2] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			textureLeft[1] = TextureIO.newTexture(new File("textures/Editor/StairsL.png"), false);
+			textureLeft[2] = TextureIO.newTexture(new File("textures/Editor/StairsH.png"), false);
 			
 			levelTextures = new Texture[100];
-			levelTextures[1] = TextureIO.newTexture(new File("img\\Wall.png"), false);
-			levelTextures[37] = TextureIO.newTexture(new File("img\\SlidingWall.png"), false);
+			levelTextures[1] = TextureIO.newTexture(new File("textures/Editor/Wall.png"), false);
+			levelTextures[37] = TextureIO.newTexture(new File("textures/Editor/SlidingWall.png"), false);
 			
-			levelTextures[2] = TextureIO.newTexture(new File("img\\Gold1.png"), false);
-			levelTextures[3] = TextureIO.newTexture(new File("img\\Gold2.png"), false);
-			levelTextures[5] = TextureIO.newTexture(new File("img\\Gold3.png"), false);
-			levelTextures[7] = TextureIO.newTexture(new File("img\\Gold4.png"), false);
+			levelTextures[2] = TextureIO.newTexture(new File("textures/Editor/Gold1.png"), false);
+			levelTextures[3] = TextureIO.newTexture(new File("textures/Editor/Gold2.png"), false);
+			levelTextures[5] = TextureIO.newTexture(new File("textures/Editor/Gold3.png"), false);
+			levelTextures[7] = TextureIO.newTexture(new File("textures/Editor/Gold4.png"), false);
 			
-			levelTextures[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
-			levelTextures[13] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			levelTextures[11] = TextureIO.newTexture(new File("textures/Editor/StairsL.png"), false);
+			levelTextures[13] = TextureIO.newTexture(new File("textures/Editor/StairsH.png"), false);
 			
-			levelTextures[19] = TextureIO.newTexture(new File("img\\Food.png"), false);
-			levelTextures[29] = TextureIO.newTexture(new File("img\\Coin.png"), false);
-			levelTextures[31] = TextureIO.newTexture(new File("img\\Chest.png"), false);
+			levelTextures[19] = TextureIO.newTexture(new File("textures/Editor/Food.png"), false);
 			
-			levelTextures[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
-			levelTextures[97] = TextureIO.newTexture(new File("img\\Player.png"), false);
+			levelTextures[23] = TextureIO.newTexture(new File("textures/Editor/Enemy.png"), false);
+			levelTextures[97] = TextureIO.newTexture(new File("textures/Editor/Player.png"), false);
 			
-	   		levelTextures[41] = TextureIO.newTexture(new File("img/TrapN.png"), false);
-	    	levelTextures[43] = TextureIO.newTexture(new File("img/TrapE.png"), false);
-	    	levelTextures[47] = TextureIO.newTexture(new File("img/TrapS.png"), false);
-	    	levelTextures[53] = TextureIO.newTexture(new File("img/TrapW.png"), false);
+	   		levelTextures[41] = TextureIO.newTexture(new File("textures/Editor/TrapN.png"), false);
+	    	levelTextures[43] = TextureIO.newTexture(new File("textures/Editor/TrapE.png"), false);
+	    	levelTextures[47] = TextureIO.newTexture(new File("textures/Editor/TrapS.png"), false);
+	    	levelTextures[53] = TextureIO.newTexture(new File("textures/Editor/TrapW.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

@@ -33,9 +33,9 @@ public class QuitMenu extends MenuObject{
 	
 	public void loadTextures(){
 		try {
-			textures[0] = TextureIO.newTexture(new File("textures\\yes.png"), false);
-			textures[1] = TextureIO.newTexture(new File("textures\\no.png"), false);
-			textures[2] = TextureIO.newTexture(new File("textures\\sure.png"), false);
+			textures[0] = TextureIO.newTexture(new File("textures/Menu/yes.png"), false);
+			textures[1] = TextureIO.newTexture(new File("textures/Menu/no.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures/Menu/sure.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

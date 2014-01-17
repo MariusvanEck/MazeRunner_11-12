@@ -14,7 +14,7 @@ public class ProjectileTrap extends Trap {
 	private double angle;
 	
 	private static String modelFileLocation = "models/trap/trapbase.obj";
-	private static String textureFileLocation = "models/textures/stone2.jpg";
+	private static String textureFileLocation = "models/trap/trapbase.png";
 	
 	/**
 	 * @param gl			GL for the rendering

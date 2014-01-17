@@ -68,11 +68,11 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	 */
 	public void loadTextures(){
 		try {
-			textures[0] = TextureIO.newTexture(new File("textures\\Background.png"), false);
-			textures[1] = TextureIO.newTexture(new File("textures\\Play.png"), false);
-			textures[2] = TextureIO.newTexture(new File("textures\\options.png"), false);
-			textures[3] = TextureIO.newTexture(new File("textures\\editor.png"), false);
-			textures[4] = TextureIO.newTexture(new File("textures\\quit.png"), false);
+			textures[0] = TextureIO.newTexture(new File("textures/menu/Background.png"), false);
+			textures[1] = TextureIO.newTexture(new File("textures/menu/Play.png"), false);
+			textures[2] = TextureIO.newTexture(new File("textures/menu/options.png"), false);
+			textures[3] = TextureIO.newTexture(new File("textures/menu/editor.png"), false);
+			textures[4] = TextureIO.newTexture(new File("textures/menu/quit.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
