@@ -33,7 +33,6 @@ public class UserInput extends Control
 	
 	private GameState gameState;
 	
-	public Point mousePressedLocation;						// the mouse pressed location in canvas coordinates
 	public Point mouseLocation;								// the mouse location in canvas coordinates
 	private Point screenCenter;								// the screen center in screen coordinates
 	private Dimension screenSize;							// the screen size
@@ -41,7 +40,7 @@ public class UserInput extends Control
 	
 	private Robot robot;									// used for centering the mouse
 	
-	protected boolean wasMousePressed;						// boolean indicating a mouse press
+	private static boolean wasMousePressed;						// boolean indicating a mouse press
 	private boolean newGame = false;						// boolean indicating a new game start
 	
 	/**
@@ -116,17 +115,14 @@ public class UserInput extends Control
 	 */
 
 	/**
-	 * Detects where and if the mouse was pressed
-	 * depending on 
+	 * Detects if the mouse was pressed
 	 */
 	@Override
 	public void mousePressed(MouseEvent event)
 	{
-		if (gameState == GameState.INGAME) {
-			mousePressedLocation = new Point(event.getX(), event.getY());
+		if (gameState == GameState.INGAME || gameState == GameState.MENU) {
+			wasMousePressed = true;
 		}
-		else if (gameState == GameState.MENU) {
-			wasMousePressed = true;}
 	}
 	
 	/**
@@ -197,14 +193,14 @@ public class UserInput extends Control
 	/**
 	 * @return Returns true if mouse was clicked
 	 */
-	public boolean wasMousePressed() {
+	public static boolean wasMousePressed() {
 		return wasMousePressed;
 	}
 	
 	/**
 	 * resets the mouse to not clicked
 	 */
-	public void resetMousePressed() {
+	public static void resetMousePressed() {
 		wasMousePressed = false;
 	}
 	
