@@ -168,9 +168,9 @@ public class MazeRunner {
 		textures = new HashMap<String, Texture>();
 		
 		try {
-			textures.put("wall", TextureIO.newTexture(new File("textures\\dungeon_wall.jpg"), false));
-			textures.put("floor", TextureIO.newTexture(new File("textures\\dungeon_floor.jpg"), false));
-			textures.put("roof", TextureIO.newTexture(new File("textures\\dungeon_roof.jpg"), false));}
+			textures.put("wall", TextureIO.newTexture(new File("textures/Level/wall.png"), false));
+			textures.put("floor", TextureIO.newTexture(new File("textures/Level/floor.png"), false));
+			textures.put("roof", TextureIO.newTexture(new File("textures/Level/floor.png"), false));}
 
 		catch (Exception e) {e.printStackTrace(); System.exit(0);}
 	}
