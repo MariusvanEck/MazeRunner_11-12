@@ -160,4 +160,8 @@ public class Player extends Creature {
 	
 	public String getName(){return name;}
 	public int getScore(){return score;}
+	public void addScore(int add){
+		if(add > 0)
+			score+= add;
+	}
 }

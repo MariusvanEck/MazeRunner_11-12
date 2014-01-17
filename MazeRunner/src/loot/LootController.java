@@ -52,6 +52,11 @@ public class LootController implements VisibleObject {
 						lootIterator.remove();
 					}
 				}
+			}else if(currentLoot instanceof Gold){
+				if(currentLoot.near(player, .2)){
+					player.addScore(10);
+					lootIterator.remove();
+				}
 			}
 		}
 	}
