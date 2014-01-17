@@ -2,10 +2,11 @@ package loot;
 
 import javax.media.opengl.GL;
 
-public class Coin extends Loot {
+public class Gold extends Loot {
 	
-	private static final String	modelFileLocation = "models/box.obj",
-								textureFileLocation = null;
+	private static final String	modelFileLocation = "models/gold/gold.obj",
+								textureFileLocation = "models/gold/gold.png";
+	private double angle;
 	
 	/**
 	 * Food constructor
@@ -15,8 +16,9 @@ public class Coin extends Loot {
 	 * @param hpIncrease 			The HP that will be regenerated
 	 * @param modelFileLocation		The location of the model file
 	 */
-	public Coin(GL gl, int x, int z){
-		super(gl, x, z, 0.25f,modelFileLocation, textureFileLocation);
+	public Gold(GL gl, double x, double z){
+		super(gl, x, 0, z, 0.25f,modelFileLocation, textureFileLocation);
+		angle = Math.random()*360;
 	}
 	
 	/**
@@ -27,7 +29,7 @@ public class Coin extends Loot {
 			System.err.println("food model is null");
 		}
 		else 
-			model.render(gl, 0, locationX, locationY, locationZ);
+			model.render(gl, angle, locationX, locationY, locationZ);
 	}
 	
 	

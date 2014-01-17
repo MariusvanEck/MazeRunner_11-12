@@ -25,6 +25,12 @@ public abstract class Loot extends GameObject implements VisibleObject {
 			model = new TexturedModel(gl,new Model(modelFileLocation,scale), textureFileLocation);
 	}
 	
+	public Loot(GL gl, double x, double y, double z, float scale, String modelFileLocation, String textureFileLocation){
+		super(x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, y*Maze.SQUARE_SIZE, z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2);
+		if(modelFileLocation != null)
+			model = new TexturedModel(gl,new Model(modelFileLocation,scale), textureFileLocation);
+	}
+	
 	//wielding loot
 	public Loot(GL gl,String modelFileLocation,String textureFileLocation){
 		if(modelFileLocation != null)
