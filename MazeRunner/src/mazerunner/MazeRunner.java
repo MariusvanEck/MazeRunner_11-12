@@ -124,7 +124,8 @@ public class MazeRunner {
 		
 		weapon = new Sword(gl, "models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword.obj",
 				"models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword_D.tga");
-	
+		player.setWeapon(weapon);
+		weapon.setCreature(player);
 		visibleObjects.add(weapon);
 		
 		// set player control
@@ -373,17 +374,26 @@ public class MazeRunner {
 	 * updateWeaponLocation() updates the weapon location so that the player holds the weapon in his hands.
 	 */
 	private void updateWeaponLocation(){	
-		double weaponAngleX = 0;
+		//double weaponAngleX = 0;
 		double weaponAngleY = player.getHorAngle();
-		double weaponAngleZ = 0;
+		double weaponAngleZ = 90;
+		weapon.setAngleX(10);
+		weapon.setAngleY(weaponAngleY); // sideways, without effects
+		weapon.setAngleZ(weaponAngleZ); // twists sword
 		
-		weapon.setWieldX(player.getLocationX() + 0.2*Maze.SQUARE_SIZE*Math.cos(Math.toRadians(player.getHorAngle())));
-		weapon.setWieldY(player.getLocationY() - Maze.SQUARE_SIZE/20);
-		weapon.setWieldZ(player.getLocationZ() - 0.2*Maze.SQUARE_SIZE*Math.sin(Math.toRadians(player.getHorAngle())));
+		weapon.setWieldX(player.getLocationX() + Math.cos(Math.toRadians(player.getHorAngle())));
+		weapon.setWieldY(player.getLocationY() - 0.5);
+		weapon.setWieldZ(player.getLocationZ() - Math.sin(Math.toRadians(player.getHorAngle())));
+		player.setVerAngle(0);
+		//double c = Math.cos(Math.toRadians(player.getHorAngle()%360)) - Math.cos(2*Math.toRadians(player.getHorAngle()%360));// + Math.sin(Math.toRadians(player.getHorAngle()%360));
+		//System.out.println(c);
+		System.out.println(player.getHorAngle()%360);
+		System.out.println(weapon.getAngleX()+ " x");
+		System.out.println(weapon.getAngleY()%360 + " y");
+		//weapon.setAngleX(10); // up and down when looking sideways
+//		System.out.println(player.getVerAngle() + " ver");
+//		System.out.println(player.getHorAngle()%360 + " hor");
 		
-		weapon.setAngleY(weaponAngleY);
-		weapon.setAngleX(weaponAngleX);
-		weapon.setAngleZ(weaponAngleZ);
 		//TODO implement angles and strafe-positioning
 	}
 	
