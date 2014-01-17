@@ -1,10 +1,13 @@
 package mazerunner;
 
 import java.awt.Point;
+import java.util.Calendar;
 
 import javax.media.opengl.GL;
 
 import loot.Stick;
+import model.Model;
+import model.TexturedModel;
 
 /**
  * Enemy represents enemies in the game
@@ -22,11 +25,17 @@ public class Enemy extends Creature implements VisibleObject{
 	private boolean hitWall;			// is true if the enemy hit a wall
 	private int TimePassed;				// integer used for keeping track of the "aggro" time
 										// after a player disappears
+	private long timeHit;
 	
 	private Point memory; 				// holds the point previously visited in grid coordinates
 	
+	// main model
 	private static String 	modelFileLocation = "models/Lambent_Male/Lambent_Male.obj",
 							textureFileLocation = "models/Lambent_Male/Lambent_Male_D.tga";
+	
+	// hit model
+	private static TexturedModel hitModel;
+	private static String hitTextureFileLocation = "models/Lambent_Male/Lambent_Male_D_Blood.png";
 	
 	/**
 	 * The Enemy constructor.
@@ -53,6 +62,10 @@ public class Enemy extends Creature implements VisibleObject{
 		setControl(new EnemyControl());
 		((EnemyControl)getControl()).setEnemy(this);
 		
+		// set the hit model
+		if(modelFileLocation != null) // if Creature has no model the string will be null
+					hitModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f), hitTextureFileLocation);
+		
 		// initialise the memory
 		memory = new Point(x, z);
 	}
@@ -70,9 +83,11 @@ public class Enemy extends Creature implements VisibleObject{
 	 */
 	@Override
 	public void display(GL gl) { 
-		if (getTexturedModel() == null)
+		if (getTexturedModel() == null || hitModel == null)
 			System.out.println("null");
-		else 
+		else if (Calendar.getInstance().getTimeInMillis() - timeHit < 50) 
+			hitModel.render(gl, getHorAngle()-180,locationX,locationY,locationZ);
+		else
 			getTexturedModel().render(gl, getHorAngle()-180,locationX,locationY,locationZ);
 	}
 
@@ -84,7 +99,18 @@ public class Enemy extends Creature implements VisibleObject{
 	 */
 	
 	/**
-	 * Updates the physical location and orientation of the enemy
+	 * Updates the physical locationt deltaTime) {
+		
+		// rotate the enemy, according to controlameObject.normaliseAngle(getHorAngle() + rotationSpeed*control.dX));
+		
+		// move the enemy, according to control
+		if (control.moveDirection != null) {
+			locationX -= speed*deltaTime*
+					Math.sin(Math.toRadians((control.moveDirection + getHorAngle())));
+			locationZ -= speed*deltaTime*
+					Math.cos(Math.toRadians((control.moveDirection + getHorAngle())));}
+	}
+n and orientation of the enemy
 	 * @param deltaTime The time in milliseconds since the last update.
 	 */
 	public void update(int deltaTime) {
@@ -128,6 +154,12 @@ public class Enemy extends Creature implements VisibleObject{
 		return control.atTarget(margin);
 	}
 	
+	/**
+	 * sets an enemy hit
+	 */
+	public void hit() {
+		timeHit = Calendar.getInstance().getTimeInMillis();
+	}
 	
 	/*
 	 * **********************************************

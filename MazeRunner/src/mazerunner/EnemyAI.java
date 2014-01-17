@@ -248,7 +248,9 @@ public class EnemyAI implements VisibleObject{
 		
 		boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(player.getHorAngle())) < 10;
 			
-		((Sword) player.getWeapon()).swingSword(enemy, incone);
+		if(((Sword) player.getWeapon()).swingSword(enemy, incone)) {
+			enemy.hit();
+		};
 	}
 	
 	/*
