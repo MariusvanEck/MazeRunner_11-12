@@ -1,10 +1,13 @@
 package trap;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
-import mazerunner.Creature;
+import mazerunner.Enemy;
 import mazerunner.GameObject;
 import mazerunner.Maze;
+import mazerunner.Player;
 import model.Model;
 import model.TexturedModel;
 
@@ -19,6 +22,6 @@ public abstract class Trap extends GameObject{
 	
 	public abstract void display(GL gl);
 	
-	public abstract void update(int deltaTime,Creature creature);
+	public abstract void update(int deltaTime, Player player, ArrayList<Enemy> enemies);
 	
 }

@@ -1,9 +1,13 @@
 package trap;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 import mazerunner.Creature;
+import mazerunner.Enemy;
 import mazerunner.Maze;
+import mazerunner.Player;
 
 public class ProjectileTrap extends Trap {
 	private Projectile projectile = null;
@@ -57,9 +61,15 @@ public class ProjectileTrap extends Trap {
 		this.triggered = false;
 	}
 	
-	public void update(int deltaTime,Creature creature){
+	public void update(int deltaTime, Player player, ArrayList<Enemy> enemies){
 		
-		if(!triggered){
+		// create list with all the creatures
+		@SuppressWarnings("unchecked")
+		ArrayList<Creature> creatures = (ArrayList<Creature>) enemies.clone();
+		creatures.add(player);
+		
+		// update triggered
+		for (Creature creature : creatures) {
 			switch(direction){
 				case 'N':
 					if(creature.getLocationX() <= locationX && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
@@ -78,24 +88,34 @@ public class ProjectileTrap extends Trap {
 						this.triggered = true;
 					break;
 			}
-		}else{
+			
+			if (triggered) break;
+		}
+		
+		if (triggered) {
 		
 			double x = projectile.getX();
 			double z = projectile.getZ();
 			projectile.update(deltaTime);
 			
-			if(triggered && maze.isWall(projectile.getX(),projectile.getZ(),Math.abs(x-projectile.getX())) || maze.isStair(projectile.getX(), projectile.getZ(),Math.abs(z-projectile.getZ())))
+			if(maze.isWall(projectile.getX(),projectile.getZ(),Math.abs(x-projectile.getX())) || maze.isStair(projectile.getX(), projectile.getZ(),Math.abs(z-projectile.getZ())))
 					projectile.setLocation(this.locationX, this.locationY, this.locationZ);
 			
-			if(projectile.near(creature, Maze.SQUARE_SIZE/16) && lastUpdate > 500){
-				creature.removeHP(projectile.getDamage());
-				projectile.setLocation(this.locationX, this.locationY, this.locationZ);
-				lastUpdate = 0;
-			}else{
-				lastUpdate += deltaTime;
+			
+			for (Creature creature : creatures) {
+				if(projectile.near(creature, Maze.SQUARE_SIZE/16) && lastUpdate > 500){
+					creature.removeHP(projectile.getDamage());
+					if (creature instanceof Enemy) {
+						((Enemy)creature).hit();};
+					lastUpdate = 0;
+				}
+				else {
+					lastUpdate += deltaTime;
+				}
 			}
 		}
 	}
+	
 	@Override
 	public void display(GL gl) {
 		model.render(gl, angle, locationX, locationY, locationZ);

@@ -34,7 +34,7 @@ public class TrapController implements VisibleObject {
 	
 	public void update(int deltaTime){
 		for(Trap t:list)
-			t.update(deltaTime,player);
+			t.update(deltaTime, player, enemies);
 	}
 	
 	public static void setTraps(ArrayList<Trap> traps) {
