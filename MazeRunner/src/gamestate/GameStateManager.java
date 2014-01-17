@@ -15,6 +15,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLException;
 import javax.media.opengl.glu.GLU;
 
 import mazerunner.InvalidSpawnLocationException;
@@ -163,43 +164,48 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * The display function should be used to pick the right sub display function depending on the gameState
 	 */
 	public void display(GLAutoDrawable drawable) {
-		GL gl = drawable.getGL();
-		
-		// update the game status
-		updateGameState(gl);
-		
-		// set the right volume
-		Sound.setVolume();
-		
-		// clear the color buffer
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-
-		// update and display using the current gamestate
-		switch (gameState) {
-		case INGAME:
-			updateScreenCenter();
-			mazeRunner.update(gl);							// update mazerunner game
-			mazeRunner.display(gl);							// display mazerunner game
-			break;
-		case MENU:
-			switchTo2D(gl);									// switch to 2D
-			menu.update();									// update menu
-			menu.display(gl);								// display menu
-			switchTo3D(gl);									// switch to 3D
-			break;
-		case PAUSE:
-			mazeRunner.display(gl);							// display frozen mazerunner game
-			switchTo2D(gl);									// switch to 2D
-			Pause.display(gl, screenWidth, screenHeight);	// display pause
-			switchTo3D(gl);									// switch to 3D
-			break;
-		case EDITOR: 
-			break;}
-		
-        // Load identity
-        gl.glLoadIdentity();
-        // Flush the OpenGL buffer.
-        gl.glFlush();
+		try{
+			GL gl = drawable.getGL();
+			
+			
+			// update the game status
+			updateGameState(gl);
+			
+			// set the right volume
+			Sound.setVolume();
+			
+			// clear the color buffer
+			gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+	
+			// update and display using the current gamestate
+			switch (gameState) {
+			case INGAME:
+				updateScreenCenter();
+				mazeRunner.update(gl);							// update mazerunner game
+				mazeRunner.display(gl);							// display mazerunner game
+				break;
+			case MENU:
+				switchTo2D(gl);									// switch to 2D
+				menu.update();									// update menu
+				menu.display(gl);								// display menu
+				switchTo3D(gl);									// switch to 3D
+				break;
+			case PAUSE:
+				mazeRunner.display(gl);							// display frozen mazerunner game
+				switchTo2D(gl);									// switch to 2D
+				Pause.display(gl, screenWidth, screenHeight);	// display pause
+				switchTo3D(gl);									// switch to 3D
+				break;
+			case EDITOR: 
+				break;}
+			
+	        // Load identity
+	        gl.glLoadIdentity();
+	        // Flush the OpenGL buffer.
+	        gl.glFlush();
+		}catch(GLException e){
+			
+		}
 	}
 	
 	/**
