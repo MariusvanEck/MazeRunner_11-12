@@ -62,6 +62,8 @@ public class HeadsUpDisplay {
 		
 		// draw time box
 		drawTimeBox(gl);
+		// draw score box
+		drawScoreBox(gl);
 		
 	    // draw health bar
 	    drawHealthBar(gl);
@@ -140,6 +142,30 @@ public class HeadsUpDisplay {
         	gl.glColor4f(0f, 1f, 0f, 1f); // set the color
         	gl.glRasterPos2i(20, sh - 29); // set the string position (left top)
         	glut.glutBitmapString(GLUT.BITMAP_9_BY_15, timeString); // draw the string
+        gl.glPopMatrix();
+	}
+	
+	private void drawScoreBox(GL gl){
+		GLUT glut = new GLUT();
+		String scoreString = "" + player.getScore();
+		int length = glut.glutBitmapLength(GLUT.BITMAP_9_BY_15, scoreString);
+		gl.glPushMatrix();
+		gl.glColor4f(0f, .2f, 0f, 1f);
+		gl.glLoadIdentity();
+		gl.glBegin(GL.GL_QUADS);
+			gl.glVertex2d(18, sh-38);
+			gl.glVertex2d(22 + length, sh-38);
+			gl.glVertex2d(22 + length, sh-50);
+			gl.glVertex2d(18, sh-50);
+		gl.glEnd();
+		gl.glPopMatrix();
+		
+		// draw time string
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+        	gl.glColor4f(0f, 1f, 0f, 1f); // set the color
+        	gl.glRasterPos2i(20, sh - 49); // set the string position (left top)
+        	glut.glutBitmapString(GLUT.BITMAP_9_BY_15, scoreString); // draw the string
         gl.glPopMatrix();
 	}
 
