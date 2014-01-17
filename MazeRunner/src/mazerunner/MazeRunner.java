@@ -21,6 +21,7 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
 import database.DataBase;
+import database.Scores;
 
 /** 
  * MazeRunner is the class representing the INGAME GameState
@@ -269,7 +270,12 @@ public class MazeRunner {
 		if (player.getHitpoints() == 0) {
 			dataBase.addScore(mapName,player.getName(),headsUpDisplay.getTime());
 			
-			// TODO:
+			Scores scores = dataBase.getScores(mapName);
+			
+			for(int i = 0; i < scores.size();i++){
+				System.out.println(scores.names.get(i) + " " + scores.scores.get(i));
+			}
+			
 			
 			System.out.println();
 			input.setGameState(GameState.MENU);

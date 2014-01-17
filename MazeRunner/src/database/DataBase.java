@@ -41,7 +41,7 @@ public class DataBase {
 			
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT," + // create table with an ID, Name (max 255 byte)
 										"Data BLOB,lvl0 LONGBLOB,lvl1 LONGBLOB,lvl2 LONGBLOB,lvl3 LONGBLOB, lvl4 LONGBLOB, lvl5 LONGBLOB," + //  and Data (max 4GB per lvl)
-										"HighScore BLOB"); // HighScore Data per map
+										"HighScore BLOB);"); // HighScore Data per map
 			statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
 				
 				
@@ -81,8 +81,8 @@ public class DataBase {
 				System.err.println("DataBase: Invalid array size is: " + lvlData.length + " max size is 6");
 				return false;
 			}
-			PreparedStatement prep = connection.prepareStatement("INSERT INTO Map(Name,Data,lvl0,lvl1,lvl2,lvl3,lvl4,lvl5)" +
-																"VALUES(?, ?, ?, ?, ?, ?, ?, ?);");
+			PreparedStatement prep = connection.prepareStatement("INSERT INTO Map(Name,Data,lvl0,lvl1,lvl2,lvl3,lvl4,lvl5,HighScore)" +
+																"VALUES(?, ?, ?, ?, ?, ?, ?, ?,?);");
 			prep.setString(1, name);
 			
 			prep.setBytes(2,lvlData[6]);
@@ -105,6 +105,7 @@ public class DataBase {
 					System.err.println("DataBase: Something went wrong!");
 					return false;
 			}
+			prep.setBytes(9, null);
 
 			prep.execute();
 			return true;
@@ -405,25 +406,30 @@ public class DataBase {
 			prep.setString(1, mapName);
 			ResultSet temp = prep.executeQuery();
 			Scores res = new Scores();
-			
-			byte[] data = temp.getBytes("HighScore");
-			
-			String name = "";
-			int score = 0;
-			for(int i = 0; i < data.length;i++){
-				if(data[i] != ' ')
-					name += data[i];
-				else{
-					i++; // skip the ' '
-					score = Cast.byteArrayToInt(new byte[] {data[i++],data[i++],data[i++],data[i++]});
-					
-					res.names.add(name);
-					res.scores.add(score);
-					name = "";
-					score = 0;
+			if(temp.next()){
+				byte[] data = temp.getBytes("HighScore");
+				if(data == null)
+					data = new byte[0];
+				
+				String name = "";
+				int score = 0;
+				for(int i = 0; i < data.length;i++){
+					if(data[i] != ' ')
+						name += data[i];
+					else{
+						i++; // skip the ' '
+						score = Cast.byteArrayToInt(new byte[] {data[i++],data[i++],data[i++],data[i++]});
+						
+						res.names.add(name);
+						res.scores.add(score);
+						name = "";
+						score = 0;
+					}
 				}
+			}else{
+				System.err.println("No HighScore found!");
+				return null;
 			}
-			
 			
 			
 			
