@@ -364,6 +364,8 @@ public class DataBase {
 				nameList.add(scores.names.get(i));
 				scoreList.add(scores.scores.get(i));
 			}
+			if(scores.size() == 0)
+				update = true;
 			if(update){
 				// TODO:update HighScore Field in Map (binary)
 				
@@ -385,7 +387,7 @@ public class DataBase {
 						data[j++] = temp[3];
 					}
 				}
-				PreparedStatement prep = connection.prepareStatement("UPDATE Map SET HighScore='?' WHERE Name = '?';");
+				PreparedStatement prep = connection.prepareStatement("UPDATE Map SET HighScore= ? WHERE Name = ?;");
 				prep.setBytes(1, data);
 				prep.setString(2, mapName);
 				
@@ -410,6 +412,7 @@ public class DataBase {
 				byte[] data = temp.getBytes("HighScore");
 				if(data == null)
 					data = new byte[0];
+				
 				
 				String name = "";
 				int score = 0;

@@ -263,14 +263,13 @@ public class MazeRunner {
 	 * update() updates the mazerunner game using the past time since the previous frame
 	 */
 	public void update(GL gl) {
-		
-		System.out.println("player location: " + player.locationX + ", " +  player.locationZ);
-		
 		// if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
 			dataBase.addScore(mapName,player.getName(),headsUpDisplay.getTime());
 			
 			Scores scores = dataBase.getScores(mapName);
+			
+			System.out.println("MazeRunner: " + scores.size());
 			
 			for(int i = 0; i < scores.size();i++){
 				System.out.println(scores.names.get(i) + " " + scores.scores.get(i));
