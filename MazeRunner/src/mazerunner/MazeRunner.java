@@ -111,7 +111,7 @@ public class MazeRunner {
 		visibleObjects.add(lootController);
 		
 		// Initialise the Traps
-		trapController = new TrapController();
+		trapController = new TrapController(player);
 		visibleObjects.add(trapController);
 		
 		// initialise enemies and add
@@ -123,8 +123,7 @@ public class MazeRunner {
 				             player.getHorAngle(), player.getVerAngle() );
 		
 		weapon = new Sword(gl, "models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword.obj",
-				"models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword_D.tga",
-				player.getLocationX(),player.getLocationY(),player.getLocationZ(), player.getHorAngle());
+				"models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword_D.tga");
 	
 		visibleObjects.add(weapon);
 		
@@ -261,6 +260,8 @@ public class MazeRunner {
 	 */
 	public void update(GL gl) {
 		
+		System.out.println("player location: " + player.locationX + ", " +  player.locationZ);
+		
 		// if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
 			dataBase.addScore(player.getName(),headsUpDisplay.getTime());
@@ -372,13 +373,17 @@ public class MazeRunner {
 	 * updateWeaponLocation() updates the weapon location so that the player holds the weapon in his hands.
 	 */
 	private void updateWeaponLocation(){	
-		double weaponAngle = GameObject.normaliseAngle(player.getHorAngle()-170);
+		double weaponAngleX = 0;
+		double weaponAngleY = player.getHorAngle();
+		double weaponAngleZ = 0;
 		
-		weapon.setWieldX(player.getLocationX() - 0.2*Maze.SQUARE_SIZE*Math.cos(Math.toRadians(weaponAngle)));
+		weapon.setWieldX(player.getLocationX() + 0.2*Maze.SQUARE_SIZE*Math.cos(Math.toRadians(player.getHorAngle())));
 		weapon.setWieldY(player.getLocationY() - Maze.SQUARE_SIZE/20);
-		weapon.setWieldZ(player.getLocationZ() + 0.2*Maze.SQUARE_SIZE*Math.sin(Math.toRadians(weaponAngle)));
+		weapon.setWieldZ(player.getLocationZ() - 0.2*Maze.SQUARE_SIZE*Math.sin(Math.toRadians(player.getHorAngle())));
 		
-		weapon.setAngleY(weaponAngle);
+		weapon.setAngleY(weaponAngleY);
+		weapon.setAngleX(weaponAngleX);
+		weapon.setAngleZ(weaponAngleZ);
 		//TODO implement angles and strafe-positioning
 	}
 	

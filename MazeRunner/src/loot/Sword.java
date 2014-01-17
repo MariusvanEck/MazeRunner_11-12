@@ -13,8 +13,8 @@ public class Sword extends Weapon{
 	private TexturedModel model;									// the model of the Sword
 	
 	//constructor for wielding or placing the sword
-	public Sword(GL gl, String modelFileLocation,String textureFileLocation, double wieldx,double wieldy,double wieldz, double angleY) {
-		super(gl, modelFileLocation, textureFileLocation, wieldx, wieldy, wieldz, angleY);
+	public Sword(GL gl, String modelFileLocation, String textureFileLocation) {
+		super(gl, modelFileLocation, textureFileLocation);
 		
 		// set the model
 		if(modelFileLocation != null && textureFileLocation != null){
@@ -24,7 +24,7 @@ public class Sword extends Weapon{
 	
 	@Override
 	public void display(GL gl) {
-		model.render(gl, angleY, wieldX, wieldY, wieldZ);
+		model.render(gl, angleX, angleY, angleZ, wieldX, wieldY, wieldZ);
 	}
 
 	@Override

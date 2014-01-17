@@ -183,13 +183,16 @@ public class TexturedModel {
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 	}
 	
-	public void render(GL gl, double angle,double x,double y,double z){
+	public void render(		GL gl, double angleX, double angleY, double angleZ, 
+							double x, double y, double z) {
 		if(!m.isLoaded()) // there is nothing to render
 			return;
 		gl.glPushMatrix();
 		
 			gl.glTranslated(x, y, z);
-			gl.glRotated(angle, 0, 1, 0);
+			gl.glRotated(angleX, 1, 0, 0);
+			gl.glRotated(angleY, 0, 1, 0);
+			gl.glRotated(angleZ, 0, 0, 1);
 //			gl.glUseProgram(shaderProgramHandle);//
 //			gl.glUniform1f(diffuseModifierUniform, 1.0f);//
 //			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);//
@@ -226,6 +229,10 @@ public class TexturedModel {
 			gl.glUseProgram(0); // unbind the program
 			
 		gl.glPopMatrix();	
+	}
+	
+	public void render(GL gl, double angleY, double x, double y, double z){
+		render(gl, 0, angleY, 0, x, y, z);
 	}
 	
 	private float[] asFloats(Vector2f v){
