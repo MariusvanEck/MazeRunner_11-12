@@ -46,6 +46,7 @@ public class MazeRunner {
 	private TrapController trapController;									// the traps
 	private Camera camera;													// the camera
 	private Maze maze; 														// the maze
+	private String mapName;
 	private DataBase dataBase;
 	
 	private HeadsUpDisplay headsUpDisplay;									// the headsUpDisplay overlay
@@ -88,14 +89,15 @@ public class MazeRunner {
 	 * visualObjects list of MazeRunner through the add method, so it will be displayed 
 	 * automagically. 
 	 */
-	public void initObjects(GL gl, String mazeFileName)	throws InvalidSpawnLocationException{
+	public void initObjects(GL gl, String mapName)	throws InvalidSpawnLocationException{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
 		
 		// Add the maze that we will be using.
+		this.mapName = mapName;
 		dataBase = new DataBase();
-		maze = new Maze(gl, dataBase, mazeFileName, textures);
+		maze = new Maze(gl, dataBase, mapName, textures);
 		if(!setPlayerSpawn(gl)) throw new InvalidSpawnLocationException("No Spawn Found");
 		visibleObjects.add(maze);
 		
@@ -110,13 +112,14 @@ public class MazeRunner {
 		lootController = new LootController(gl, player);
 		visibleObjects.add(lootController);
 		
-		// Initialise the Traps
-		trapController = new TrapController(player);
-		visibleObjects.add(trapController);
 		
 		// initialise enemies and add
 		enemyAI = new EnemyAI(gl, player, maze);
 		visibleObjects.add(enemyAI);
+		
+		// Initialise the Traps
+				trapController = new TrapController(player, enemyAI.getEnemies());
+				visibleObjects.add(trapController);
 		
 		// set up a camera
 		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
@@ -264,7 +267,11 @@ public class MazeRunner {
 		
 		// if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
-			dataBase.addScore(player.getName(),headsUpDisplay.getTime());
+			dataBase.addScore(mapName,player.getName(),headsUpDisplay.getTime());
+			
+			// TODO:
+			
+			System.out.println();
 			input.setGameState(GameState.MENU);
 		}
 		
