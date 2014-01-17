@@ -43,10 +43,10 @@ import database.DataBase;
 /* List of used PrimeNumbers
  * 0 - Floor
  * 1 - Wall
- * 2 - TorchN
- * 3 - TorchE
- * 5 - TorchS
- * 7 - TorchW
+ * 2 - Gold1
+ * 3 - Gold2
+ * 5 - Gold3
+ * 7 - Gold4
  * 11 - Stair Low
  * 13 - Stair High
  * 19 - Food
@@ -65,6 +65,7 @@ import database.DataBase;
  * TODO
  * - void draw eruit slopen
  * - alle functies beschrijven
+ * - automatisch player spawn aanmaken, linksonder oid
  */
 public class Editor extends JFrame implements GLEventListener, MouseListener, MouseMotionListener, ActionListener {
 
@@ -105,17 +106,13 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private JPanel paneln = new JPanel(); //the north panel
 	private JPanel savePanel = new JPanel();
 	private JLabel sizel = new JLabel("Level size(3-63): ");
-	private JLabel nlevl = new JLabel("Number of levels (1-12): ");
+	private JLabel nlevl = new JLabel("Number of levels (1-6): ");
 	private JLabel mapNamel = new JLabel("name");
 	private JFileChooser chooser = new JFileChooser();
     File file = new File("mazes\\test.maze");
     FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", "maze");
     int returnVal;
-	
 	private Texture[] textureLeft;
-	// private Texture[] textureRight;
-	// private Texture[] textureMaze;
-	
 	private Texture[] levelTextures;
 		
 	public Editor() {
@@ -250,7 +247,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
     	
 		btn = new Button[buttonRow*3];
 		btnr = new Button[buttonRow];
-		textureLeft = new Texture[buttonRow*3];
+		textureLeft = new Texture[3];
 		// textureRight = new Texture[buttonRow];
 		
 		
@@ -258,6 +255,30 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		try {
 			textureLeft[1] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
 			textureLeft[2] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			
+			levelTextures = new Texture[100];
+			levelTextures[1] = TextureIO.newTexture(new File("img\\Wall.png"), false);
+			levelTextures[37] = TextureIO.newTexture(new File("img\\SlidingWall.png"), false);
+			
+			levelTextures[2] = TextureIO.newTexture(new File("img\\Gold1.png"), false);
+			levelTextures[3] = TextureIO.newTexture(new File("img\\Gold2.png"), false);
+			levelTextures[5] = TextureIO.newTexture(new File("img\\Gold3.png"), false);
+			levelTextures[7] = TextureIO.newTexture(new File("img\\Gold4.png"), false);
+			
+			levelTextures[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
+			levelTextures[13] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
+			
+			levelTextures[19] = TextureIO.newTexture(new File("img\\Food.png"), false);
+			levelTextures[29] = TextureIO.newTexture(new File("img\\Coin.png"), false);
+			levelTextures[31] = TextureIO.newTexture(new File("img\\Chest.png"), false);
+			
+			levelTextures[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
+			levelTextures[97] = TextureIO.newTexture(new File("img\\Player.png"), false);
+			
+	   		levelTextures[41] = TextureIO.newTexture(new File("img/TrapN.png"), false);
+	    	levelTextures[43] = TextureIO.newTexture(new File("img/TrapE.png"), false);
+	    	levelTextures[47] = TextureIO.newTexture(new File("img/TrapS.png"), false);
+	    	levelTextures[53] = TextureIO.newTexture(new File("img/TrapW.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -269,7 +290,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		//color of the other buttons (temporary)
 		for (int i = 0; i < 3; i++){
 			for (int j = 2; j < 30; j++){
-				colors[i][j] = /*(float) Math.random();*/0.5f;
+				colors[i][j] = 0.5f;
 				colors[3][j] = 1.0f;
 			}
 		}
@@ -295,10 +316,10 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 				text[i] = "";
 			}
 		}
-		text[0] = "Wall"; text[3] = "Door"; text[4] = "Chest"; text[5] = "Coin"; text[6] = "TorchN"; 
-		text[7] = "TorchE"; text[8] = "TorchS"; text[9] = "TorchW"; text[10] = "Food"; text[11] = "Enemy"; text[12] = "SlidingWall";text[13] ="TrapN";
-		text[14] ="TrapE";text[15] ="TrapS";text[16] ="TrapW";
-		text[25] = "LtoString"; text[26] = "Player"; text[27] = "Void"; text[28] = "Clear"; text[29] = "ClearAll";
+		text[0] = "Wall"; text[3] = "Door"; text[4] = "Chest"; text[6] = "Gold1"; 
+		text[7] = "Gold2"; text[8] = "Gold3"; text[9] = "Gold4"; text[10] = "Food"; text[11] = "Enemy"; text[12] = "SlidingWall";
+		text[13] ="TrapN"; text[14] ="TrapE";text[15] ="TrapS";text[16] ="TrapW";
+		text[25] = "LtoString"; text[26] = "Player"; text[27] = "TheEnd"; text[28] = "Clear"; text[29] = "ClearAll";
 		
 		//Create the buttons on the left
 	   	int index = 0;
@@ -338,36 +359,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	   	//set default to walldraw
 	   	btn[0].setSelected(true);
 	   	
-	   	//load the textures
-	   	try {
-	   		levelTextures = new Texture[100];
-			levelTextures[1] = TextureIO.newTexture(new File("img\\Wall.png"), false);
-			levelTextures[37] = TextureIO.newTexture(new File("img\\SlidingWall.png"), false);
-			
-			levelTextures[2] = TextureIO.newTexture(new File("img\\TorchN.png"), false);
-			levelTextures[3] = TextureIO.newTexture(new File("img\\TorchE.png"), false);
-			levelTextures[5] = TextureIO.newTexture(new File("img\\TorchS.png"), false);
-			levelTextures[7] = TextureIO.newTexture(new File("img\\TorchW.png"), false);
-			
-			levelTextures[11] = TextureIO.newTexture(new File("img\\StairsL.png"), false);
-			levelTextures[13] = TextureIO.newTexture(new File("img\\StairsH.png"), false);
-			
-			levelTextures[19] = TextureIO.newTexture(new File("img\\Food.png"), false);
-			levelTextures[29] = TextureIO.newTexture(new File("img\\Coin.png"), false);
-			levelTextures[31] = TextureIO.newTexture(new File("img\\Chest.png"), false);
-			
-			levelTextures[23] = TextureIO.newTexture(new File("img\\Enemy.png"), false);
-			levelTextures[97] = TextureIO.newTexture(new File("img\\Player.png"), false);
-			
-	   		levelTextures[41] = TextureIO.newTexture(new File("img/TrapN.png"), false);
-	    	levelTextures[43] = TextureIO.newTexture(new File("img/TrapE.png"), false);
-	    	levelTextures[47] = TextureIO.newTexture(new File("img/TrapS.png"), false);
-	    	levelTextures[53] = TextureIO.newTexture(new File("img/TrapW.png"), false);
-	   	}
-	   	catch(Exception e) {
-	   		e.printStackTrace();
-	   	}
-	   	
 	   	Level.setTextureMaze(levelTextures);
 	}
 	
@@ -406,7 +397,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		return dataBase.addMap(name, res);
 	}
-	
 	
 	@Override
 	public void mouseReleased(MouseEvent me) {
@@ -738,7 +728,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			level.level[X][Y-1] = 13;
 		}
 		
-		//TorchN draw button
+		//Gold1 draw button
 		else if (btn[6].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,2) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 2;
@@ -748,7 +738,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			}
 		}
 		
-		//TorchE draw button
+		//Gold2 draw button
 		else if (btn[7].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,3) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 3;
@@ -758,7 +748,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			}
 		}
 		
-		//TorchS draw button
+		//Gold3 draw button
 		else if (btn[8].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,5) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 5;
@@ -768,7 +758,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			}
 		}
 		
-		//TorchW draw button
+		//Gold4 draw button
 		else if (btn[9].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && 
 				level.level[X][Y-1] != 97 && level.check(X,Y-1,7) == false){
 			if(level.level[X][Y-1] == 0){
