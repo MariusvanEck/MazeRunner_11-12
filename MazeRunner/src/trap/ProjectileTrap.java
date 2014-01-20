@@ -72,19 +72,19 @@ public class ProjectileTrap extends Trap {
 		for (Creature creature : creatures) {
 			switch(direction){
 				case 'N':
-					if(creature.getLocationX() <= locationX && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
+					if(creature.getLocationZ() <= locationZ && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'E':
-					if(creature.getLocationZ() >= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20) && !maze.isVisionBlocked(this, creature))
+					if(creature.getLocationX() >= locationX && nearAxis(locationZ,creature.getLocationZ(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'S':
-					if(creature.getLocationX() >= locationX && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
+					if(creature.getLocationZ() >= locationZ && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'W':
-					if(creature.getLocationZ() <= locationZ && nearAxis(locationZ,creature.getLocationZ(),0.20) && !maze.isVisionBlocked(this, creature))
+					if(creature.getLocationX() <= locationX && nearAxis(locationZ,creature.getLocationZ(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 			}
