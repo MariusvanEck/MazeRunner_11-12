@@ -265,7 +265,7 @@ public class MazeRunner {
 	public void update(GL gl) {
 		// if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
-			dataBase.addScore(mapName,player.getName(),headsUpDisplay.getTime());
+			dataBase.addScore(mapName,player.getName(),player.getScore());
 			
 			Scores scores = dataBase.getScores(mapName);
 			

@@ -81,6 +81,10 @@ public class DataBase {
 				System.err.println("DataBase: Invalid array size is: " + lvlData.length + " max size is 6");
 				return false;
 			}
+			if(doesMapNameExists(name)){
+				System.err.println("DataBase: Map name already in use");
+				return false;
+			}
 			PreparedStatement prep = connection.prepareStatement("INSERT INTO Map(Name,Data,lvl0,lvl1,lvl2,lvl3,lvl4,lvl5,HighScore)" +
 																"VALUES(?, ?, ?, ?, ?, ?, ?, ?,?);");
 			prep.setString(1, name);
@@ -352,47 +356,57 @@ public class DataBase {
 			if(scores == null){
 				scores = new Scores();
 			}
+			
 			ArrayList<String> nameList = new ArrayList<String>();
 			ArrayList<Integer> scoreList = new ArrayList<Integer>();
-			for(int i = 0; i < scores.scores.size(); i++){
-				if(score < scores.scores.get(i)){
+			
+			for(int i = 0;  (i < scores.size()) && (nameList.size() < 10);i++){
+				if(score > scores.scores.get(i) && !update){
 					nameList.add(playerName);
 					scoreList.add(score);
-					i++;
 					update = true;
+					i--; // because scores at i are not used and need still be added
+				}else{
+					nameList.add(scores.names.get(i));
+					scoreList.add(scores.scores.get(i));
 				}
-				nameList.add(scores.names.get(i));
-				scoreList.add(scores.scores.get(i));
-			}
-			if(scores.size() == 0)
-				update = true;
-			if(update){
-				// TODO:update HighScore Field in Map (binary)
 				
+			}
+			if(nameList.size() < 10 && !update){
+				nameList.add(playerName);
+				scoreList.add(score);
+				update = true;
+			}
+			
+			
+			if(update){
 				int nameSize = 0;
-				for(String name:nameList)
+				
+				for(String name:nameList){
+					System.out.println(name);
 					nameSize += (name.length() + 1);
+				}
 				
 				byte[] data = new byte[nameSize + scoreList.size()*4];
-				
-				int j = 0;
-				for(int i = 0; i < scores.size();i++){
-					for(int k = 0; k < scores.names.get(i).length();k++){
-						data[j++] = (byte)scores.names.get(i).charAt(k);
-						data[j++] = ' ';
-						byte[] temp = Cast.intToByteArray(scores.scores.get(i));
-						data[j++] = temp[0];
-						data[j++] = temp[1];
-						data[j++] = temp[2];
-						data[j++] = temp[3];
+
+				int k = 0;
+				for(int i = 0; i < nameList.size();i++){
+					for(int j = 0; j < nameList.get(i).length();j++){
+						data[k++] = (byte)nameList.get(i).charAt(j);
 					}
-				}
-				PreparedStatement prep = connection.prepareStatement("UPDATE Map SET HighScore= ? WHERE Name = ?;");
+					data[k++] = ' ';
+					byte[] temp = Cast.intToByteArray(scoreList.get(i));
+					data[k++] = temp[0];
+					data[k++] = temp[1];
+					data[k++] = temp[2];
+					data[k++] = temp[3];
+				}	
+				
+				PreparedStatement prep = connection.prepareStatement("UPDATE Map SET HighScore = ? WHERE Name = ?;");
 				prep.setBytes(1, data);
 				prep.setString(2, mapName);
 				
 				prep.execute();
-				
 			}
 			
 			
@@ -418,11 +432,11 @@ public class DataBase {
 				int score = 0;
 				for(int i = 0; i < data.length;i++){
 					if(data[i] != ' ')
-						name += data[i];
+						name +=(char) data[i];
 					else{
 						i++; // skip the ' '
-						score = Cast.byteArrayToInt(new byte[] {data[i++],data[i++],data[i++],data[i++]});
-						
+						score = Cast.byteArrayToInt(new byte[] {data[i++],data[i++],data[i++],data[i]});
+						System.out.println(name);
 						res.names.add(name);
 						res.scores.add(score);
 						name = "";
@@ -433,8 +447,6 @@ public class DataBase {
 				System.err.println("No HighScore found!");
 				return null;
 			}
-			
-			
 			
 			return res;
 			
@@ -466,6 +478,34 @@ public class DataBase {
 			System.err.println("DataBase: " + e.getMessage());
 			return null;
 		}
+		
+	}
+	
+	public void test(){
+		try{
+			PreparedStatement prep = connection.prepareStatement("UPDATE Map SET HighScore = ? WHERE Map.Name = 'test';");
+			prep.setBytes(1, new byte[] {'t','e','s','t',' ',0,0,0,10});
+			
+			
+			prep.execute();
+			
+			ResultSet rs = statement.executeQuery("SELECT HighScore FROM Map WHERE Map.Name = 'test';");
+			
+			
+			if(rs.next()){
+				byte[] b = rs.getBytes("HighScore");
+				
+				for(int i = 0; i < b.length; i++){
+					System.out.print(b[i]);
+				}
+				System.out.print('\n');
+					
+			}
+			
+		}catch(SQLException e){
+			System.err.println("DataBase: "+ e.getMessage());
+		}
+		
 		
 	}
 	

@@ -34,7 +34,7 @@ public class Player extends Creature {
 	double Ax = 0.4;
 	double Ay = Ax/2;
 	
-	private String name;
+	private String name = "Player";
 	
 	/**
 	 * The Player constructor.
