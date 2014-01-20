@@ -190,8 +190,9 @@ public class TexturedModel {
 		gl.glPushMatrix();
 		
 			gl.glTranslated(x, y, z);
-			gl.glRotated(angleX, 1, 0, 0);
+
 			gl.glRotated(angleY, 0, 1, 0);
+			gl.glRotated(angleX, 1, 0, 0);
 			gl.glRotated(angleZ, 0, 0, 1);
 //			gl.glUseProgram(shaderProgramHandle);//
 //			gl.glUniform1f(diffuseModifierUniform, 1.0f);//
