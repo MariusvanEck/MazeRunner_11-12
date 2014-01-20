@@ -16,7 +16,9 @@ public class saveActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		editor.resetSize();
 		
+		editor.mirror();
 		editor.saveToDataBase(editor.getMapName(), new DataBase());
+		editor.mirror();
 		editor.getSaveFrame().dispose();
 	}
 

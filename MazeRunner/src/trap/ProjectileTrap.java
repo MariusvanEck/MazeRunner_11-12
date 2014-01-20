@@ -103,11 +103,17 @@ public class ProjectileTrap extends Trap {
 			
 			
 			for (Creature creature : creatures) {
-				if(projectile.near(creature, Maze.SQUARE_SIZE/16) && lastUpdate > 500){
-					creature.removeHP(projectile.getDamage());
-					if (creature instanceof Enemy) {
-						((Enemy)creature).hit();};
-					lastUpdate = 0;
+				if(projectile.near(creature, Maze.SQUARE_SIZE/16)){
+					if(lastUpdate > 500){
+				
+						creature.removeHP(projectile.getDamage());
+						if (creature instanceof Enemy) {
+							((Enemy)creature).hit();
+						}
+						
+						lastUpdate = 0;
+					}
+					projectile.setLocation(this.locationX, this.locationY, this.locationZ); // so the projectile doesn't go trough a creature
 				}
 				else {
 					lastUpdate += deltaTime;

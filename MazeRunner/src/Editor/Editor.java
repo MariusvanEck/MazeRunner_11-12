@@ -668,7 +668,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 	}
 
-	private void mirror(){
+	protected void mirror(){
 		//Mirroring maze
 	        for(int n = 0; n < nlevels; n++){
 	    		int[][] templevel = levels[n].getLevel();
