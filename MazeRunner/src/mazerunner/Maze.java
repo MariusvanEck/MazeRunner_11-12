@@ -155,7 +155,7 @@ public class Maze implements VisibleObject {
 						
 						// check for end
 						if (currentLevel[i][j]%59 == 0) {
-							end = new End(i, j);
+							end = new End(gl, i, j);
 						}
 					}
 				}
@@ -408,8 +408,10 @@ public class Maze implements VisibleObject {
 	 * Check if the player is at the end
 	 */
 	public boolean atEnd(Player player) {
-		if (player.near(end, .5)) {
-			return true;
+		if (end != null) {
+			if (player.near(end, .5)) {
+				return true;
+			}
 		}
 		return false;
 	}
