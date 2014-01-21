@@ -6,38 +6,48 @@ import javax.media.opengl.GL;
 
 import mazerunner.Creature;
 import mazerunner.Enemy;
+import mazerunner.GameObject;
 import mazerunner.Maze;
 import mazerunner.Player;
+import model.Model;
+import model.TexturedModel;
 
-public class ProjectileTrap extends Trap {
-	private Projectile projectile = null;
-	private boolean triggered;
-	private Maze maze;
-	private int lastUpdate = 0;
-	private char direction;
+public class ProjectileTrap extends GameObject implements Trap{
+	
+	private Projectile projectile;			// the associated projectile
+	private boolean triggered;				// boolean storing if the trap is active
+	private Maze maze;						// a reference to the maze
+	
+	private int Counter = 0;				// counts the time since done damage	
+	
+	// trap orientation
+	private char direction;		
 	private double angle;
 	
-	private static String modelFileLocation = "models/trap/trapbase.obj";
-	private static String textureFileLocation = "models/trap/trapbase.png";
+	// the model for the trap
+	private TexturedModel model;			
+	private static String 	modelFileLocation = "models/trap/trapbase.obj",
+							textureFileLocation = "models/trap/trapbase.png";
 	
 	/**
 	 * @param gl			GL for the rendering
-	 * @param player		The Player who can activate the trap
 	 * @param maze			The maze
 	 * @param x				The trap coordX
 	 * @param y				The trap coordY
 	 * @param z				The trap coordZ
-	 * @param activationX	The activation coordX
-	 * @param activationY	The activation coordY (as in wich lvl)
-	 * @param activationZ	The activation coordZ
 	 * @param direction		The direction the Projectile goes (N,E,S,W)
-	 * @param speed			The speed relative to the player
+	 * @param speed			The projectile speed
 	 */
-	public ProjectileTrap(GL gl,Maze maze,double x,double z,char direction,double speed){
-		super(gl,x,z,modelFileLocation,textureFileLocation);
+	public ProjectileTrap(GL gl, Maze maze, double x, double z, char direction, double speed){
+		super(	x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2,
+				Maze.SQUARE_SIZE/4, 
+				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2);
+		
+		this.model = new TexturedModel(gl, new Model(modelFileLocation, 0.05f), textureFileLocation);
 		this.maze = maze;
 		this.direction = direction;
 		
+		// set the correct angle
 		switch(direction){
 			case 'N':
 			case 'n':
@@ -61,6 +71,9 @@ public class ProjectileTrap extends Trap {
 		this.triggered = false;
 	}
 	
+	/**
+	 * updates the trap
+	 */
 	public void update(int deltaTime, Player player, ArrayList<Enemy> enemies){
 		
 		// create list with all the creatures
@@ -94,48 +107,50 @@ public class ProjectileTrap extends Trap {
 		
 		if (triggered) {
 		
-			double x = projectile.getX();
-			double z = projectile.getZ();
+			double x = projectile.getLocationX();
+			double z = projectile.getLocationZ();
 			projectile.update(deltaTime);
 			
-			if(maze.isWall(projectile.getX(),projectile.getZ(),Math.abs(x-projectile.getX())) || maze.isStair(projectile.getX(), projectile.getZ(),Math.abs(z-projectile.getZ())))
+			if(		maze.isWall(projectile.getLocationX(),projectile.getLocationZ(),Math.abs(x-projectile.getLocationX())) || 
+					maze.isStair(projectile.getLocationX(), projectile.getLocationZ(),Math.abs(z-projectile.getLocationZ())))
 					projectile.setLocation(this.locationX, this.locationY, this.locationZ);
 			
 			
 			for (Creature creature : creatures) {
 				if(projectile.near(creature, Maze.SQUARE_SIZE/16)){
-					if(lastUpdate > 500){
+					if(Counter > 500){
 				
 						creature.removeHP(projectile.getDamage());
 						if (creature instanceof Enemy) {
 							((Enemy)creature).hit();
 						}
 						
-						lastUpdate = 0;
+						Counter = 0;
 					}
 					projectile.setLocation(this.locationX, this.locationY, this.locationZ); // so the projectile doesn't go trough a creature
 				}
 				else {
-					lastUpdate += deltaTime;
+					Counter += deltaTime;
 				}
 			}
 		}
 	}
 	
-	@Override
+	/**
+	 * display the trap
+	 */
 	public void display(GL gl) {
 		model.render(gl, angle, locationX, locationY, locationZ);
 		
 		if(triggered)
 			projectile.display(gl);
 	}
-	
-	private double distanceToAxis(double axis,double pos){
-		return Math.abs(axis-pos);
-	}
-	
+
+	/**
+	 * Checks if a creature is near the axis of the trap
+	 */
 	private boolean nearAxis(double axis,double pos,double near){
-		return (distanceToAxis(axis,pos) < near);
+		return (Math.abs(axis-pos) < near);
 	}
 	
 }

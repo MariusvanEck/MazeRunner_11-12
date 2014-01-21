@@ -4,11 +4,14 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.texture.Texture;
 
+/**
+ * Class for making sliders
+ */
 public class Slider extends MenuObject{
 	
-	private float fraction;
-	private Texture[] sliderTextures;
-	private Texture nameTexture;
+	private float fraction;				// fraction of the slider filled
+	private Texture[] sliderTextures;	// the slider textures
+	private Texture nameTexture;		// the slider name texture
 	
 	public Slider(int minX, int maxX, int minY, int maxY, Texture[] sliderTextures, Texture nameTexture) {
 		super(minX, maxX, minY, maxY);
@@ -18,6 +21,9 @@ public class Slider extends MenuObject{
 		fraction = 1f;
 	}
 
+	/**
+	 * display slider
+	 */
 	@Override
 	public void display(GL gl) {
 		
@@ -81,6 +87,9 @@ public class Slider extends MenuObject{
 		
 	}
 	
+	/**
+	 * update slider
+	 */
 	public void update(int minX,int maxX,int minY, int maxY){
 		this.minX = minX;
 		this.maxX = maxX;
@@ -88,10 +97,16 @@ public class Slider extends MenuObject{
 		this.maxY = maxY;
 	}
 
+	/**
+	 * Change the fraction
+	 */
 	public void setFraction(float fraction) {
 		this.fraction = fraction;
 	}
 	
+	/**
+	 * get the fraction
+	 */
 	public float getFraction() {
 		return fraction;
 	}

@@ -8,17 +8,14 @@ import javax.media.opengl.GL;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
+/**
+ * Class for making buttons
+ */
 public class Button extends MenuObject{
 	private Texture texture[];
 	
 	/**
-	 * Button constructor
-	 * @param text The text on the button
-	 * @param gl The GL to draw to
-	 * @param minX The left x
-	 * @param maxX the right x
-	 * @param minY the bottom y
-	 * @param maxY the top y
+	 * Button constructor using a texture for the visual
 	 */
 	public Button(int minX,int maxX,int minY,int maxY, Texture texture){
 		super(minX,maxX,minY,maxY);
@@ -26,6 +23,9 @@ public class Button extends MenuObject{
 		this.texture[0] = texture;
 	}
 	
+	/**
+	 * Button constructor
+	 */
 	public Button(int minX,int maxX,int minY,int maxY,String name){
 		super(minX,maxX,minY,maxY);
 		
@@ -119,7 +119,6 @@ public class Button extends MenuObject{
 		
 	}
 	
-	
 	/**
 	 * Draw the button
 	 */
@@ -177,6 +176,10 @@ public class Button extends MenuObject{
 			}
 		}
 	}
+	
+	/**
+	 * update button location and size
+	 */
 	public void update(int minX,int maxX,int minY, int maxY){
 		this.minX = minX;
 		this.maxX = maxX;

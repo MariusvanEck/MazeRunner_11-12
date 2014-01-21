@@ -7,15 +7,22 @@ import model.Model;
 import model.TexturedModel;
 
 public class Projectile extends GameObject{
-	private char direction;
-	private double speed;
-	private TexturedModel model;
-	private double angle;
-	private final int damage = 10;
+
+	private double speed;			// the speed
+	private final int damage = 10;	// damage for the projectile
 	
+	// The projectiles direction
+	private char direction;
+	private double angle;
+	
+	// the model
+	private TexturedModel model;	
 	private static String modelFileLocation = "models/trap/projectile.obj";
 	private static String textureFileLocation = "models/trap/projectile.png";
 	
+	/**
+	 * Constructor creates a new projectile
+	 */
 	public Projectile(GL gl,double x,double y,double z,char direction,double speed){
 		super(x,y,z);
 		if(direction == 'N' || direction == 'E' || direction == 'S' || direction == 'W')
@@ -27,6 +34,9 @@ public class Projectile extends GameObject{
 		this.angle = 0;
 	}
 	
+	/**
+	 * Update the projectile
+	 */
 	public void update(int deltaTime){
 		switch(direction){
 			case 'N':
@@ -44,6 +54,9 @@ public class Projectile extends GameObject{
 		}
 	}
 	
+	/**
+	 * Change the projectile location
+	 */
 	public void setLocation(double x,double y,double z){
 		this.locationX = x;
 		this.locationY = y;
@@ -51,12 +64,15 @@ public class Projectile extends GameObject{
 		this.angle = 0;
 	}
 	
-	public double getX(){return locationX;}
-	public double getY(){return locationY;}
-	public double getZ(){return locationZ;}
+	/**
+	 * get the projectile damage
+	 */
 	public int getDamage(){return damage;}
 	
-	
+	/**
+	 * Display the projectile
+	 * @param gl
+	 */
 	public void display(GL gl){
 		model.render(gl, angle-=5, locationX, locationY, locationZ);
 	}

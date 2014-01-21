@@ -8,16 +8,20 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
 public class PlayMenu extends MenuObject{
+	
+	// this menu's buttons
 	private Button buttons[];
 	
+	// the level selector
 	private LevelSelector levelSelector;
 	
+	// this menu's options
 	public static final byte NEW = 0;
 	public static final byte CONTINUE = 1;
 	public static final byte BACK = 2;
 	
+	// the textures
 	private Texture[] textures;
-	
 	
 	/**
 	 * Constructor creates menu objects
@@ -37,6 +41,9 @@ public class PlayMenu extends MenuObject{
 		levelSelector = new LevelSelector(minX,maxX,minY,maxY);
 	}
 	
+	/**
+	 * Load the textures
+	 */
 	public void loadTextures(){
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures/menu/new.png"), false);
@@ -70,6 +77,9 @@ public class PlayMenu extends MenuObject{
 			buttons[i].display(gl);
 	}
 	
+	/**
+	 * Reshape
+	 */
 	public void reshape(int minX, int maxX,int minY,int maxY){
 		this.minX = minX;
 		this.maxX = maxX;
@@ -80,7 +90,6 @@ public class PlayMenu extends MenuObject{
 		buttons[1].update(minX,maxX,minY+(maxY-minY)/3,minY+(maxY-minY)*2/3);
 		buttons[2].update(minX,maxX,minY,minY+(maxY-minY)/3);
 	}
-	
 	
 	/**
 	 * This methode is used to check if and what is selected
@@ -98,6 +107,9 @@ public class PlayMenu extends MenuObject{
 		case BACK:		buttons[BACK].setSelected(true);		break;}
 	}
 	
+	/**
+	 * Get the level selector
+	 */
 	public LevelSelector getLevelSelector(){return levelSelector;}
 	
 }

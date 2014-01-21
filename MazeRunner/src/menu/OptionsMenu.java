@@ -13,13 +13,17 @@ import com.sun.opengl.util.texture.TextureIO;
 
 public class OptionsMenu extends MenuObject{
 	
-	private Button[] buttons;
-	private static Slider volumeSlider;
+	// this menu's buttons and sliders
+	private Button[] buttons;					
+	private static Slider volumeSlider;			
 	private static Slider difficultySlider;
+	
+	// this menu's options
 	public static final byte BACK = 0;
 	public static final byte VOLUME = 1;
 	public static final byte DIFFICULTY = 2;
 	
+	// the textures
 	private Texture[] textures;
 	private Texture[] sliderTextures;
 	
@@ -40,6 +44,9 @@ public class OptionsMenu extends MenuObject{
 		buttons[0] = new Button(minX,maxX,minY,minY+(maxY-minY)/3, textures[2]);
 	}
 	
+	/**
+	 * Load the textures
+	 */
 	public void loadTextures(){
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures/menu/volume.png"), false);
@@ -67,6 +74,9 @@ public class OptionsMenu extends MenuObject{
 		return -1;
 	}
 	
+	/**
+	 * Reshape
+	 */
 	public void reshape(int minX, int maxX, int minY, int maxY){
 		this.minX = minX;
 		this.maxX = maxX;

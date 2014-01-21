@@ -8,11 +8,15 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
 public class QuitMenu extends MenuObject{
+	
+	// this menu's buttons
 	private Button buttons[];
 	
+	// this menu's options
 	public static final byte YES = 0;
 	public static final byte NO = 1;
 	
+	// the textures
 	private Texture[] textures;
 	
 	/**
@@ -31,6 +35,9 @@ public class QuitMenu extends MenuObject{
 		
 	}
 	
+	/**
+	 * Load the textures
+	 */
 	public void loadTextures(){
 		try {
 			textures[0] = TextureIO.newTexture(new File("textures/Menu/yes.png"), false);
@@ -54,6 +61,9 @@ public class QuitMenu extends MenuObject{
 		return -1;
 	}
 	
+	/**
+	 * Reshape
+	 */
 	public void reshape(int minX, int maxX,int minY,int maxY){
 		this.minX = minX;
 		this.maxX = maxX;
