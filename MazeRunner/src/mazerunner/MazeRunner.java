@@ -330,6 +330,11 @@ public class MazeRunner {
 		if (maze.isStair(player.getLocationX(), player.getLocationZ(), 0)) {
 			maze.changeLevel(maze.getCurrentLevel() + 1, gl);}
 		
+		// end if the end was hit
+		if (maze.atEnd(player)) {
+			input.setGameState(GameState.MENU);
+		}
+		
 		// set player back if a wall was hit
 		if (hitWall){
 			player.locationX = previousX;

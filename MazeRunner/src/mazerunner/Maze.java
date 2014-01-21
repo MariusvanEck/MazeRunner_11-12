@@ -38,6 +38,7 @@ public class Maze implements VisibleObject {
 	private ArrayList<Roof> roofs;
 	private ArrayList<Wall> walls;
 	private HashMap<Point,SlidingWall> slidingWalls;
+	private End end;
 	
 	
 	
@@ -151,6 +152,11 @@ public class Maze implements VisibleObject {
 						// Trap W
 						else if(currentLevel[i][j]%53 == 0)
 							traps.add(new ProjectileTrap(gl,this,i,j,'W',0.01));
+						
+						// check for end
+						if (currentLevel[i][j]%59 == 0) {
+							end = new End(i, j);
+						}
 					}
 				}
 			}
@@ -180,7 +186,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isWall( int x, int z ) {
 		if( x >= 0 && x < mazeSize && z >= 0 && z < mazeSize ) {
-			if (currentLevel[x][z] == 1 || currentLevel[x][z] == 13) return true;
+			if (currentLevel[x][z] == 1 || currentLevel[x][z] == 13 || currentLevel[x][z] == 5) return true;
 			else if (currentLevel[x][z] == 37) {
 				if (slidingWalls.get(new Point(x,z)).isWall()) return true;
 			}
@@ -398,6 +404,15 @@ public class Maze implements VisibleObject {
 		}
 	}
 	
+	/**
+	 * Check if the player is at the end
+	 */
+	public boolean atEnd(Player player) {
+		if (player.near(end, .5)) {
+			return true;
+		}
+		return false;
+	}
 	
 	/*
 	 * **********************************************
@@ -436,6 +451,11 @@ public class Maze implements VisibleObject {
 		//// stairs ////
 		for(Stair s : stairs){
 				s.display(gl);}
+		
+		//// end ////
+		if (end != null) {
+			end.display(gl);
+		}
 	}
 	
 
