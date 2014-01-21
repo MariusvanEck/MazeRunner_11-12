@@ -20,7 +20,11 @@ import cast.InvalidByteArraySize;
 public class DataBase {
 	private Connection connection = null;
 	private Statement statement = null;
-		
+	
+	/**
+	 * Constructs a connection to the dataBase.
+	 * If the there is no DataBase it will be created.
+	 */
 	public DataBase(){
 		try {
 			setup();
@@ -29,7 +33,10 @@ public class DataBase {
 		}
 	}
 	
-	
+	/**
+	 * Setup the connection if possible.
+	 * @throws ClassNotFoundException
+	 */
 	protected void setup() throws ClassNotFoundException{
 		Class.forName("org.sqlite.JDBC");
 		
@@ -44,15 +51,15 @@ public class DataBase {
 										"HighScore BLOB);"); // HighScore Data per map
 			statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
 				
-				
-				// TODO:adds the default lvl's to the database if the database was empty
-				
 		}
 		catch(SQLException e){
 			System.err.println("DataBase: " + e.getMessage());
 		}
 	}
     
+	/**
+	 * Cleanup method, This will close the connection with the dataBase.
+	 */
 	protected void cleanUp(){
 		try
 		{
@@ -64,7 +71,10 @@ public class DataBase {
 				System.err.println("DataBase: Closing the connection failed!\n\t" + e);
 			}
 	}
-	
+	/**
+	 * Make sure that the connection is closed when the object is destroyed
+	 * @throws Throwable
+	 */
 	@Override
 	protected void finalize() throws Throwable{
 		try{
@@ -74,7 +84,12 @@ public class DataBase {
 		}
 	}
 	
-	
+	/**
+	 * Add a Map to the dataBase
+	 * @param name		The mapName
+	 * @param lvlData	The MapData
+	 * @return			Returns true if map is added successful. False otherwise
+	 */
 	public boolean addMap(String name,byte[][] lvlData){
 		try{
 			if(lvlData.length-1 > 6 || lvlData.length == 0){ // the length of the first array
@@ -119,7 +134,9 @@ public class DataBase {
 		}
 	}
 	
-	
+	/**
+	 * Import Map from file
+	 */
 	public void importMap(){
 		JFileChooser chooser = new JFileChooser();
 		File file = new File("mazes\\test.maze");
@@ -223,12 +240,14 @@ public class DataBase {
 					res[y][i] = list.get(i);
 		}
 		this.addMap(name, res);
-		
-		
-		
-		
 	}
 	
+	/**
+	 * Gives back the level matrix from the Map
+	 * @param name	The map name
+	 * @param lvl	The level that will be extracted
+	 * @return		Returns the level matrix if successful, null otherwise.
+	 */
 	public int[][] getMap(String name,int lvl){
 		if(lvl > 6){
 			System.err.println("DataBase: wrong lvl has to be less then 5");
@@ -270,46 +289,23 @@ public class DataBase {
 		}
 	}
 	
-	public byte[] getMap(int ID){
-		
-		try{
-			PreparedStatement prep = connection.prepareStatement("SELECT Data " +
-																"FROM Map " +
-																"WHERE Map.ID = ?");
-			prep.setInt(1, ID);
-			
-			ResultSet rs = prep.executeQuery();
-			
-			
-			if(rs.next()){
-				return rs.getBytes("Data");
-			}
-			else{
-				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
-				return null;
-			}
-		}catch(SQLException e){
-			System.err.println("DataBase: " + e.getMessage());
-			return null;
-		}
-	}
-	
-//	private boolean doesTableExists(String tableName,Connection conn) throws SQLException{
-//		DatabaseMetaData dbmd = conn.getMetaData(); 
-//		ResultSet rs = dbmd.getTables(null, null, tableName, null);
-//		
-//		if(rs.next())
-//			return rs.getRow() == 1;
-//		
-//		return false;
-//	}
+	/**
+	 * Check if map name exists in the dataBase. 
+	 * @param name				The Map Name
+	 * @return					True if exists, false otherwise
+	 * @throws SQLException
+	 */
 	private boolean doesMapNameExists(String name) throws SQLException{
 		ResultSet temp = statement.executeQuery("SELECT * FROM Map WHERE Name = '" + name + "';");
 		if(temp.next())
 			return true;
 		return false;
 	}
-	
+	/**
+	 * Gives back the number of levels in given Map
+	 * @param name	Map name
+	 * @return		amount of numbers in Map if successful, 0 otherwise
+	 */
 	public int getNumLevels(String name){
 		try {
 			ResultSet temp = statement.executeQuery("SELECT Data FROM Map WHERE Name = '" + name + "';");
@@ -329,6 +325,11 @@ public class DataBase {
 			return 0;
 		}
 	}
+	/**
+	 * Gives back the size of the level matrix
+	 * @param name	Map name
+	 * @return		Size of the level matrix if successful, 0 otherwise
+	 */
 	public int getMazeSize(String name){
 		try {
 			ResultSet temp = statement.executeQuery("SELECT Data FROM Map WHERE Name = '" + name + "';");
@@ -348,7 +349,12 @@ public class DataBase {
 			return 0;
 		}
 	}
-	
+	/**
+	 * Add a score to the HighScore of a Map
+	 * @param mapName		Map name
+	 * @param playerName	The Player name that should be added
+	 * @param score			The score that should be added
+	 */
 	public void addScore(String mapName,String playerName,int score){
 		try{
 			boolean update = false;
@@ -415,7 +421,11 @@ public class DataBase {
 		}
 		
 	}
-	
+	/**
+	 * Gives back the score pressent in the DataBase
+	 * @param mapName	Name of the map
+	 * @return			A Scores-object will be returned if successful, null otherwise
+	 */
 	public Scores getScores(String mapName){
 		try{
 			PreparedStatement prep = connection.prepareStatement("SELECT HighScore FROM Map WHERE Name == ?");
@@ -458,7 +468,10 @@ public class DataBase {
 			return null;
 		}
 	}
-	
+	/**
+	 * Gives the map names present in the database
+	 * @return	String[] containing the names if successful, null otherwise
+	 */
 	public String[] getMapNames(){
 		
 		try{
@@ -478,35 +491,6 @@ public class DataBase {
 			System.err.println("DataBase: " + e.getMessage());
 			return null;
 		}
-		
-	}
-	
-	public void test(){
-		try{
-			PreparedStatement prep = connection.prepareStatement("UPDATE Map SET HighScore = ? WHERE Map.Name = 'test';");
-			prep.setBytes(1, new byte[] {'t','e','s','t',' ',0,0,0,10});
-			
-			
-			prep.execute();
-			
-			ResultSet rs = statement.executeQuery("SELECT HighScore FROM Map WHERE Map.Name = 'test';");
-			
-			
-			if(rs.next()){
-				byte[] b = rs.getBytes("HighScore");
-				
-				for(int i = 0; i < b.length; i++){
-					System.out.print(b[i]);
-				}
-				System.out.print('\n');
-					
-			}
-			
-		}catch(SQLException e){
-			System.err.println("DataBase: "+ e.getMessage());
-		}
-		
-		
 	}
 	
 }
