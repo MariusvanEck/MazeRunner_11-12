@@ -10,7 +10,6 @@ public class Food extends Loot {
 	private final static String 	modelFileLocation = "models/food/food.obj",
 									textureFileLocation = "models/food/food.png";
 	
-	
 	/**
 	 * Food constructor
 	 * @param x 					The x-coordinate of the location 

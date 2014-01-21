@@ -127,8 +127,8 @@ public class MazeRunner {
 		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
 				             player.getHorAngle(), player.getVerAngle() );
 		
-		weapon = new Sword(gl, "models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword.obj",
-				"models/Killer_Frost_Ice_Sword/Killer_Frost_Ice_Sword_D.tga");
+		// set the player weapon
+		weapon = new Sword(gl);
 		player.setWeapon(weapon);
 		weapon.setCreature(player);
 		visibleObjects.add(weapon);

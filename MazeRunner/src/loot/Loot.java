@@ -25,29 +25,27 @@ public abstract class Loot extends GameObject implements VisibleObject {
 			model = new TexturedModel(gl,new Model(modelFileLocation,scale), textureFileLocation);
 	}
 	
+	/**
+	 * Loot constructor with explicit coordinates
+	 */
 	public Loot(GL gl, double x, double y, double z, float scale, String modelFileLocation, String textureFileLocation){
 		super(x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, y*Maze.SQUARE_SIZE, z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2);
 		if(modelFileLocation != null)
 			model = new TexturedModel(gl,new Model(modelFileLocation,scale), textureFileLocation);
 	}
 	
-	//wielding loot
-	public Loot(GL gl,String modelFileLocation,String textureFileLocation){
+	/**
+	 * Loot constructor without coordinates
+	 */
+	public Loot(GL gl, String modelFileLocation, String textureFileLocation){
 		if(modelFileLocation != null)
 			model = new TexturedModel(gl,new Model(modelFileLocation,.25f), textureFileLocation);
 	}
 	
 	/**
-	 * Loot constructor without location (associated with creature)
+	 * Display
 	 */
-	public Loot(GL gl,String modelFileLocation) {
-		super();
-		if(modelFileLocation != null)
-			model = new TexturedModel(gl,new Model(modelFileLocation,.25f),null);
-			System.out.println("model is niet null");
-	}
-	
-	public void render(GL gl,double angle){
+	public void render(GL gl, double angle){
 		model.render(gl, angle, locationX, locationY, locationZ);
 	}
 }

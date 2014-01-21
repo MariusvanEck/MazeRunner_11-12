@@ -17,7 +17,7 @@ public class Gold extends Loot {
 	 * @param modelFileLocation		The location of the model file
 	 */
 	public Gold(GL gl, double x, double z){
-		super(gl, x, 0, z, 0.25f,modelFileLocation, textureFileLocation);
+		super(gl, x, 0, z, 0.25f, modelFileLocation, textureFileLocation);
 		angle = Math.random()*360;
 	}
 	
