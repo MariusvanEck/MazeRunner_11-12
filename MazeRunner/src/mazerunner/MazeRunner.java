@@ -3,7 +3,9 @@ import gamestate.GameState;
 import gamestate.GameStateManager;
 import gamestate.UserInput;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -332,6 +334,12 @@ public class MazeRunner {
 		
 		// end if the end was hit
 		if (maze.atEnd(player)) {
+			try {
+				Desktop.getDesktop().open(new File("video/dietryingending.mp4")); //doesn't have to be on the desktop
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			input.setGameState(GameState.MENU);
 		}
 		
