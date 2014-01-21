@@ -58,6 +58,7 @@ import database.DataBase;
  * 43 - TrapE
  * 47 - TrapS
  * 53 - TrapW
+ * 59 - The End
  * 97 - Player
  */
 
@@ -136,9 +137,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	public void drawLevel(GL gl){
 		if (mazeX > 19){
 	   		level.lineWidth = 1;
-	   	}
-
-		
+	   	}	
 		level.draw(gl, mazeL, 0, mazeR-mazeL, screenHeight);
 	}
 	
@@ -277,6 +276,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	    	levelTextures[43] = TextureIO.newTexture(new File("textures/Editor/TrapE.png"), false);
 	    	levelTextures[47] = TextureIO.newTexture(new File("textures/Editor/TrapS.png"), false);
 	    	levelTextures[53] = TextureIO.newTexture(new File("textures/Editor/TrapW.png"), false);
+	    	levelTextures[59] = TextureIO.newTexture(new File("textures/Editor/the_end.png"), false);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -314,10 +314,10 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 				text[i] = "";
 			}
 		}
-		text[0] = "Wall"; text[3] = "Door"; text[4] = "Chest"; text[6] = "Gold1"; 
-		text[7] = "Gold2"; text[8] = "Gold3"; text[9] = "Gold4"; text[10] = "Food"; text[11] = "Enemy"; text[12] = "SlidingWall";
-		text[13] ="TrapN"; text[14] ="TrapE";text[15] ="TrapS";text[16] ="TrapW";
-		text[25] = "LtoString"; text[26] = "Player"; text[27] = "TheEnd"; text[28] = "Clear"; text[29] = "ClearAll";
+		text[0] = "Wall"; text[3] = "Gold1"; text[6] = "Gold2"; text[9] = "Gold3"; text[12] = "Gold4";
+		text[4] ="TrapN"; text[7] ="TrapE";text[10] ="TrapS";text[13] ="TrapW";
+		text[8] = "Food"; text[11] = "Enemy"; text[5] = "SlidingWall"; text[17] = "The End"; text[14] = "Player";
+		text[27] = "LtoString"; text[28] = "Clear"; text[29] = "ClearAll";
 		
 		//Create the buttons on the left
 	   	int index = 0;
@@ -423,7 +423,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		 */	
 		
         //print level to console
-        if (i == 25){
+        if (i == 27){
             System.out.println(level.toString());
             btn[25].setSelected(false);
         }
@@ -695,24 +695,24 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		// TrapN draw button
-		else if(btn[13].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[4].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 41;
 		}
 		//TrapE draw button
-		else if(btn[14].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[7].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 43;
 		}
 		//TrapS draw button
-		else if(btn[15].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[10].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 47;
 		}
 		//TrapW draw button
-		else if(btn[16].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if(btn[13].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 53;
 		}
 		
 		//The slidingwall draw button
-		else if (btn[12].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
+		else if (btn[5].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
 			level.level[X][Y-1] = 37;
 		}
 		
@@ -727,7 +727,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Gold1 draw button
-		else if (btn[6].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,2) == false){
+		else if (btn[3].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,2) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 2;
 			}
@@ -737,7 +737,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Gold2 draw button
-		else if (btn[7].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,3) == false){
+		else if (btn[6].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,3) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 3;
 			}
@@ -747,7 +747,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Gold3 draw button
-		else if (btn[8].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,5) == false){
+		else if (btn[9].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && level.level[X][Y-1] != 97 && level.check(X,Y-1,5) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 5;
 			}
@@ -757,7 +757,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Gold4 draw button
-		else if (btn[9].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && 
+		else if (btn[12].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && 
 				level.level[X][Y-1] != 97 && level.check(X,Y-1,7) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 7;
@@ -768,7 +768,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Food draw button
-		else if (btn[10].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && 
+		else if (btn[8].selected == true && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 37 && 
 				level.level[X][Y-1] != 97 && level.check(X,Y-1,19) == false){
 			if(level.level[X][Y-1] == 0){
 			    level.level[X][Y-1] = 19;
@@ -812,7 +812,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
         //Player Spawn button
-		else if (SwingUtilities.isLeftMouseButton(me) && btn[26].selected == true && squareX > 0 && 
+		else if (SwingUtilities.isLeftMouseButton(me) && btn[14].selected == true && squareX > 0 && 
         		squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 97){
             for(int a = 0; a < mazeX; a++){
                 for(int b = 0; b < mazeX; b++){
@@ -826,11 +826,20 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
             level.level[X][Y-1] = 97;
         }
 		
-		//The Void draw button
-		else if (btn[27].selected == true && level != levels[0] && squareX > 0 && squareX < mazeX-1 &&
-				squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 97){
-			level.level[X][Y-1] = 17;
-		}
+		//The End button
+		else if (SwingUtilities.isLeftMouseButton(me) && btn[17].selected == true && squareX > 0 && 
+        		squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0 && level.level[X][Y-1] != 59){
+            for(int a = 0; a < mazeX; a++){
+                for(int b = 0; b < mazeX; b++){
+                	for (int c = 0; c < nlevels; c++){
+	                    if (levels[c].level[a][b] == 59){
+	                        levels[c].level[a][b] = 0;
+	                    }
+                	}
+                }
+            }
+            level.level[X][Y-1] = 59;
+        }
 		
 		//The right mouse button always draws an empty floor tile
 		if(SwingUtilities.isRightMouseButton(me) && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
