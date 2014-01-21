@@ -1,5 +1,10 @@
 package cast;
 
+
+/**
+ * Used only in Cast.java as a Throwable-object
+ *
+ */
 public class InvalidByteArraySize extends Exception {
 	private static final long serialVersionUID = 2973113730656047926L;
 	private String message;
