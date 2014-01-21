@@ -31,7 +31,7 @@ import mazerunner.Control;
 public class UserInput extends Control 
 		implements MouseListener, MouseMotionListener, KeyListener,FocusListener {
 	
-	private GameState gameState;
+	private GameState gameState;							// the current GameState
 	
 	public Point mouseLocation;								// the mouse location in canvas coordinates
 	private Point screenCenter;								// the screen center in screen coordinates
@@ -40,7 +40,7 @@ public class UserInput extends Control
 	
 	private Robot robot;									// used for centering the mouse
 	
-	private static boolean wasMousePressed;						// boolean indicating a mouse press
+	private static boolean wasMousePressed;					// boolean indicating a mouse press
 	private boolean newGame = false;						// boolean indicating a new game start
 	
 	/**

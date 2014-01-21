@@ -9,10 +9,10 @@ import com.sun.opengl.util.GLUT;
  */
 public abstract class Pause {
 	
-	private static String pauseString = "PAUSE";
+	private final static String pauseString = "PAUSE";
 	
 	/**
-	  * Displays pause on the screen when the game is paused
+	  * Displays pause overlay on the screen when the game is paused
 	  */
 	protected static void display(GL gl, int sw, int sh) {
         GLUT glut = new GLUT();

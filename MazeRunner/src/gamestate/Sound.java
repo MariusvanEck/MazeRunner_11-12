@@ -6,13 +6,15 @@ import java.net.URL;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.BooleanControl;
-import javax.sound.sampled.Control;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
 
 import menu.OptionsMenu;
 
+/**
+ * Class for playing sounds in the game
+ */
 public class Sound {
 
    private AudioClip clip;
@@ -114,24 +116,6 @@ public class Sound {
    		}
    	}
 
-   	public void printLinesAndControls() {
-
-   		Mixer.Info[] infos = AudioSystem.getMixerInfo();
-   		for (Mixer.Info info: infos) {
-   		    Mixer mixer = AudioSystem.getMixer(info);
-   		    Line[] lines = mixer.getSourceLines();
-   		    
-   		    for(Line line : lines) {
-   		    	System.out.println(line);
-   		    	Control[] controls = line.getControls();
-   		    	for (Control c : controls) {
-   		    		System.out.println(c);
-   		    	}
-   		    }
-   		}
-	    	
-	    	
-   	}
 }
 
 
