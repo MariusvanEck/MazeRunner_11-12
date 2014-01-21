@@ -360,6 +360,12 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	   	Level.setTextureMaze(levelTextures);
 	}
 	
+	/**
+	 * Save the current map to the DataBase
+	 * @param name			The map name
+	 * @param dataBase		The DataBase that should be used
+	 * @return				True if save was successful, false otherwise.
+	 */
 	public boolean saveToDataBase(String name,DataBase dataBase){
 		byte[][] res = new byte[7][];
 		res[6] = new byte[8];
