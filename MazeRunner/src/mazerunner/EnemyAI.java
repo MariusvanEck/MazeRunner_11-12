@@ -80,13 +80,16 @@ public class EnemyAI implements VisibleObject{
 			if (control.getAngleToRotate() < 15)
 				enemy.getWeapon().doDamage(player);
 			
-			// damage the enemy with the players weapon
-			if (UserInput.wasMousePressed())
-				damageEnemy();
-			
 			// update the Enemy's control
 			control.setPlayerVisible(isPlayerVisible);
 			control.update();
+		}
+		
+		// swing the sword
+		if (UserInput.wasMousePressed()) {
+			if(((Sword) player.getWeapon()).swingSword(enemies)) {
+				enemy.hit();
+			}
 		}
 		
 		// reset wasMousePressed
@@ -237,20 +240,6 @@ public class EnemyAI implements VisibleObject{
 		Point nextLocation = possibleLocations.get(nextLocationIndex);
 		control.setTarget( 	((double) nextLocation.x + 0.5) * Maze.SQUARE_SIZE,
 							((double) nextLocation.y + 0.5) * Maze.SQUARE_SIZE);
-	}
-	
-	/** 
-	 * damage the enemy
-	 */
-	private void damageEnemy() {
-		double enemyAngle = (180/Math.PI)*
-				Math.atan2(player.locationX - enemy.locationX, player.locationZ - enemy.locationZ);
-		
-		boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(player.getHorAngle())) < 10;
-			
-		if(((Sword) player.getWeapon()).swingSword(enemy, incone)) {
-			enemy.hit();
-		};
 	}
 	
 	

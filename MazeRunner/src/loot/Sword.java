@@ -2,11 +2,14 @@ package loot;
 
 import gamestate.Sound;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.media.opengl.GL;
 
 import mazerunner.Creature;
+import mazerunner.Enemy;
+import mazerunner.GameObject;
 import mazerunner.Maze;
 import mazerunner.Player;
 import model.Model;
@@ -89,19 +92,25 @@ public class Sword extends Weapon{
 	/**
 	 * Swing the sword
 	 */
-	public boolean swingSword (Creature creature, boolean incone) {
+	public boolean swingSword (ArrayList<Enemy> enemies) {
+		
 		if ((timeDoneLastDamage == null || 
 			Calendar.getInstance().getTimeInMillis() - timeDoneLastDamage > downTime)) {
 			timeDoneLastDamage = Calendar.getInstance().getTimeInMillis();
 			animating = true;
 			
-			if (creature.near(getCreature(), range) && incone) {
-				doDamage(creature);
-				return true;
+			for (Enemy enemy : enemies) {
+				double enemyAngle = (180/Math.PI)*
+						Math.atan2(getCreature().getLocationX() - enemy.getLocationX(), 
+								getCreature().getLocationZ() - enemy.getLocationZ());
+
+				boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(getCreature().getHorAngle())) < 10;
+				if (enemy.near(getCreature(), range) && incone) {
+					doDamage(enemy);
+					return true;
+				}
 			}
-			else {
-				miss.play();
-			}
+			miss.play();
 		}
 		
 		return false;
