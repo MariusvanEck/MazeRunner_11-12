@@ -11,6 +11,7 @@ package mazerunner;
  *
  */
 public abstract class GameObject {
+	// coordinates
 	protected double locationX, locationY, locationZ;
 
 	/**
