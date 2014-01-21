@@ -120,6 +120,10 @@ public class HeadsUpDisplay {
 		
 	}
 
+	/**
+	 * Draw the time
+	 * @param gl
+	 */
 	private void drawTimeBox(GL gl) {
 		GLUT glut = new GLUT();
 		
@@ -145,6 +149,9 @@ public class HeadsUpDisplay {
         gl.glPopMatrix();
 	}
 	
+	/**
+	 * Draw the score
+	 */
 	private void drawScoreBox(GL gl){
 		GLUT glut = new GLUT();
 		String scoreString = "" + player.getScore();
@@ -169,6 +176,10 @@ public class HeadsUpDisplay {
         gl.glPopMatrix();
 	}
 
+	/**
+	 * Draw the health bar
+	 * @param gl
+	 */
 	public void drawHealthBar(GL gl)  {
 		 
 		double frac = (double)player.getHitpoints() / (double)player.getMaxHP();
@@ -193,6 +204,9 @@ public class HeadsUpDisplay {
 		    gl.glPopMatrix();
 	}
 	
+	/**
+	 * Get the time
+	 */
 	public int getTime(){
 		return time;
 	}

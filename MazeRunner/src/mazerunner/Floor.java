@@ -3,7 +3,7 @@ package mazerunner;
 import javax.media.opengl.GL;
 
 /**
- * Represents an ingame wall block
+ * Represents an ingame floor
  */
 public class Floor extends GameObject implements VisibleObject{
 

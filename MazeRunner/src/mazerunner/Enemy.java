@@ -171,9 +171,6 @@ n and orientation of the enemy
 		return speed;
 	}
 
-	/**
-	 * set the speed to a factor time maxSpeed
-	 */
 	protected void setSpeed(double speedFactor) {
 		if(speedFactor >= 0 && speedFactor <= 1)
 			this.speed = speedFactor*maxSpeed;

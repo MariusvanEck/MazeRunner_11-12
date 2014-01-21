@@ -23,16 +23,12 @@ import loot.Weapon;
  */
 public class Player extends Creature {
 	
-	private double verAngle;
-	private double speed;
-	private double rotationSpeed;
-	private Control control;
-	private int score;
-	double t = 0;
-	int fx = 10;
-	int fy = fx/2;
-	double Ax = 0.4;
-	double Ay = Ax/2;
+	private double verAngle;		// verticle angle
+	private double speed;			// speed
+	private double rotationSpeed;	// turning speed
+	private Control control;		// the control
+	private int score;				// the score
+	double t = 0;					// variable for head bobbing
 	
 	private String name = "Player";
 	
@@ -84,15 +80,11 @@ public class Player extends Creature {
 				locationZ -= speed*deltaTime*
 						Math.cos((getHorAngle() + control.moveDirection)*(Math.PI/180));
 				
-				// makes the camera bob
-				t = t + 0.01;
-				
-				setVerAngle(getVerAngle() + Ax*Math.sin(fx*t));
-				setHorAngle(getHorAngle() + Ay*Math.sin(fy*t));
-				
-				if(t > 5){ // t > GCD(fx,fy) dus als ze een veelvoud van elkaar zijn, het laagste getal.
-					t = 0;
-				}
+				// make the camera bob
+				t = t + ((double) deltaTime)/1000d;
+				setVerAngle(getVerAngle() + 0.4*Math.sin(10*t));
+				setHorAngle(getHorAngle() + 0.2*Math.sin(5*t));
+				if(t > 5){t = 0;}
 			}
 			
 			
@@ -158,8 +150,21 @@ public class Player extends Creature {
 		this.speed = speed;
 	}
 	
+	/**
+	 * Get the player name 
+	 * @return
+	 */
 	public String getName(){return name;}
+	
+	/**
+	 * Get the score
+	 */
 	public int getScore(){return score;}
+	
+	/**
+	 * Add to the score
+	 * @param add
+	 */
 	public void addScore(int add){
 		if(add > 0)
 			score+= add;

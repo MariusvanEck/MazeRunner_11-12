@@ -13,6 +13,7 @@ import javax.media.opengl.GL;
  *
  */
 public interface VisibleObject {
+	
 	/**
 	 * display(GL) contains all the GL callback functions to display the object on the screen.
 	 * <p>

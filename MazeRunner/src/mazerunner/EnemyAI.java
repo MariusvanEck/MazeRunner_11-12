@@ -13,15 +13,17 @@ import loot.Sword;
 
 public class EnemyAI implements VisibleObject{
 	
-	private Maze maze;
-	private Player player;
+	private Maze maze;				// the maze
+	private Player player;			// the player
 	
+	// The enemies
 	private static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private Iterator<Enemy> it;
-	private ArrayList<Point> memory;
-	private Enemy enemy;
-	private EnemyControl control;
-	private Random rnd;
+	
+	private ArrayList<Point> memory;		// the enemies' combined (swarm) memory
+	private Enemy enemy;					// current enemy (for updating)
+	private EnemyControl control;			// current control (for updating)
+	private Random rnd;						// random number generation
 	
 	/**
 	 * In the EnemyAI constructor the enemies are initialised and the maze and player are set
@@ -90,8 +92,6 @@ public class EnemyAI implements VisibleObject{
 		// reset wasMousePressed
 		UserInput.resetMousePressed();
 	}
-
-
 
 	/**
 	 * Update the enemy's targets according to the current aggresive state tov the player
@@ -252,6 +252,7 @@ public class EnemyAI implements VisibleObject{
 			enemy.hit();
 		};
 	}
+	
 	
 	/*
 	 * **********************************************

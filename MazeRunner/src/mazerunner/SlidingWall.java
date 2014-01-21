@@ -4,11 +4,11 @@ import javax.media.opengl.GL;
 
 public class SlidingWall extends Wall {
 	
-	private final double locationYup = .5*Maze.SQUARE_SIZE;
-	private final double locationYdown = -.5*Maze.SQUARE_SIZE;
-	private final double slidingspeed = 0.001;
-	private boolean isWall = true;
-	private Floor floor;
+	private final double locationYup = .5*Maze.SQUARE_SIZE;			// locationY when wall is completely up
+	private final double locationYdown = -.5*Maze.SQUARE_SIZE;		// locationY when wall is completely down
+	private final double slidingspeed = 0.001;						// wall sliding speed	
+	private boolean isWall = true;									// boolean for the wall state
+	private Floor floor;											// floor on top of the sliding wall
 	
 	/**
 	 * constructor
@@ -39,10 +39,18 @@ public class SlidingWall extends Wall {
 		isWall = locationY > locationYdown;
 	}
 	
+	/**
+	 * Checks if this sliding wall is in the "wall" state
+	 * @return
+	 */
 	public boolean isWall() {
 		return isWall;
 	}
 
+	/**
+	 * Displays the floor on top of the sliding wall
+	 * @param gl
+	 */
 	public void displayFloor(GL gl) {
 		floor.display(gl);
 	}

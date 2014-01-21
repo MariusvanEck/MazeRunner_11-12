@@ -38,6 +38,8 @@ public class Projectile extends GameObject{
 	 * Update the projectile
 	 */
 	public void update(int deltaTime){
+		angle -= deltaTime;
+		
 		switch(direction){
 			case 'N':
 				locationZ -= speed*deltaTime;
@@ -74,7 +76,7 @@ public class Projectile extends GameObject{
 	 * @param gl
 	 */
 	public void display(GL gl){
-		model.render(gl, angle-=5, locationX, locationY, locationZ);
+		model.render(gl, angle, locationX, locationY, locationZ);
 	}
 	
 }

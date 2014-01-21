@@ -7,6 +7,7 @@ import model.TexturedModel;
 
 public class Stair extends GameObject implements VisibleObject {
 	
+	// model
 	private static final String modelFileLocation = "models/stairs/stairs.obj";
 	private static final String textureFileLocation = "models/stairs/stairs.png";
 	private static TexturedModel texturedModel;
@@ -18,10 +19,16 @@ public class Stair extends GameObject implements VisibleObject {
 		this.orientation = orientation;
 	}
 	
+	/**
+	 * Load the model
+	 */
 	public static void loadModel(GL gl) {
 		texturedModel = new TexturedModel(gl, new Model(modelFileLocation, 1f),textureFileLocation);
 	}
 	
+	/**
+	 * Display the stair
+	 */
 	public void display(GL gl){
 		texturedModel.render(gl, orientation, locationX, locationY, locationZ);
 	}

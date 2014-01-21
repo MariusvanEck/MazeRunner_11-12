@@ -42,13 +42,13 @@ public class MazeRunner {
 	
 	private Player player;													// the player
 	private EnemyAI enemyAI;												// the enemyAI with the enemies
-	private Weapon weapon;
+	private Weapon weapon;													// the players weapon
 	private LootController lootController;									// the loot
 	private TrapController trapController;									// the traps
 	private Camera camera;													// the camera
 	private Maze maze; 														// the maze
-	private String mapName;
-	private DataBase dataBase;
+	private String mapName;													// the name of the selected map
+	private DataBase dataBase;												// the database
 	
 	private HeadsUpDisplay headsUpDisplay;									// the headsUpDisplay overlay
 	private UserInput input;												// user input object controls the game.
@@ -56,8 +56,9 @@ public class MazeRunner {
 	
 	private int spawnLocationX, spawnLocationZ;								// store the spawn location of the player
 	
-	private static HashMap<String, Texture> textures;
+	private static HashMap<String, Texture> textures;						// the textures
 
+	
 /*
  * **********************************************
  * *		Initialisation methods				*

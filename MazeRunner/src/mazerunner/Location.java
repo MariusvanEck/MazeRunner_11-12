@@ -9,6 +9,9 @@ public class Location extends GameObject {
 		super(x, 0, z);
 	}
 	
+	/**
+	 * location to string
+	 */
 	public String toString() {
 		return "[" + String.format("%.2f", locationX) + ", " + String.format("%.2f", locationZ) + "]";
 	}

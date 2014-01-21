@@ -21,9 +21,9 @@ import database.DataBase;
  */
 public class Maze implements VisibleObject {
 	
-	private int mazeSize;
-	private int numLevels;
-	public final static double SQUARE_SIZE = 5;
+	private int mazeSize;							// The amount of squares (wall / no wall)
+	private int numLevels;							// The amount of different levels
+	public final static double SQUARE_SIZE = 5;		// scale factor for displaying
 	
 	private HashMap<String,Texture> textures;			// reference to the texture hashmap
 	private Texture currentTexture;						// specifies the current texture
