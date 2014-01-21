@@ -24,24 +24,38 @@ public class TexturedModel {
 	// private int diffuseModifierUniform;
 	private Texture texture;
 	private  Model m;
+	private GL gl;
 	
+	/**
+	 * Constructs a TexturedModel
+	 * @param gl					GL used to access openGL functions
+	 * @param model					A Model
+	 * @param textureFileLocation	The file location of the texture
+	 */
 	public TexturedModel(GL gl, Model model, String textureFileLocation){
 		this.m = model;
-		this.setUpVBOs(gl);
-		//this.setupShaders(gl);//
-		this.setUpLighting(gl);
-		this.loadTexture(gl, textureFileLocation);
+		this.gl = gl;
+		this.setUpVBOs();
+		//this.setupShaders(gl);
+		this.setUpLighting();
+		this.loadTexture(textureFileLocation);
 	}
-	
-	protected void finalize(GL gl) throws Throwable{
+	/**
+	 * Deallocate the memory used by openGL 
+	 * @throws Throwable
+	 */
+	@Override
+	protected void finalize() throws Throwable{
 		try{
-			this.cleanUp(gl);
+			this.cleanUp();
 		}finally{
 			super.finalize();
 		}
 	}
-	
-	private void setUpVBOs(GL gl){
+	/**
+	 * Setup the VBO's so openGL will be able to render the model
+	 */
+	private void setUpVBOs(){
 		gl.glGenBuffers(1,vboVertexHandle,0);
 		gl.glGenBuffers(1,vboNormalHandle,0);
 		gl.glGenBuffers(1,vboTexCoordHandle,0);
@@ -81,7 +95,11 @@ public class TexturedModel {
 		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0); // unbind the buffer
 	}
 	
-	private void loadTexture(GL gl, String textureFileLocation){
+	/**
+	 * Load the textures		
+	 * @param textureFileLocation	The location of the texture file
+	 */
+	private void loadTexture(String textureFileLocation){
 		if (textureFileLocation == null)
 			return;
 		
@@ -94,7 +112,7 @@ public class TexturedModel {
 		}	
 	}
 	
-//	private void setupShaders(GL gl){
+//	private void setupShaders(){
 //		shaderProgramHandle = gl.glCreateProgram();
 //		vertexShaderHandle = gl.glCreateShader(GL.GL_VERTEX_SHADER);
 //		fragmentShaderHandle = gl.glCreateShader(GL.GL_FRAGMENT_SHADER);
@@ -159,7 +177,10 @@ public class TexturedModel {
 //		setUpLighting(gl);
 //	}
 	
-	public void cleanUp(GL gl){
+	/**
+	 * Used to cleanup the memory allocated by openGL
+	 */
+	public void cleanUp(){
 		gl.glDeleteProgram(shaderProgramHandle);
 		
 		gl.glDeleteBuffers(1,vboVertexHandle,0);
@@ -170,7 +191,10 @@ public class TexturedModel {
 		gl.glDeleteShader(fragmentShaderHandle);
 	}
 	
-	private void setUpLighting(GL gl){
+	/**
+	 * Setup the lighting so the model will be visible 
+	 */
+	private void setUpLighting(){
 		gl.glShadeModel(GL.GL_SMOOTH);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_LIGHTING);
@@ -183,6 +207,16 @@ public class TexturedModel {
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 	}
 	
+	/**
+	 * Render the model
+	 * @param gl			The gl used for the display
+	 * @param angleX		rotation angle round the X-axis
+	 * @param angleY		rotation angle round the Y-axis
+	 * @param angleZ		rotation angle round the Z-axis
+	 * @param x				Location x	where the model should appear
+	 * @param y				Location y	where the model should appear
+	 * @param z				Location z	where the model should appear
+	 */
 	public void render(		GL gl, double angleX, double angleY, double angleZ, 
 							double x, double y, double z) {
 		if(!m.isLoaded()) // there is nothing to render
@@ -231,19 +265,38 @@ public class TexturedModel {
 			
 		gl.glPopMatrix();	
 	}
-	
+	/**
+	 * Render the model
+	 * @param gl			The gl used for the display
+	 * @param angleY		rotation angle round the Y-axis
+	 * @param x				Location x	where the model should appear
+	 * @param y				Location y	where the model should appear
+	 * @param z				Location z	where the model should appear
+	 */
 	public void render(GL gl, double angleY, double x, double y, double z){
 		render(gl, 0, angleY, 0, x, y, z);
 	}
-	
+	/**
+	 * convert a vector2f to a float[]
+	 * @param v		the vector to be converted
+	 * @return		the float[]
+	 */
 	private float[] asFloats(Vector2f v){
 		return new float[]{v.x,v.y};
 	}
-	
+	/**
+	 * convert a vector3f to a float[]
+	 * @param v		the vector to be converted
+	 * @return		the float[]
+	 */
 	private float[] asFloats(Vector3f v){
 		return new float[]{v.x,v.y,v.z};
 	}
-	
+	/**
+	 * Convert different float values to a FloatBuffer
+	 * @param values	the float values
+	 * @return			FloatBuffer
+	 */
 	private FloatBuffer asFloatBuffer(float... values){
 		FloatBuffer res = reserveData(values.length*4); // 4 bytes per float
 		res.put(values);
@@ -251,6 +304,11 @@ public class TexturedModel {
 		return res;
 	}
 	
+	/**
+	 * Create a FloatBuffer with the specified size
+	 * @param size	The size of the FloatBuffer in bytes 
+	 * @return
+	 */
 	private FloatBuffer reserveData(int size){
 		ByteBuffer byteBuff = ByteBuffer.allocateDirect(size); // allocate memory
 		byteBuff.order(ByteOrder.nativeOrder()); // use the device hardware's native byte order

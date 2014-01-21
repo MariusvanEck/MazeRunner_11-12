@@ -10,6 +10,13 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
 
 public class OBJLoader {
+	/**
+	 * Load a model from a .obj-file
+	 * @param f							The File location
+	 * @return							Returns a Model
+	 * @throws FileNotFoundException	Thrown when the file is not found
+	 * @throws IOException				Thrown when the file is not readable
+	 */
 	public static Model loadModel(File f)throws FileNotFoundException,IOException{
 		BufferedReader reader = new BufferedReader(new FileReader(f));
 		Model m = new Model();
@@ -21,7 +28,7 @@ public class OBJLoader {
 				float x = Float.valueOf(line.split(" ")[1]);
 				float y = Float.valueOf(line.split(" ")[2]);
 				float z = Float.valueOf(line.split(" ")[3]);
-				m.addVertice(new Vector3f(x,y,z));
+				m.addVertex(new Vector3f(x,y,z));
 			}
 			else if(line.startsWith("vn ")){
 				float x = Float.valueOf(line.split(" ")[1]);
