@@ -14,7 +14,6 @@ import javax.media.opengl.glu.GLU;
 
 import loot.LootController;
 import loot.Sword;
-import loot.Weapon;
 import trap.TrapController;
 
 import com.sun.opengl.util.texture.Texture;
@@ -42,7 +41,7 @@ public class MazeRunner {
 	
 	private Player player;													// the player
 	private EnemyAI enemyAI;												// the enemyAI with the enemies
-	private Weapon weapon;													// the players weapon
+	private Sword sword;													// the players weapon
 	private LootController lootController;									// the loot
 	private TrapController trapController;									// the traps
 	private Camera camera;													// the camera
@@ -108,7 +107,7 @@ public class MazeRunner {
 							spawnLocationX * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// x coordinate
 							Maze.SQUARE_SIZE / 2,										// y coordinate
 							spawnLocationZ * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// z coordinate
-							90, 0, 100, weapon);
+							90, 0, 100, sword);
 		
 		// Initialise the loot
 		lootController = new LootController(gl, player);
@@ -128,10 +127,10 @@ public class MazeRunner {
 				             player.getHorAngle(), player.getVerAngle() );
 		
 		// set the player weapon
-		weapon = new Sword(gl);
-		player.setWeapon(weapon);
-		weapon.setCreature(player);
-		visibleObjects.add(weapon);
+		sword = new Sword(gl);
+		player.setWeapon(sword);
+		sword.setCreature(player);
+		visibleObjects.add(sword);
 		
 		// set player control
 		player.setControl(input);
@@ -336,6 +335,9 @@ public class MazeRunner {
 			player.locationX = previousX;
 			player.locationZ = previousZ;
 		}
+		
+		// update the sword
+		sword.update(deltaTime, player);
 	}	
 	
 	/**
@@ -386,19 +388,7 @@ public class MazeRunner {
 	 * updateWeaponLocation() updates the weapon location so that the player holds the weapon in his hands.
 	 */
 	private void updateWeaponLocation(){	
-		double weaponAngleX = 20+player.getVerAngle();
-		double weaponAngleY = player.getHorAngle();
-		double weaponAngleZ = 90;
-
-		weapon.setAngleX(weaponAngleX);
-		weapon.setAngleY(weaponAngleY); // sideways, without effects
-		weapon.setAngleZ(weaponAngleZ);// - 10*Math.sin(Math.toRadians(player.getHorAngle()%360))); // twists sword
 		
-		weapon.setWieldX(player.getLocationX() + Math.cos(Math.toRadians(player.getHorAngle())));
-		weapon.setWieldY(player.getLocationY() - 0.5);
-		weapon.setWieldZ(player.getLocationZ() - Math.sin(Math.toRadians(player.getHorAngle())));
-
-		//TODO implement angles and strafe-positioning
 	}
 	
 	

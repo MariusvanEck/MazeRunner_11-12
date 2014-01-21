@@ -94,7 +94,7 @@ public abstract class Creature extends GameObject {
 	/**
 	 * Get the creatures horizontal angle
 	 */
-	protected double getHorAngle() {
+	public double getHorAngle() {
 		return horAngle;
 	}
 
