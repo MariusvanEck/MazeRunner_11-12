@@ -41,6 +41,7 @@ public class UserInput extends Control
 	private Robot robot;									// used for centering the mouse
 	
 	private static boolean wasMousePressed;					// boolean indicating a mouse press
+	private static boolean jumping;
 	private boolean newGame = false;						// boolean indicating a new game start
 	
 	/**
@@ -150,6 +151,7 @@ public class UserInput extends Control
 			case KeyEvent.VK_A: left = true;	break;
 			case KeyEvent.VK_S: back = true;	break;
 			case KeyEvent.VK_D: right = true;	break;
+			case KeyEvent.VK_SPACE: jumping = true; break;
 			}
 		}
 	}
@@ -165,6 +167,7 @@ public class UserInput extends Control
 		case KeyEvent.VK_A: left = false;	 	break;
 		case KeyEvent.VK_S: back = false;	 	break;	
 		case KeyEvent.VK_D: right = false;	 	break;
+		case KeyEvent.VK_SPACE: jump = false; break;
 		
 		// pause/unpause
 		case KeyEvent.VK_PAUSE:
@@ -197,11 +200,19 @@ public class UserInput extends Control
 		return wasMousePressed;
 	}
 	
+	public static boolean wasJumped() {
+		return jumping;
+	}
+	
 	/**
 	 * resets the mouse to not clicked
 	 */
 	public static void resetMousePressed() {
 		wasMousePressed = false;
+	}
+	
+	public static void resetJumped() {
+		jumping = false;
 	}
 	
 	/**
@@ -283,7 +294,7 @@ public class UserInput extends Control
 	@Override
 	public void keyTyped(KeyEvent event)
 	{
-		
+	
 	}
 
 	@Override

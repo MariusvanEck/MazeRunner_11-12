@@ -1,5 +1,7 @@
 package mazerunner;
 
+import gamestate.UserInput;
+
 import javax.media.opengl.GL;
 
 import loot.Weapon;
@@ -29,6 +31,7 @@ public class Player extends Creature {
 	private Control control;		// the control
 	private int score;				// the score
 	double t = 0;					// variable for head bobbing
+	private double counter = 0;
 	
 	private String name = "Player";
 	
@@ -85,6 +88,20 @@ public class Player extends Creature {
 				setVerAngle(getVerAngle() + 0.4*Math.sin(10*t));
 				setHorAngle(getHorAngle() + 0.2*Math.sin(5*t));
 				if(t > 5){t = 0;}
+			}
+			
+
+			if (UserInput.wasJumped()) {
+				double jumplength = 40;
+				if(counter<2*Math.sqrt(2)){
+					counter += 2*Math.sqrt(2)/jumplength;
+					locationY = 4.5 - Math.pow((counter-Math.sqrt(2)),2);
+				}
+				else{
+					locationY = 2.5;
+					counter = 0;
+					UserInput.resetJumped();
+				}
 			}
 			
 			
