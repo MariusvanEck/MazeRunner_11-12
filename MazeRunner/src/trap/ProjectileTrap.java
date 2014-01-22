@@ -118,7 +118,7 @@ public class ProjectileTrap extends GameObject implements Trap{
 			
 			for (Creature creature : creatures) {
 				if(projectile.near(creature, Maze.SQUARE_SIZE/16)){
-					if(Counter > 500){
+					if(Counter > 250){
 				
 						creature.removeHP(projectile.getDamage());
 						if (creature instanceof Enemy) {

@@ -186,4 +186,7 @@ public class Player extends Creature {
 		if(add > 0)
 			score+= add;
 	}
+	public void setName(String name){
+		this.name = name;
+	}
 }

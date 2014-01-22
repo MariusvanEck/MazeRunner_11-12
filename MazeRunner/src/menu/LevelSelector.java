@@ -111,9 +111,10 @@ public class LevelSelector extends MenuObject{
 	 */
 	public String getName(int index){
 		if(index == 0)
-			return"up";
-		if(index < names.length+1)
+			return "up";
+		if(index > 0 && index < names.length+1){
 			return names[index-1];
+		}
 		if(index == names.length+1)
 			return "down";
 		if(index == names.length+2)

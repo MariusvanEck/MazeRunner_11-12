@@ -277,15 +277,16 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			}
 			break;
 		case NEW:
-			if(playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)).equals("up")){
+			boolean notNull = playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)) != null;
+			if(notNull && playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)).equals("up")){
 				playMenu.getLevelSelector().goUp();
 			}
-			else if(playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)).equals("down")){
+			else if(notNull && playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)).equals("down")){
 				playMenu.getLevelSelector().goDown();
 			}
-			else if(playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)).equals("back"))
+			else if(notNull && playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)).equals("back"))
 				menuState = MenuState.PLAY;
-			else if(playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y)) != null){
+			else if(notNull){
 				mapName = playMenu.getLevelSelector().getName(playMenu.getLevelSelector().getButton(x, y));
 				input.setGameState(GameState.INGAME);
 				input.setNewGame(true);

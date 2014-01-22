@@ -110,7 +110,7 @@ public class MazeRunner {
 							Maze.SQUARE_SIZE / 2,										// y coordinate
 							spawnLocationZ * Maze.SQUARE_SIZE + Maze.SQUARE_SIZE / 2, 	// z coordinate
 							90, 0, 100, sword);
-		
+
 		// Initialise the loot
 		lootController = new LootController(gl, player);
 		visibleObjects.add(lootController);

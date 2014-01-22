@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import cast.Cast;
 
@@ -107,8 +106,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private JLabel sizel = new JLabel("Level size(3-63): ");
 	private JLabel nlevl = new JLabel("Number of levels (1-6): ");
 	private JLabel mapNamel = new JLabel("name");
-    File file = new File("mazes\\test.maze");
-    FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", "maze");
+
     int returnVal;
 	private Texture[] textureLeft;
 	private Texture[] levelTextures;
