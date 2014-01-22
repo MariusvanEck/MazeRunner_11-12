@@ -47,12 +47,11 @@ public class GameStateManager extends Frame implements GLEventListener{
 	 * **********************************************
 	 */
 
-	public static boolean mazeRunnerStarted	= false;				// boolean to check if mazeRunner is available
 	public static int screenWidth = 800, screenHeight = 500;		// screenSize
 	private GLCanvas canvas;										// canvas for drawing
 	private GameState gameState;									// current GameState
 	
-	private MazeRunner mazeRunner;									// INGAME functionality
+	private static MazeRunner mazeRunner;							// INGAME functionality
 	private MainMenu menu;											// MENU functionality
 	private static HighScore highScore = null;						// HighScore display
 	private UserInput input;										// Mouse and Keyboard input functionality
@@ -329,7 +328,6 @@ public class GameStateManager extends Frame implements GLEventListener{
 		
 		// setup new game if required
 		if (input.isNewGame()) {
-			mazeRunnerStarted = true;
 			String mazeName = menu.getMapName();
 			
 			if (mazeName != null) {
@@ -385,6 +383,9 @@ public class GameStateManager extends Frame implements GLEventListener{
 		highScore = score;
 	}
 	
+	public static boolean isMazeRunnerStarted() {
+		return mazeRunner != null;
+	}
 	
 	/*
 	 * **********************************************

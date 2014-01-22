@@ -241,7 +241,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 	 */
 	
 	/**
-	* This method performs the correct actionz when a button is pressed
+	* This method performs the correct action when a button is pressed
 	**/
 	public void buttonPressed(int x, int y){
 
@@ -268,7 +268,7 @@ public class MainMenu extends MenuObject implements MenuInterface{
 			switch(playMenu.getButton(x, y)) {
 				case PlayMenu.BACK: 	menuState = MenuState.MAIN; break;
 				case PlayMenu.CONTINUE: 
-					if (GameStateManager.mazeRunnerStarted) {
+					if (GameStateManager.isMazeRunnerStarted()) {
 						input.setGameState(GameState.INGAME); break;
 					}
 				case PlayMenu.NEW:		
