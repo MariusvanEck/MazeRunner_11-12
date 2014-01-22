@@ -105,9 +105,9 @@ public class Maze implements VisibleObject {
 						// check for stairs
 						if (currentLevel[x][z]%11 == 0) {
 							if(currentLevel[x][z+1] != 0 && currentLevel[x][z+1]%13 == 0) stairs.add(new Stair(gl,x+1,z,180)); 		// N
-							if(currentLevel[x+1][z] != 0 && currentLevel[x+1][z]%13 == 0) stairs.add(new Stair(gl,x,z,270)); 		// E
-							if(currentLevel[x][z-1] != 0 && currentLevel[x][z-1]%13 == 0) stairs.add(new Stair(gl,x,z+1,0)); 		// S
-							if(currentLevel[x-1][z] != 0 && currentLevel[x-1][z]%13 == 0) stairs.add(new Stair(gl,x+1,z+1,90)); 	// W
+							else if(currentLevel[x+1][z] != 0 && currentLevel[x+1][z]%13 == 0) stairs.add(new Stair(gl,x,z,270)); 		// E
+							else if(currentLevel[x][z-1] != 0 && currentLevel[x][z-1]%13 == 0) stairs.add(new Stair(gl,x,z+1,0)); 		// S
+							else if(currentLevel[x-1][z] != 0 && currentLevel[x-1][z]%13 == 0) stairs.add(new Stair(gl,x+1,z+1,90)); 	// W
 						}
 				
 						// check for enemies and add to the AI
@@ -185,7 +185,7 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isWall( int x, int z ) {
 		if( x >= 0 && x < mazeSize && z >= 0 && z < mazeSize ) {
-			if (currentLevel[x][z] == 1 || currentLevel[x][z] == 13 || currentLevel[x][z] == 5) return true;
+			if (currentLevel[x][z] == 1 || currentLevel[x][z] == 13) return true;
 			else if (currentLevel[x][z] == 37) {
 				if (slidingWalls.get(new Point(x,z)).isWall()) return true;
 			}
