@@ -237,9 +237,13 @@ public class EnemyAI implements VisibleObject{
 				nextLocationIndex = i;
 				break;}}
 		
+		
 		Point nextLocation = possibleLocations.get(nextLocationIndex);
-		control.setTarget( 	((double) nextLocation.x + 0.5) * Maze.SQUARE_SIZE,
-							((double) nextLocation.y + 0.5) * Maze.SQUARE_SIZE);
+		if (nextLocation != null) {
+			control.setTarget( 	((double) nextLocation.x + 0.5) * Maze.SQUARE_SIZE,
+								((double) nextLocation.y + 0.5) * Maze.SQUARE_SIZE);}
+		else {
+			control.setTarget(enemy.locationX, enemy.locationZ);}
 	}
 	
 	
