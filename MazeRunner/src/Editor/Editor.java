@@ -89,8 +89,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private float mazeR = screenWidth-((screenWidth-screenHeight)/3);		//Right bound of mazeDrawingWindow
 	
 	//creates the initial levels with walls on the borders
-	private Level level = new Level(mazeX,mazeX);
-	private Level[] levels = new Level[nlevels];
+	protected Level level = new Level(mazeX,mazeX);
+	protected Level[] levels = new Level[nlevels];
 
 	//Button related
 	private Button btn[];
@@ -102,10 +102,13 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private JTextField mapName = new JTextField();
 	private JFrame frame = new JFrame("Create New Maze");
 	private JFrame saveFrame = new JFrame("Save Map");
+	private JFrame loadFrame = new JFrame("Load Map");
 	private JButton newmaze = new JButton("Create New Maze");
 	private JButton saveMap = new JButton("Save");
+	private JButton loadMap = new JButton("Load");
 	private JPanel paneln = new JPanel(); //the north panel
 	private JPanel savePanel = new JPanel();
+	private JPanel loadPanel = new JPanel();
 	private JLabel sizel = new JLabel("Level size(3-63): ");
 	private JLabel nlevl = new JLabel("Number of levels (1-6): ");
 	private JLabel mapNamel = new JLabel("name");
@@ -231,11 +234,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		// when rendering.
 		gl.glDisable(GL.GL_DEPTH_TEST);	
 		
-		//print the level for reference, should be turned off eventually
-		System.out.println(level.toString());
 		level.primes();
-//		boolean x = level.check(level.primeFactors(level.level[0][0]),2);
-//		System.out.println(x);
 		
 		//Creating the left buttonmenu
 		//Vierkante knoppen?
@@ -404,8 +403,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	
 	@Override
 	public void mouseReleased(MouseEvent me) {
-		
-		//System.out.println(me.getX() + " " + me.getY());		//for development to see where the mouse is released
 		/*
 		 * The 30 buttons on the left side are defined here below
 		 * First we determine which button is selected
@@ -515,7 +512,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 		
 		//Saving a file
-		// TODO: blkaj
 		else if(k == 1){
 			toFront();
 			setSize(1,1);
@@ -541,60 +537,33 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			
 			
 		}
-/*		else if (k == 1){
-			setSize(1,1);
-            System.out.println("Starting Save");
-            chooser.setFileFilter(filter);
-            chooser.setCurrentDirectory(file);
-            returnVal = chooser.showSaveDialog(Editor.this);
-            toFront();
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                file = chooser.getSelectedFile();
-                String path = file.getAbsolutePath();
-                String name = "";
-                for(int h = path.length()-1; h > 0;h--){
-                	if(path.charAt(h) == '\\' || path.charAt(h) == '/'){
-                		name = path.substring(h+1);
-                		break;
-                	}
-                }
-                mirror();
-                DataBase dataBase = new DataBase();
-                if(!this.saveToDataBase(name, dataBase))
-                	System.err.println("Can't save to dataBase");
-                
-                if(!path.endsWith(".maze")){
-                	file = new File(path + ".maze");
-                }
-                System.out.println(chooser.getSelectedFile().getName() + " saved.");
-            }
-                        
-            try{
-                FileOutputStream fmaze = new FileOutputStream(file);
-                ObjectOutputStream omaze = new ObjectOutputStream(fmaze);
-                omaze.writeObject(nlevels);
-                omaze.writeObject(mazeX);
-                for (int n = 0; n < nlevels; n++){
-                    int[][] writeLevel = levels[n].getLevel();
-                    omaze.writeObject(writeLevel);
-                }
-                omaze.flush();
-                omaze.close();
-         
-               }catch(Exception ex){
-                   ex.printStackTrace();
-               }
-
-            mirror();
-            
-            System.out.println("Save Completed!");
-            btnr[1].setSelected(false);
-            setSize(screenWidth,screenHeight);
-        }*/
-        
         //Loading a file
-        else if (k == 2){
-
+		else if(k==2){
+			toFront();
+			setSize(1,1);
+			loadFrame.setAlwaysOnTop(true);
+		    loadFrame.setSize(250, 120);
+		    loadFrame.setVisible(true);
+		    loadFrame.setResizable(false);
+		    loadFrame.toFront();
+		    
+		    loadMap.addActionListener(new loadActionListener(this));
+		    
+		    mapName.setPreferredSize(new Dimension(150,20));
+		    
+		    loadPanel.setBackground(Color.WHITE);
+		    loadPanel.add(mapNamel);
+		    loadPanel.add(mapName);
+		    loadPanel.add(loadMap);
+		    //add the panel to the frame
+		    loadFrame.add(loadPanel);
+		    
+		    btnr[2].setSelected(false);
+		    loadFrame.toFront();
+		}
+        //Loading a file
+ /*       else if (k == 2){
+        	
         	toFront();
             System.out.println("Start Loading...");
             chooser.setFileFilter(filter);
@@ -618,7 +587,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
                 
                 mazeX = x;
                 Level.updateMazeX(x);
-                level = new Level(mazeX,mazeX);
                 levels = new Level[nlevels];
                 
                    for (int b = 0; b < nlevels; b++){
@@ -656,11 +624,10 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
             System.out.println("Loading Completed!");
             btnr[2].setSelected(false);
             mirror();
-        }
+        }*/
 
 		//The Exit button on the bottom-right
 		if(k == 9){
-			System.out.println(level.toString());
 			new GameStateManager();
 			Level.updateMazeX(20);
 			dispose();
@@ -870,6 +837,10 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		return saveFrame;
 	}
 	
+	protected JFrame getLoadFrame(){
+		return loadFrame;
+	}
+	
 	@Override
 	public void mouseDragged(MouseEvent me) {
 		//The wall and floor draw buttons can be dragged for easier drawing
@@ -881,7 +852,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Button Pressed");
         setSize(screenWidth,screenHeight);
         // TODO: 
         try{
@@ -890,7 +860,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
         	Level.updateMazeX(mazeX);
         	Level.updateMazeL(mazeL);
         }catch (NumberFormatException ex){
-        	System.out.println("One or more invalid numbers were entered");
+        	System.err.println("One or more invalid numbers were entered");
         }
         
         if (mazeX < 3 || mazeX > 63){

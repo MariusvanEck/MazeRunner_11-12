@@ -14,14 +14,12 @@ import com.sun.opengl.util.texture.TextureIO;
 
 
 public class TexturedModel {
-	// private int texture;
 	private int shaderProgramHandle;
 	private int vboVertexHandle[] = new int[1];
 	private int vboNormalHandle[] = new int [1];
 	private int vboTexCoordHandle[] = new int [1];
 	private int vertexShaderHandle;
 	private int fragmentShaderHandle;
-	// private int diffuseModifierUniform;
 	private Texture texture;
 	private  Model m;
 	private GL gl;
@@ -36,7 +34,6 @@ public class TexturedModel {
 		this.m = model;
 		this.gl = gl;
 		this.setUpVBOs();
-		//this.setupShaders(gl);
 		this.setUpLighting();
 		this.loadTexture(textureFileLocation);
 	}
@@ -112,71 +109,6 @@ public class TexturedModel {
 		}	
 	}
 	
-//	private void setupShaders(){
-//		shaderProgramHandle = gl.glCreateProgram();
-//		vertexShaderHandle = gl.glCreateShader(GL.GL_VERTEX_SHADER);
-//		fragmentShaderHandle = gl.glCreateShader(GL.GL_FRAGMENT_SHADER);
-//		
-//		String vertexShaderSource = new String();
-//		String fragmentShaderSource = new String();
-//		
-//		try{
-//			BufferedReader reader = new BufferedReader(new FileReader("src/model/shader.vert"));
-//			String line;
-//			
-//			while((line = reader.readLine()) != null){
-//				vertexShaderSource += line;
-//				vertexShaderSource += "\n";
-//			}
-//			reader.close();
-//			
-//		}catch(IOException e){
-//			System.err.println("Vertex shader wassn't loaded properly.");
-//			return;
-//		}
-//		
-//		try{
-//			BufferedReader reader = new BufferedReader(new FileReader("src/model/shader.frag"));
-//			String line;
-//			
-//			while((line = reader.readLine()) != null){
-//				fragmentShaderSource += line;
-//				fragmentShaderSource += "\n";
-//			}
-//			reader.close();
-//			
-//		}catch(IOException e){
-//			System.err.println("Fragment shader wassn't loaded properly.");
-//			return;
-//		}
-//		IntBuffer temp = IntBuffer.allocate(1);
-//		gl.glShaderSource(vertexShaderHandle, 1, new String[]{vertexShaderSource},null);
-//		gl.glCompileShader(vertexShaderHandle);
-//		
-//		gl.glGetShaderiv(vertexShaderHandle, GL.GL_COMPILE_STATUS, temp);
-//		if(temp.get(0) == GL.GL_FALSE) {
-//			System.err.println("Vertex shader wasn't able to be compiled corectly.");
-//			return;}
-//		
-//		gl.glShaderSource(fragmentShaderHandle,1,new String[]{fragmentShaderSource},null);
-//		gl.glCompileShader(fragmentShaderHandle);
-//		
-//		gl.glGetShaderiv(fragmentShaderHandle, GL.GL_COMPILE_STATUS, temp);
-//		if(temp.get(0) == GL.GL_FALSE) {
-//			System.err.println("Fragment shader wasn't able to be compiled corectly.");
-//			return;}
-//		
-//		gl.glAttachShader(shaderProgramHandle, vertexShaderHandle);
-//		gl.glAttachShader(shaderProgramHandle, fragmentShaderHandle);
-//		
-//		gl.glLinkProgram(shaderProgramHandle);
-//		gl.glValidateProgram(shaderProgramHandle);
-//		
-//		diffuseModifierUniform = gl.glGetUniformLocation(shaderProgramHandle, "diffuseIntensityModifier");
-//		
-//		setUpLighting(gl);
-//	}
-	
 	/**
 	 * Used to cleanup the memory allocated by openGL
 	 */
@@ -228,9 +160,6 @@ public class TexturedModel {
 			gl.glRotated(angleY, 0, 1, 0);
 			gl.glRotated(angleX, 1, 0, 0);
 			gl.glRotated(angleZ, 0, 0, 1);
-//			gl.glUseProgram(shaderProgramHandle);//
-//			gl.glUniform1f(diffuseModifierUniform, 1.0f);//
-//			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10.0f);//
 			
 			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vboVertexHandle[0]);
 			gl.glVertexPointer(3, GL.GL_FLOAT, 0, 0L);
@@ -249,7 +178,6 @@ public class TexturedModel {
 			gl.glEnableClientState(GL.GL_VERTEX_ARRAY);
 			gl.glEnableClientState(GL.GL_NORMAL_ARRAY);
 		
-//			gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, 10f);//
 			gl.glDrawArrays(GL.GL_TRIANGLES, 0, m.faces.size()*3);
 			
 			gl.glDisableClientState(GL.GL_VERTEX_ARRAY);

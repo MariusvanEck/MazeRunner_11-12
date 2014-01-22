@@ -54,6 +54,7 @@ public class GameStateManager extends Frame implements GLEventListener{
 	
 	private MazeRunner mazeRunner;									// INGAME functionality
 	private MainMenu menu;											// MENU functionality
+	private static HighScore highScore = null;						// HighScore display
 	private UserInput input;										// Mouse and Keyboard input functionality
 	
 	// Cursor for ingame state
@@ -190,6 +191,15 @@ public class GameStateManager extends Frame implements GLEventListener{
 				menu.display(gl);								// display menu
 				switchTo3D(gl);									// switch to 3D
 				break;
+			case HIGHSCORE:
+				if(highScore != null){
+					switchTo2D(gl);								// switch to 2D
+					highScore.display(gl);						// display HighScore
+					switchTo3D(gl);
+				}else{
+					gameState = GameState.MENU;
+				}
+				break;
 			case PAUSE:
 				mazeRunner.display(gl);							// display frozen mazerunner game
 				switchTo2D(gl);									// switch to 2D
@@ -244,6 +254,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 			menu.reshape(screenWidth/2-(screenWidth/8), screenWidth/2+(screenWidth/8), screenHeight/2-(screenHeight/8),
 					screenHeight/2+(screenHeight/8));
 		}
+		if(highScore != null)
+			highScore.update(0, screenWidth, 0, screenHeight);
 		
 	}
 
@@ -352,6 +364,8 @@ public class GameStateManager extends Frame implements GLEventListener{
 				menu.theme.loop();
 				setCursor(Cursor.DEFAULT_CURSOR);
 				break;
+			case HIGHSCORE:
+				break;
 			case EDITOR:
 				new Editor();
 				dispose();
@@ -365,6 +379,10 @@ public class GameStateManager extends Frame implements GLEventListener{
 		Point screenCenter = canvas.getLocationOnScreen(); 
 		screenCenter.translate(getSize().width/2, getSize().height/2);
 		input.setScreenCenter(screenCenter);
+	}
+	
+	public static void setHighScore(HighScore score){
+		highScore = score;
 	}
 	
 	

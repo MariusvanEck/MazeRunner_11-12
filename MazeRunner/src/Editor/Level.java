@@ -33,7 +33,13 @@ public class Level {
     static int primeNumbers[] = new int[100];
     // private int aantalobjecten = 100;
 	
-	//creates a level with borders at the edges of the matrix
+    
+    
+   /**
+    * creates a level with borders at the edges of the matrix
+    * @param x		the x coordinate of the level size
+    * @param y		the y coordinate of the level size
+    */
 	public Level(int x, int y){
 		this.x = x;
 		this.y = y;
@@ -65,7 +71,14 @@ public class Level {
 		
 	}
 		
-	//draws the level on the specified location
+	/**
+	 * draws the level on the specified location
+	 * @param gl		The gl is used to call openGL methods and to draw on the canvas
+	 * @param startx	The x coordinate of the start position
+	 * @param starty	The y coordinate of the start position
+	 * @param width		The width of the  level draw area
+	 * @param height	The height of the level draw area
+	 */
 	public void draw(GL gl, float startx, float starty, float width, float height){
 				
 		buttonSize = height/y;
@@ -226,6 +239,9 @@ public class Level {
 		//End of drawing the grid
 	}
 	
+	/**
+	 * Level to string
+	 */
 	public  String toString(){
 		String res = new String();
 		for (int j = 0; j < y; j++){
@@ -236,38 +252,70 @@ public class Level {
 		}
 		return res;
 	}
-
+	
+	/**
+	 * Set the level
+	 * @param level	int[][] level to be set
+	 */
 	public void setLevel(int[][] level) {
 		this.level = level;
 	}
-
+	/**
+	 * Set the x
+	 * @param x	the x to be set
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
-
+	/**
+	 * Set the y
+	 * @param y the y to be set
+	 */
 	public void setY(int y) {
 		this.y = y;
 	}
-
+	/**
+	 * Get this level
+	 * @return	int[][] level
+	 */
 	public int[][] getLevel() {
 		return level;
 	}
-	
+	/**
+	 * Set a specific point
+	 * @param x		x location
+	 * @param y		y location
+	 * @param set	value to be set
+	 */
 	public void set(int x,int y,int set){
 		level[x][y] = set;
 	}
+	/**
+	 * Get a specific point
+	 * @param x	x location
+	 * @param y	y location
+	 * @return	returns the value at (x,y) in the matrix
+	 */
 	public int get(int x,int y){
 		return level[x][y];
 	}
-
+	/**
+	 * Gives back x
+	 * @return returns x
+	 */
 	public int getX() {
 		return x;
 	}
-
+	/**
+	 * Gives back y
+	 * @return returns y
+	 */
 	public int getY() {
 		return y;
 	}
-
+	/**
+	 * Make a array of primenumbers
+	 */
 	public void primes(){
 		// Initialize array of the first 100 prime numbers
         int index = 0;
@@ -283,7 +331,6 @@ public class Level {
                 }
                 if (primeNum){
                     primeNumbers[index] = i;
-                    //System.out.println(i);
                     index++;
                     if(index==100){
                         break;
@@ -292,7 +339,13 @@ public class Level {
             }
         }
 	}
-	
+	/**
+	 * Checks if the given value is present on i an j in the level matrix
+	 * @param i			i location
+	 * @param j			j location
+	 * @param value		The value to be checked
+	 * @return			true if value is present at the location, false otherwise.
+	 */
 	boolean check(int i, int j, int value){
 		int index = 0;
 		int number = level[i][j];
@@ -301,7 +354,7 @@ public class Level {
         if(value>=Integer.MAX_VALUE){
             System.out.println("Error: Value is larger than Integer.MAX_VALUE.");
             objects[0] = -1;
-            System.exit(0);
+            return false;
         }
         else if(number == 1){
         	objects[0] = 1;
@@ -313,11 +366,9 @@ public class Level {
         // p<VALUE VALUE is primeNumber array size, also change in primes()
         else for (int p = 0; p < 100; p++) {
         	
-            //System.out.println(primeNumbers[i]);
             if (number % primeNumbers[p] == 0) {
                 objects[index] = primeNumbers[p];
                 index++;
-                //System.out.println(primeNumbers[i]);
                 number /= primeNumbers[p];
                 p = p - 1;
             }
@@ -328,9 +379,9 @@ public class Level {
         }
         // If the remaining number is more than 1, not all prime factors are calculated
         if(number>1){
-            System.out.println("Error: Not all prime factors are given, primeNumbers array too small.");
+            System.err.println("Error: Not all prime factors are given, primeNumbers array too small.");
             objects[0] = -1;
-            System.exit(0);
+            return false;
         }		
 		
 		for(int l = 0;l<objects.length;l++){
@@ -340,16 +391,24 @@ public class Level {
 		}
 		return false;
 	}
-	
+	/**
+	 * Updates the mazeL
+	 * @param mazeL	The parameter which will be set to mazeL
+	 */
 	public static void updateMazeL(float mazeL) {
 		Level.mazeL = mazeL;
 	}
-
+	/**
+	 * Updates the mazeX
+	 * @param mazeX	The parameter which will be set to mazeX
+	 */
 	public static void updateMazeX(int mazeX) {
 		Level.mazeX = mazeX;
 	}
-
-	
+	/**
+	 * Set all textures at ones
+	 * @param textureMaze	Texture[] which contains all needed textures
+	 */
 	public static void setTextureMaze(Texture[] textureMaze) {
 		Level.textureMaze = textureMaze;
 	}

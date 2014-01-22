@@ -10,5 +10,5 @@ package gamestate;
  * @author Marius
  */
 public enum GameState {
-	MENU, INGAME, PAUSE, EDITOR
+	MENU, INGAME, PAUSE, EDITOR, HIGHSCORE
 }

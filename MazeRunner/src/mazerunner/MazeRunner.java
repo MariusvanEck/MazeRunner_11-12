@@ -1,6 +1,7 @@
 package mazerunner;
 import gamestate.GameState;
 import gamestate.GameStateManager;
+import gamestate.HighScore;
 import gamestate.UserInput;
 
 import java.awt.Desktop;
@@ -22,7 +23,6 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
 import database.DataBase;
-import database.Scores;
 
 /** 
  * MazeRunner is the class representing the INGAME GameState
@@ -268,18 +268,8 @@ public class MazeRunner {
 		// if players health is 0 go to main menu and reset
 		if (player.getHitpoints() == 0) {
 			dataBase.addScore(mapName,player.getName(),player.getScore());
-			
-			Scores scores = dataBase.getScores(mapName);
-			
-			System.out.println("MazeRunner: " + scores.size());
-			
-			for(int i = 0; i < scores.size();i++){
-				System.out.println(scores.names.get(i) + " " + scores.scores.get(i));
-			}
-			
-			
-			System.out.println();
-			input.setGameState(GameState.MENU);
+			GameStateManager.setHighScore(new HighScore(dataBase.getScores(mapName),0,GameStateManager.screenWidth,0,GameStateManager.screenHeight));
+			input.setGameState(GameState.HIGHSCORE);
 		}
 		
 		// Calculating time since last frame.
@@ -337,7 +327,7 @@ public class MazeRunner {
 			try {
 				Desktop.getDesktop().open(new File("video/dietryingending.mp4")); //doesn't have to be on the desktop
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.println("MazeRunner: Somthing went wrong!\n\t" + e.getMessage());
 				e.printStackTrace();
 			}
 			input.setGameState(GameState.MENU);

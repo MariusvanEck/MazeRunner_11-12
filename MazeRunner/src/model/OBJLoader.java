@@ -24,23 +24,27 @@ public class OBJLoader {
 		String line;
 		
 		while((line = reader.readLine()) != null){
+			// add the vertices
 			if(line.startsWith("v ")){
 				float x = Float.valueOf(line.split(" ")[1]);
 				float y = Float.valueOf(line.split(" ")[2]);
 				float z = Float.valueOf(line.split(" ")[3]);
 				m.addVertex(new Vector3f(x,y,z));
 			}
+			// add the normals
 			else if(line.startsWith("vn ")){
 				float x = Float.valueOf(line.split(" ")[1]);
 				float y = Float.valueOf(line.split(" ")[2]);
 				float z = Float.valueOf(line.split(" ")[3]);
 				m.addNormal(new Vector3f(x,y,z));
 			}
+			// add the texture coordinates
 			else if(line.startsWith("vt ")){
 				float u = Float.valueOf(line.split(" ")[1]);
 				float v = Float.valueOf(line.split(" ")[2]);
 				m.addTexCoord(new Vector2f(u,v));
 			}
+			// add the faces
 			else if(line.startsWith("f ")){
 				float x = Float.valueOf(line.split(" ")[1].split("/")[0]);
 				float y = Float.valueOf(line.split(" ")[2].split("/")[0]);

@@ -11,7 +11,6 @@ import javax.vecmath.Vector3f;
 
 import mazerunner.Maze;
 
-// Need to use GL VBO for better performance
 public class Model {
 	protected List<Vector3f> vertices = new ArrayList<Vector3f>();
 	protected List<Vector3f> normals = new ArrayList<Vector3f>();

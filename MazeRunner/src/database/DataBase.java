@@ -19,7 +19,6 @@ import cast.InvalidByteArraySize;
 
 public class DataBase {
 	private Connection connection = null;
-	private Statement statement = null;
 	
 	/**
 	 * Constructs a connection to the dataBase.
@@ -42,19 +41,29 @@ public class DataBase {
 		
 		try{
 			// Create DataBase connection
-			connection = DriverManager.getConnection("jdbc:sqlite:mazerunner.db");
-			statement = connection.createStatement();
+			refresh();
+			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30); // timeout to 30 sec
 			
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS Map(ID INTEGER PRIMARY KEY AUTOINCREMENT,Name TINYTEXT," + // create table with an ID, Name (max 255 byte)
 										"Data BLOB,lvl0 LONGBLOB,lvl1 LONGBLOB,lvl2 LONGBLOB,lvl3 LONGBLOB, lvl4 LONGBLOB, lvl5 LONGBLOB," + //  and Data (max 4GB per lvl)
 										"HighScore BLOB);"); // HighScore Data per map
 			statement.executeUpdate("CREATE INDEX IF NOT EXISTS ID ON Map(ID);"); // create index for table Map for faster search
-				
+			statement.close();
 		}
 		catch(SQLException e){
 			System.err.println("DataBase: " + e.getMessage());
 		}
+	}
+	/**
+	 * Refresh the connection with the dataBase
+	 * @throws SQLException
+	 */
+	protected void refresh() throws SQLException{
+		if(connection != null)
+			connection.close();
+		connection = DriverManager.getConnection("jdbc:sqlite:mazerunner.db");
+		
 	}
     
 	/**
@@ -92,6 +101,7 @@ public class DataBase {
 	 */
 	public boolean addMap(String name,byte[][] lvlData){
 		try{
+			refresh();
 			if(lvlData.length-1 > 6 || lvlData.length == 0){ // the length of the first array
 				System.err.println("DataBase: Invalid array size is: " + lvlData.length + " max size is 6");
 				return false;
@@ -248,12 +258,14 @@ public class DataBase {
 	 * @param lvl	The level that will be extracted
 	 * @return		Returns the level matrix if successful, null otherwise.
 	 */
-	public int[][] getMap(String name,int lvl){
+	public int[][] getMap(String name,int lvl){;
 		if(lvl > 6){
 			System.err.println("DataBase: wrong lvl has to be less then 5");
 			return null;
 		}
 		try{
+			refresh();
+			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * " +
 												"FROM Map " +
 												"WHERE Map.Name = '" + name + "';");
@@ -273,11 +285,12 @@ public class DataBase {
 				}
 				
 				
-				
+				statement.close();
 				return res;
 			}
 			else{
 				System.err.println("DataBase: rs is not open!\n\tSomething wrong with SQL statement?");
+				statement.close();
 				return null;
 			}
 		}catch(SQLException e){
@@ -296,9 +309,14 @@ public class DataBase {
 	 * @throws SQLException
 	 */
 	private boolean doesMapNameExists(String name) throws SQLException{
+		refresh();
+		Statement statement = connection.createStatement();
 		ResultSet temp = statement.executeQuery("SELECT * FROM Map WHERE Name = '" + name + "';");
-		if(temp.next())
+		if(temp.next()){
+			statement.close();
 			return true;
+		}
+		statement.close();
 		return false;
 	}
 	/**
@@ -308,9 +326,12 @@ public class DataBase {
 	 */
 	public int getNumLevels(String name){
 		try {
+			refresh();
+			Statement statement = connection.createStatement();
 			ResultSet temp = statement.executeQuery("SELECT Data FROM Map WHERE Name = '" + name + "';");
 			if(temp.next()){
 				byte[] b = temp.getBytes("Data");
+				statement.close();
 				return Cast.byteArrayToInt(new byte[] {b[0],b[1],b[2],b[3]});
 			}
 			else{
@@ -332,9 +353,12 @@ public class DataBase {
 	 */
 	public int getMazeSize(String name){
 		try {
+			refresh();
+			Statement statement = connection.createStatement();
 			ResultSet temp = statement.executeQuery("SELECT Data FROM Map WHERE Name = '" + name + "';");
 			if(temp.next()){
 				byte[] b = temp.getBytes("Data");
+				statement.close();
 				return Cast.byteArrayToInt(new byte[] {b[4],b[5],b[6],b[7]});
 			}
 			else{
@@ -357,6 +381,7 @@ public class DataBase {
 	 */
 	public void addScore(String mapName,String playerName,int score){
 		try{
+			refresh();
 			boolean update = false;
 			Scores scores = getScores(mapName);
 			if(scores == null){
@@ -389,7 +414,6 @@ public class DataBase {
 				int nameSize = 0;
 				
 				for(String name:nameList){
-					System.out.println(name);
 					nameSize += (name.length() + 1);
 				}
 				
@@ -415,7 +439,6 @@ public class DataBase {
 				prep.execute();
 			}
 			
-			
 		}catch(SQLException e){
 			System.err.println("DataBase: " + e.getMessage());
 		}
@@ -428,6 +451,7 @@ public class DataBase {
 	 */
 	public Scores getScores(String mapName){
 		try{
+			refresh();
 			PreparedStatement prep = connection.prepareStatement("SELECT HighScore FROM Map WHERE Name == ?");
 			prep.setString(1, mapName);
 			ResultSet temp = prep.executeQuery();
@@ -446,7 +470,6 @@ public class DataBase {
 					else{
 						i++; // skip the ' '
 						score = Cast.byteArrayToInt(new byte[] {data[i++],data[i++],data[i++],data[i]});
-						System.out.println(name);
 						res.names.add(name);
 						res.scores.add(score);
 						name = "";
@@ -475,6 +498,8 @@ public class DataBase {
 	public String[] getMapNames(){
 		
 		try{
+			refresh();
+			Statement statement = connection.createStatement();
 			ResultSet temp = statement.executeQuery("SELECT Name FROM Map");
 			ArrayList<String> resList = new ArrayList<String>();
 			while(temp.next()){
@@ -485,6 +510,7 @@ public class DataBase {
 			for(int i = 0; i < resList.size();i++){
 				res[i] = resList.get(i);
 			}
+			statement.close();
 			return res;
 			
 		}catch(SQLException e){

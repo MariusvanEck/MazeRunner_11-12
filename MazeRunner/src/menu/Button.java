@@ -111,6 +111,37 @@ public class Button extends MenuObject{
 					case 'z': case 'Z':
 						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/z.png"), false);
 						break;
+					case '0':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/0.png"), false);
+						break;
+					case '1':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/1.png"), false);
+						break;
+					case '2':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/2.png"), false);
+						break;
+					case '3':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/3.png"), false);
+						break;
+					case '4':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/4.png"), false);
+						break;
+					case '5':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/5.png"), false);
+						break;
+					case '6':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/6.png"), false);
+						break;
+					case '7':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/7.png"), false);
+						break;
+					case '8':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/8.png"), false);
+						break;
+					case '9':
+						texture[i] = TextureIO.newTexture(new File("textures/Alfabet/9.png"), false);
+						break;
+						
 				}
 			}
 		} catch (IOException e) {
