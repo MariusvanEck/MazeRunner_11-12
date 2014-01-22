@@ -100,7 +100,7 @@ public class Model {
 			System.err.println("Model: File not found!");
 		}catch(IOException e){
 			loaded = false;
-			System.out.println("Model: Read error!");
+			System.err.println("Model: Read error!");
 		}
 	}
 	

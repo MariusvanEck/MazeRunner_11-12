@@ -20,7 +20,6 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -108,7 +107,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private JLabel sizel = new JLabel("Level size(3-63): ");
 	private JLabel nlevl = new JLabel("Number of levels (1-6): ");
 	private JLabel mapNamel = new JLabel("name");
-	private JFileChooser chooser = new JFileChooser();
     File file = new File("mazes\\test.maze");
     FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", "maze");
     int returnVal;
@@ -397,6 +395,20 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		return dataBase.addMap(name, res);
 	}
 	
+	public void loadFromDataBase(String name,DataBase dataBase){
+		nlevels = dataBase.getNumLevels(name);
+		mazeX = dataBase.getMazeSize(name);
+		level.setX(mazeX);
+		level.setY(mazeX);
+		levels = new Level[nlevels];
+		for(int i = 0; i < nlevels;i++){
+			levels[i] = new Level(mazeX,mazeX);
+			levels[i].setLevel(dataBase.getMap(name, i));
+		}
+		level = levels[0];
+		
+	}
+	
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		/*
@@ -482,6 +494,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		// new maze
 		if (k == 0){
 			toFront();
+			setSize(1,1);
 			frame.setAlwaysOnTop(true);
 		    frame.setSize(250, 120);
 		    frame.setVisible(true);
@@ -509,6 +522,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		//Saving a file
 		else if(k == 1){
 			toFront();
+			setSize(1,1);
 			saveFrame.setAlwaysOnTop(true);
 		    saveFrame.setSize(250, 120);
 		    saveFrame.setVisible(true);
@@ -534,6 +548,7 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
         //Loading a file
 		else if(k==2){
 			toFront();
+			setSize(1,1);
 			loadFrame.setAlwaysOnTop(true);
 		    loadFrame.setSize(250, 120);
 		    loadFrame.setVisible(true);
@@ -554,71 +569,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		    btnr[2].setSelected(false);
 		    loadFrame.toFront();
 		}
-        //Loading a file
- /*       else if (k == 2){
-        	
-        	toFront();
-            System.out.println("Start Loading...");
-            chooser.setFileFilter(filter);
-            chooser.setCurrentDirectory(file);
-            returnVal = chooser.showOpenDialog(Editor.this);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                file = chooser.getSelectedFile();                
-                System.out.println(chooser.getSelectedFile().getName() + " loaded.");
-            }
-                
-            try{     
-                FileInputStream fmaze = new FileInputStream(file);
-                ObjectInputStream omaze = new ObjectInputStream(fmaze);
-                
-                nlevels = (Integer) omaze.readObject();
-                mazeX = (Integer) omaze.readObject();
-                
-                
-                int[][] firstLevel = (int[][]) omaze.readObject();
-                int x = firstLevel.length;
-                
-                mazeX = x;
-                Level.updateMazeX(x);
-                levels = new Level[nlevels];
-                
-                   for (int b = 0; b < nlevels; b++){
-                       levels[b] = new Level(mazeX,mazeX);
-                   }
-                   
-                   level = levels[0];
-                   btnr[3].setSelected(true);
-                   for (int c = 4; c < 9; c++){
-                       btnr[c].setSelected(false);
-                   }
-                
-                level.setX(x);
-                level.setY(x);
-                
-                int n = 0;
-                
-                int[][] nextLevel;
-                levels[n].setLevel(firstLevel);
-                for ( n=1; n<nlevels; n++){
-                    nextLevel = (int[][]) omaze.readObject();
-                    if (nextLevel != null) {
-                        levels[n].setLevel(nextLevel);
-                    }
-                    else break;
-                }        
-                omaze.close();    
-            }
-                
-            catch(Exception ex){
-                ex.printStackTrace();
-            }
-            
-            System.out.println("De grootte van de levels is " + mazeX + " en de maze bevat " + nlevels + " levels.");
-            System.out.println("Loading Completed!");
-            btnr[2].setSelected(false);
-            mirror();
-        }*/
-
 		//The Exit button on the bottom-right
 		if(k == 9){
 			new GameStateManager();

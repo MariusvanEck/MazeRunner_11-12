@@ -51,7 +51,7 @@ public class ProjectileTrap extends GameObject implements Trap{
 		switch(direction){
 			case 'N':
 			case 'n':
-				angle = 90;
+				angle = 270;
 				break;
 			case 'E':
 			case 'e':
@@ -59,7 +59,7 @@ public class ProjectileTrap extends GameObject implements Trap{
 				break;
 			case 'S':
 			case 's':
-				angle = 270;
+				angle = 90;
 				break;
 			case 'W':
 			case 'w':
@@ -85,7 +85,7 @@ public class ProjectileTrap extends GameObject implements Trap{
 		for (Creature creature : creatures) {
 			switch(direction){
 				case 'N':
-					if(creature.getLocationZ() <= locationZ && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
+					if(creature.getLocationZ() >= locationZ && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'E':
@@ -93,7 +93,7 @@ public class ProjectileTrap extends GameObject implements Trap{
 						this.triggered = true;
 					break;
 				case 'S':
-					if(creature.getLocationZ() >= locationZ && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
+					if(creature.getLocationZ() <= locationZ && nearAxis(locationX,creature.getLocationX(),0.20) && !maze.isVisionBlocked(this, creature))
 						this.triggered = true;
 					break;
 				case 'W':

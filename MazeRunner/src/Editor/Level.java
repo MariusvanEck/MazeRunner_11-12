@@ -352,7 +352,7 @@ public class Level {
 		int objects[] = new int[10];
         // Input is larger than the maximum value, so the value given will miss factors and thus objects
         if(value>=Integer.MAX_VALUE){
-            System.out.println("Error: Value is larger than Integer.MAX_VALUE.");
+            System.err.println("Error: Value is larger than Integer.MAX_VALUE.");
             objects[0] = -1;
             return false;
         }
