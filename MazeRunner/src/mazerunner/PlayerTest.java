@@ -1,13 +1,15 @@
 package mazerunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 public class PlayerTest {
 
 	double x = 1.5*Maze.SQUARE_SIZE, y=2.25*Maze.SQUARE_SIZE, z = 3.375*Maze.SQUARE_SIZE;
-	double h = 90, v = 180;
+	double h = 0, v = 0;
 	int hp = 150;
 	
 	@Test
@@ -96,6 +98,7 @@ public class PlayerTest {
 		assertTrue(player1.near(player2, 0));
 		assertTrue(player2.near(player1, 0));
 		player2.setLocationX(player2.getLocationX() + Maze.SQUARE_SIZE);
+		player2.setLocationY(Double.MAX_VALUE);
 		player2.setLocationZ(player2.getLocationZ() + Maze.SQUARE_SIZE);
 		assertTrue(player1.near(player2, 2));
 		assertFalse(player1.near(player2, 1));
@@ -109,7 +112,41 @@ public class PlayerTest {
 		assertTrue(GameObject.normaliseAngle(-95.2) == -95.2);
 		assertTrue(GameObject.normaliseAngle(1439.5) == -.5);
 	}
+	
+	@Test
+	public void testGetLocation() {
+		Player player1 = new Player(null, x, y, z, h, v, hp, null);
+		Location location1 = new Location(x, z);
+		
+		assertNotNull(player1.getLocation());
+		assertTrue(player1.distanceTo(location1) == 0);
+	}
 
+	@Test
+	public void testPLayerUpdate() {
+		Player player = new Player(null, x, y, z, h, v, hp, null);
+		class TestControl extends Control {
+			@Override
+			public void update() {}
+		}
+		TestControl control = new TestControl();
+		player.setControl(control);
+		
+		int deltaTime = 10;
+		control.dX = 2; control.dY = 3;
+		player.update(deltaTime);
+		assertTrue(player.getHorAngle() == h - control.dX);
+		assertTrue(player.getVerAngle() == v - control.dY);
+		
+		player.setHorAngle(h);
+		control.dX = 0; control.dY = 0;
+		control.moveDirection = 0;
+		player.update(deltaTime);
+		assertTrue(player.getLocationX() == x);
+		assertTrue(player.getLocationZ() == z - player.getSpeed()*deltaTime);
+		
+		
+	}
 
 
 }
