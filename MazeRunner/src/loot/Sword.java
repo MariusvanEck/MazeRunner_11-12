@@ -21,7 +21,7 @@ public class Sword extends Weapon{
 	private Long timeDoneLastDamage;						// last time the stick was swung
 	private int damage = 50;								// the sticks damage output
 	private double range = .5;								// the damage range for the stick in units of SQUARE_SIZE
-	private int counter;									// counter counts time since sword was swung in ms
+	private int counter = 0;									// counter counts time since sword was swung in ms
 	private boolean animating = false;						// boolean check for in animation			
 	
 	// the model
@@ -38,20 +38,33 @@ public class Sword extends Weapon{
 	 */
 	public void update(int deltaTime, Player player) {
 		// Set the sword location 
-		setWieldX(player.getLocationX() + (Maze.SQUARE_SIZE/5)*Math.cos(Math.toRadians(player.getHorAngle())));
-		setWieldY(player.getLocationY() - Maze.SQUARE_SIZE/10);
-		setWieldZ(player.getLocationZ() - (Maze.SQUARE_SIZE/5)*Math.sin(Math.toRadians(player.getHorAngle())));
+		setWieldX(player.getLocationX() + (Maze.SQUARE_SIZE/5)*Math.cos(Math.toRadians(player.getHorAngle()+30)));
+		setWieldY(player.getLocationY() - Maze.SQUARE_SIZE/10 - 0.3);
+		setWieldZ(player.getLocationZ() - (Maze.SQUARE_SIZE/5)*Math.sin(Math.toRadians(player.getHorAngle()+30)));
 		
 		// calculate the sword angles
-		double weaponAngleX = 20+player.getVerAngle();
-		double weaponAngleY = player.getHorAngle();
+		double weaponAngleX = 30+0.5*player.getVerAngle();
+		double weaponAngleY = player.getHorAngle()-10;
 		double weaponAngleZ = 90;
 
 		// animation
 		if (animating) {
-			if (counter < 200) {
-				weaponAngleX -= 15*Math.sin((counter/200d)*Math.PI);
-				weaponAngleZ += 360*(counter/200d);
+			double weaponspeed = 700;
+			double raise = 3; // less is higher
+			if (counter < weaponspeed) {
+				if(counter<weaponspeed/raise){
+					weaponAngleY -= 30*Math.sin((counter/((raise-1)*weaponspeed/raise))*Math.PI);
+				}
+				else{
+					weaponAngleY += 30*Math.sin(((counter-weaponspeed/raise)/((raise-1)*weaponspeed/raise))*Math.PI);
+				}
+				if(counter<weaponspeed/10){
+					weaponAngleX += 30*Math.sin((counter/((raise-1)*weaponspeed/raise))*Math.PI);
+				}
+				else{
+					weaponAngleX -= 30*Math.sin(((counter-weaponspeed/raise)/((raise-1)*weaponspeed/raise))*Math.PI);
+				}
+				weaponAngleZ = 45;
 				counter += deltaTime;
 			}
 			else {
