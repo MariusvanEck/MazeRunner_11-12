@@ -42,13 +42,13 @@ public class Projectile extends GameObject{
 		
 		switch(direction){
 			case 'N':
-				locationZ -= speed*deltaTime;
+				locationZ += speed*deltaTime;
 				break;
 			case 'E':
 				locationX += speed*deltaTime;
 				break;
 			case 'S':
-				locationZ+= speed*deltaTime;
+				locationZ -= speed*deltaTime;
 				break;
 			case 'W':
 				locationX -= speed*deltaTime;

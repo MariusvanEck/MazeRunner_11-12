@@ -20,7 +20,6 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -108,7 +107,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private JLabel sizel = new JLabel("Level size(3-63): ");
 	private JLabel nlevl = new JLabel("Number of levels (1-6): ");
 	private JLabel mapNamel = new JLabel("name");
-	private JFileChooser chooser = new JFileChooser();
     File file = new File("mazes\\test.maze");
     FileNameExtensionFilter filter = new FileNameExtensionFilter(".maze files", "maze");
     int returnVal;
@@ -395,6 +393,20 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 					res[y][i] = list.get(i);
 		}
 		return dataBase.addMap(name, res);
+	}
+	
+	public void loadFromDataBase(String name,DataBase dataBase){
+		nlevels = dataBase.getNumLevels(name);
+		mazeX = dataBase.getMazeSize(name);
+		level.setX(mazeX);
+		level.setY(mazeX);
+		levels = new Level[nlevels];
+		for(int i = 0; i < nlevels;i++){
+			levels[i] = new Level(mazeX,mazeX);
+			levels[i].setLevel(dataBase.getMap(name, i));
+		}
+		level = levels[0];
+		
 	}
 	
 	@Override

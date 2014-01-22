@@ -280,8 +280,11 @@ public class DataBase {
 				for(int z = 0; z < mazeSize; z++){
 					for(int x = 0; x < mazeSize;x++){
 						res[x][z] = Cast.byteArrayToInt(new byte[] {b_lvl[i],b_lvl[i+1],b_lvl[i+2],b_lvl[i+3]});
+						System.out.print(res[x][z]);
+						System.out.print(' ');
 						i+=4;
 					}
+					System.out.print('\n');
 				}
 				
 				
