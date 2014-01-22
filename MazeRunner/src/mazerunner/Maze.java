@@ -53,7 +53,6 @@ public class Maze implements VisibleObject {
 	public Maze(GL gl, DataBase dataBase, String name, HashMap<String,Texture> textures){
 		this.textures = textures;
 		this.levels = new ArrayList<int[][]>();
-		Stair.loadModel(gl);
 		
 		this.load(gl,dataBase,name);
 	}
@@ -90,72 +89,72 @@ public class Maze implements VisibleObject {
 		ArrayList<Trap> traps = new ArrayList<Trap>();
 		ArrayList<Loot> loot = new ArrayList<Loot>();
 		
-		for (int i=0; i<mazeSize; i++) {
-			for (int j=0; j<mazeSize; j++) {
+		for (int x=0; x<mazeSize; x++) {
+			for (int z=0; z<mazeSize; z++) {
 				// check for a wall
-				if (currentLevel[i][j] == 1) 
-					walls.add(new Wall(i, j));
+				if (currentLevel[x][z] == 1) 
+					walls.add(new Wall(x, z));
 				
 				// add other objects
 				else {
 					// roof and floor
-					roofs.add(new Roof(i, j));
-					floors.add(new Floor(i, j));
+					roofs.add(new Roof(x, z));
+					floors.add(new Floor(x, z));
 					
-					if (currentLevel[i][j] != 0) {
+					if (currentLevel[x][z] != 0) {
 						// check for stairs
-						if (currentLevel[i][j]%11 == 0) {
-							if 		(currentLevel[i+1][j]%13 == 0) 	stairs.add(new Stair(i, j, 270));
-							else if (currentLevel[i-1][j]%13 == 0)	stairs.add(new Stair(i+1, j+1, 90));
-							else if (currentLevel[i][j-1]%13 == 0)	stairs.add(new Stair(i, j+1, 0));
-							else if (currentLevel[i][j+1]%13 == 0)	stairs.add(new Stair(i+1, j, 180));
+						if (currentLevel[x][z]%11 == 0) {
+							if(currentLevel[x][z+1] != 0 && currentLevel[x][z+1]%13 == 0) stairs.add(new Stair(gl,x+1,z,180)); 		// N
+							if(currentLevel[x+1][z] != 0 && currentLevel[x+1][z]%13 == 0) stairs.add(new Stair(gl,x,z,270)); 		// E
+							if(currentLevel[x][z-1] != 0 && currentLevel[x][z-1]%13 == 0) stairs.add(new Stair(gl,x,z+1,0)); 		// S
+							if(currentLevel[x-1][z] != 0 && currentLevel[x-1][z]%13 == 0) stairs.add(new Stair(gl,x+1,z+1,90)); 	// W
 						}
 				
 						// check for enemies and add to the AI
-						if (currentLevel[i][j]%23 == 0) 
-							enemies.add(new Enemy(gl, i, j, 0));
+						if (currentLevel[x][z]%23 == 0) 
+							enemies.add(new Enemy(gl, x, z, 0));
 						
 						// check for Food
-						if(currentLevel[i][j]%19 == 0)
-							loot.add(new Food(gl, i, j, 10));
+						if(currentLevel[x][z]%19 == 0)
+							loot.add(new Food(gl, x, z, 10));
 						
 						// check for Gold1
-						if(currentLevel[i][j]%2 == 0)
-							loot.add(new Gold(gl, i-.25, j-.25));
+						if(currentLevel[x][z]%2 == 0)
+							loot.add(new Gold(gl, x-.25, z-.25));
 						
 						// check for Gold2
-						if(currentLevel[i][j]%3 == 0)
-							loot.add(new Gold(gl, i+.25, j-.25));
+						if(currentLevel[x][z]%3 == 0)
+							loot.add(new Gold(gl, x+.25, z-.25));
 						
 						// check for Gold3
-						if(currentLevel[i][j]%5 == 0)
-							loot.add(new Gold(gl, i-.25, j+.25));
+						if(currentLevel[x][z]%5 == 0)
+							loot.add(new Gold(gl, x-.25, z+.25));
 						
 						// check for Gold4
-						if(currentLevel[i][j]%7 == 0)
-							loot.add(new Gold(gl, i+.25, j+.25));
+						if(currentLevel[x][z]%7 == 0)
+							loot.add(new Gold(gl, x+.25, z+.25));
 						
 						// check for sliding walls {
-						if (currentLevel[i][j]%37 == 0)
-							slidingWalls.put(new Point(i,j), new SlidingWall(i,j));
+						if (currentLevel[x][z]%37 == 0)
+							slidingWalls.put(new Point(x,z), new SlidingWall(x,z));
 						
 						// check for Traps
 						// Trap N
-						if(currentLevel[i][j]%41 == 0)
-							traps.add(new ProjectileTrap(gl,this,i,j,'N',0.01));
+						if(currentLevel[x][z]%41 == 0)
+							traps.add(new ProjectileTrap(gl,this,x,z,'N',0.01));
 						// Trap E
-						else if(currentLevel[i][j]%43 == 0)
-							traps.add(new ProjectileTrap(gl,this,i,j,'E',0.01));
+						else if(currentLevel[x][z]%43 == 0)
+							traps.add(new ProjectileTrap(gl,this,x,z,'E',0.01));
 						// Trap S
-						else if(currentLevel[i][j]%47 == 0)
-							traps.add(new ProjectileTrap(gl,this,i,j,'S',0.01));
+						else if(currentLevel[x][z]%47 == 0)
+							traps.add(new ProjectileTrap(gl,this,x,z,'S',0.01));
 						// Trap W
-						else if(currentLevel[i][j]%53 == 0)
-							traps.add(new ProjectileTrap(gl,this,i,j,'W',0.01));
+						else if(currentLevel[x][z]%53 == 0)
+							traps.add(new ProjectileTrap(gl,this,x,z,'W',0.01));
 						
 						// check for end
-						if (currentLevel[i][j]%59 == 0) {
-							end = new End(gl, i, j);
+						if (currentLevel[x][z]%59 == 0) {
+							end = new End(gl, x, z);
 						}
 					}
 				}
