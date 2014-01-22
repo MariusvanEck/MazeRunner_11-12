@@ -12,10 +12,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -486,7 +482,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		// new maze
 		if (k == 0){
 			toFront();
-			setSize(1,1);
 			frame.setAlwaysOnTop(true);
 		    frame.setSize(250, 120);
 		    frame.setVisible(true);
@@ -514,7 +509,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		//Saving a file
 		else if(k == 1){
 			toFront();
-			setSize(1,1);
 			saveFrame.setAlwaysOnTop(true);
 		    saveFrame.setSize(250, 120);
 		    saveFrame.setVisible(true);
@@ -540,7 +534,6 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
         //Loading a file
 		else if(k==2){
 			toFront();
-			setSize(1,1);
 			loadFrame.setAlwaysOnTop(true);
 		    loadFrame.setSize(250, 120);
 		    loadFrame.setVisible(true);
