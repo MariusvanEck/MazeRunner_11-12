@@ -47,7 +47,7 @@ public abstract class GameObject {
 	 * Checks if the object is near another GameObject (within distance*SQUARE_SIZE range)
 	 */
 	public boolean near(GameObject that, double distance) {
-		if (distanceTo(that) < distance*Maze.SQUARE_SIZE) return true;
+		if (distanceTo(that) <= distance*Maze.SQUARE_SIZE) return true;
 		return false;
 	}
 	
