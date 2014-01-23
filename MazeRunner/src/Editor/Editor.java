@@ -59,7 +59,7 @@ import database.DataBase;
 public class Editor extends JFrame implements GLEventListener, MouseListener, MouseMotionListener, ActionListener {
 
 	/**
-	 * This is the LevelEditor for AwesomeGame. With this editor mazes consisting of 1 to 12 levels can be
+	 * This is the LevelEditor for Die Trying. With this editor mazes consisting of 1 to 6 levels can be
 	 * designed.
 	 */
 	private static final long serialVersionUID = -1698109322093496405L;
@@ -94,17 +94,21 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	private JButton newmaze = new JButton("Create New Maze");
 	private JButton saveMap = new JButton("Save");
 	private JButton loadMap = new JButton("Load");
-	private JPanel paneln = new JPanel(); //the north panel
+	private JPanel paneln = new JPanel();
 	private JPanel savePanel = new JPanel();
 	private JPanel loadPanel = new JPanel();
 	private JLabel sizel = new JLabel("Level size(3-63): ");
 	private JLabel nlevl = new JLabel("Number of levels (1-6): ");
 	private JLabel mapNamel = new JLabel("name");
-
     int returnVal;
 	private Texture[] textureLeft;
 	private Texture[] levelTextures;
-		
+	
+	/**
+	 * Constructor for the Editor
+	 * Creates a frame and adds a canvas and animator to it
+	 * Initializes the other parameters 
+	 */
 	public Editor() {
 		super("Level Editor Beta v1.0");
 		setSize(screenWidth, screenHeight);
@@ -122,7 +126,11 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		setResizable(false);
 		setVisible(true);
 	}
-
+	
+	/**
+	 * Draws the level
+	 * @param gl	GL for the drawing
+	 */
 	public void drawLevel(GL gl){
 		if (mazeX > 19){
 	   		level.lineWidth = 1;
@@ -130,7 +138,10 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		level.draw(gl, mazeL, 0, mazeR-mazeL, screenHeight);
 	}
 	
-	//Button definition
+	/**
+	 * Draws the buttons
+	 * @param gl	GL for the drawing
+	 */
 	public void Buttons(GL gl){
 		
 		for (int i = 0; i < buttonRow*3; i++){
@@ -143,6 +154,12 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}	
 	}
 	
+	/**
+	 * Get the button index
+	 * @param x		The button x-location
+	 * @param y		The button y-location
+	 * @return		returns the button index if there is button, -1 otherwise.
+	 */
 	public int getButton(int x,int y){
 		int i = -1;
 		for(int it = 0;it<buttonRow*3;it++){
@@ -155,6 +172,12 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		return i;
 	}
 	
+	/**
+	 * Get the buttonR index
+	 * @param x		The button x-location
+	 * @param y		The button y-location
+	 * @return		returns the button index if there is button, -1 otherwise.
+	 */
 	public int getButtonR(int x,int y){
 		int i = -1;
 		for(int it = 0; it<buttonRow;it++){
@@ -167,6 +190,9 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		return i;
 	}
 	
+	/**
+	 * openGL display handling
+	 */
 	@Override
 	public void display(GLAutoDrawable drawable) {
 
@@ -186,6 +212,9 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		gl.glFlush();
 	}
 
+	/**
+	 * openGL init
+	 */
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
@@ -389,6 +418,11 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		return dataBase.addMap(name, res);
 	}
 	
+	/**
+	 * load a map from the DataBase
+	 * @param name			The map name
+	 * @param dataBase		The DataBase that should be used
+	 */
 	public void loadFromDataBase(String name,DataBase dataBase){
 		nlevels = dataBase.getNumLevels(name);
 		mazeX = dataBase.getMazeSize(name);
@@ -400,9 +434,11 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 			levels[i].setLevel(dataBase.getMap(name, i));
 		}
 		level = levels[0];
-		
 	}
 	
+	/**
+	 * The mouseEvent handler for selecting the function buttons
+	 */
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		/*
@@ -578,20 +614,9 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		}
 	}
 
-	protected void mirror(){
-		//Mirroring maze
-	        for(int n = 0; n < nlevels; n++){
-	    		int[][] templevel = levels[n].getLevel();
-	    		levels[n].level = new int[mazeX][mazeX]; 
-	    		for(int x = 0; x<mazeX; x++){
-	    			for(int y = mazeX-1; y>=0; y--){
-	    				int oy = mazeX-y-1;
-	    				levels[n].level[x][oy] = templevel[x][y];
-	    			}
-	    		}
-	    	}
-	}
-	
+	/**
+	 * The mouseEvent handler for selecting the draw buttons
+	 */	
 	@Override
 	public void mousePressed(MouseEvent me) {
 		double squareX = Math.floor( ( (me.getX() - (mazeL)) / level.buttonSize));
@@ -753,44 +778,54 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 		
 		//The right mouse button always draws an empty floor tile
 		if(SwingUtilities.isRightMouseButton(me) && squareX > 0 && squareX < mazeX-1 && squareY < mazeX-1 && squareY > 0){
-			try{
-				level.level[X][Y-1] = 0;
-			}
-			catch (ArrayIndexOutOfBoundsException ex){
-				//System.err.println("you are drawing out of bounds");
-			}
+			level.level[X][Y-1] = 0;
 		}
 	}
-	
+	/**
+	 * Resets the size of the screen
+	 */
 	protected void resetSize(){
 		setSize(screenWidth,screenHeight);
 	}
-	
+	/**
+	 * Get the name of the map
+	 * @return	String with the name
+	 */
 	protected String getMapName(){
 		return mapName.getText();
 	}
-	
+	/**
+	 * Get the saveFrame
+	 * @return	Returns the Save Frame
+	 */
 	protected JFrame getSaveFrame(){
 		return saveFrame;
 	}
-	
+	/**
+	 * Get the loadFrame
+	 * @return	Returns the load Frame
+	 */
 	protected JFrame getLoadFrame(){
 		return loadFrame;
 	}
 	
+	/**
+	 * Makes drawing walls easier
+	 */
 	@Override
 	public void mouseDragged(MouseEvent me) {
 		//The wall and floor draw buttons can be dragged for easier drawing
-		if(btn[0].selected || SwingUtilities.isRightMouseButton(me) || btn[27].selected){
+		if(btn[0].selected || SwingUtilities.isRightMouseButton(me)){
 			mousePressed(me);
 		}
 		
 	}
-	
+	/**
+	 * Action event for new Maze
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-        setSize(screenWidth,screenHeight);
-        // TODO: 
+        setSize(screenWidth,screenHeight); 
         try{
         	nlevels = Integer.parseInt(nlev.getText());
         	mazeX = Integer.parseInt(size.getText());
@@ -840,20 +875,20 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	public void mouseEntered(MouseEvent arg0) {/*NOT USED*/}
 	@Override
 	public void mouseExited(MouseEvent arg0) {/*NOT USED*/}
-
+	
+	/**
+	 * Get the button
+	 * @return the button
+	 */
 	public Button[] getBtn() {
 		return btn;
 	}
 	
-	public float getMazeL() {
-		return mazeL;
-	}
-
-	public float getMazeR() {
-		return mazeR;
-	}
-	
-	public float getMazeX() {
+	/**
+	 * Get the maze size
+	 * @return the maze size
+	 */
+	public int getMazeX() {
 		return mazeX;
 	}
 }

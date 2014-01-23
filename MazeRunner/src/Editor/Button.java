@@ -21,6 +21,19 @@ public class Button {
 	private String text;
 	private Texture texture;
 	
+	/**
+	 * the button constructor
+	 * @param gl		GL for drawing
+	 * @param x			the x-location
+	 * @param y			the y-location
+	 * @param sizex		the x-size
+	 * @param sizey		the y-size
+	 * @param R			the color -R
+	 * @param G			the color -G
+	 * @param B			the color -B
+	 * @param O			the color -opacity
+	 * @param text		the text string
+	 */
 	public Button(GL gl, float x, float y, float sizex, float sizey, float R, float G, float B, float O, String text){
 		this.x = x;
 		this.y = y;
@@ -32,7 +45,10 @@ public class Button {
 		this.O = O;
 		this.text = text;
 	}
-	
+	/**
+	 * The draw method
+	 * @param gl	GL to draw
+	 */
 	public void draw(GL gl){
 		
 		gl.glLineWidth(1);
@@ -60,6 +76,14 @@ public class Button {
 		}
 	}
 	
+	/**
+	 * Box selection line
+	 * @param gl		GL for the openGL methods
+	 * @param x			the x-location
+	 * @param y			the y-location
+	 * @param sizex		the x-size
+	 * @param sizey		the y-size
+	 */
 	public void boxLine(GL gl, float x, float y, float sizex, float sizey){
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex2f(x, y);
@@ -69,6 +93,14 @@ public class Button {
 		gl.glEnd();
 	}
 	
+	/**
+	 * Box draw
+	 * @param gl		GL for the openGL methods
+	 * @param x			the x-location
+	 * @param y			the y-location
+	 * @param sizex		the x-size
+	 * @param sizey		the y-size
+	 */
 	public void boxOnScreen(GL gl, float x, float y, float sizex, float sizey) {
 		
 		if (texture != null) {
@@ -95,9 +127,7 @@ public class Button {
 	public void setSelected(boolean selected){
 		this.selected = selected;
 	}
-	public void mouseReleased(MouseEvent me) {
-		
-	}
+	public void mouseReleased(MouseEvent me) {/*NOT USED*/}
 
 	public float getX() {
 		return x;
@@ -114,31 +144,7 @@ public class Button {
 	public float getSizey() {
 		return sizey;
 	}
-
-	public float getR() {
-		return R;
-	}
-
-	public float getG() {
-		return G;
-	}
-
-	public float getB() {
-		return B;
-	}
 	
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public Texture getTexture() {
-		return texture;
-	}
-
 	public void setTexture(Texture texture) {
 		this.texture = texture;
 	}
