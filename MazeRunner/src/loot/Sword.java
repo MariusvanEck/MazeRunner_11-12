@@ -117,7 +117,7 @@ public class Sword extends Weapon{
 						Math.atan2(getCreature().getLocationX() - enemy.getLocationX(), 
 								getCreature().getLocationZ() - enemy.getLocationZ());
 
-				boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(getCreature().getHorAngle())) < 10;
+				boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(getCreature().getHorAngle())) < 45;
 				if (enemy.near(getCreature(), range) && incone) {
 					doDamage(enemy);
 					return true;
