@@ -1,5 +1,5 @@
-/*
- * This is based on tutorials from Oscar Veerhoek.
+/**
+ * This is based on tutorials from Oskar Veerhoek.
  * The tutorials were written in LWJGL so needed to be converted
  * to JOGL. 
  */
