@@ -54,7 +54,7 @@ public class EnemyControl extends Control{
 			
 			if (	targets.size() == 1 
 					&& playerVisible 
-					&& enemy.distanceTo(targetX, targetZ) < .25*Maze.SQUARE_SIZE  	) 
+					&& enemy.distanceTo(targetX, targetZ) < .5*Maze.SQUARE_SIZE) 
 				
 				moveDirection = null;
 			else {

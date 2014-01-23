@@ -121,7 +121,7 @@ public class MazeRunner {
 		visibleObjects.add(enemyAI);
 		
 		// Initialise the Traps
-				trapController = new TrapController(player, enemyAI.getEnemies());
+				trapController = new TrapController(player, EnemyAI.getEnemies());
 				visibleObjects.add(trapController);
 		
 		// set up a camera
@@ -351,7 +351,7 @@ public class MazeRunner {
 		enemyAI.update(deltaTime);
 		
 		// get an iterator over the enemies
-		Iterator<Enemy> it = enemyAI.getEnemies().iterator();
+		Iterator<Enemy> it = EnemyAI.getEnemies().iterator();
 		
 		Enemy enemy;
 		while (it.hasNext()) {

@@ -35,7 +35,7 @@ public class Enemy extends Creature implements VisibleObject{
 	
 	// hit model
 	private static TexturedModel hitModel;
-	private static String hitTextureFileLocation = "models/Lambent_Male/Lambent_Male_D_Blood.png";
+	private final String hitTextureFileLocation = "models/Lambent_Male/Lambent_Male_D_Blood.png";
 	
 	/**
 	 * The Enemy constructor.
@@ -63,9 +63,11 @@ public class Enemy extends Creature implements VisibleObject{
 		((EnemyControl)getControl()).setEnemy(this);
 		
 		// set the hit model
-		if(modelFileLocation != null && gl != null) // if Creature has no model the string will be null
-					hitModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f), hitTextureFileLocation);
+		if(modelFileLocation != null && gl != null){ // if Creature has no model the string will be null
+			System.err.println("ja");		
+			hitModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f), hitTextureFileLocation);
 		
+		}
 		// initialise the memory
 		memory = new Point(x, z);
 	}
@@ -85,7 +87,7 @@ public class Enemy extends Creature implements VisibleObject{
 	public void display(GL gl) { 
 		if (getTexturedModel() == null || hitModel == null)
 			System.out.println("null");
-		else if (Calendar.getInstance().getTimeInMillis() - timeHit < 50) 
+		else if (Calendar.getInstance().getTimeInMillis() - timeHit < 250)
 			hitModel.render(gl, getHorAngle()-180,locationX,locationY,locationZ);
 		else
 			getTexturedModel().render(gl, getHorAngle()-180,locationX,locationY,locationZ);
@@ -99,18 +101,7 @@ public class Enemy extends Creature implements VisibleObject{
 	 */
 	
 	/**
-	 * Updates the physical locationt deltaTime) {
-		
-		// rotate the enemy, according to controlameObject.normaliseAngle(getHorAngle() + rotationSpeed*control.dX));
-		
-		// move the enemy, according to control
-		if (control.moveDirection != null) {
-			locationX -= speed*deltaTime*
-					Math.sin(Math.toRadians((control.moveDirection + getHorAngle())));
-			locationZ -= speed*deltaTime*
-					Math.cos(Math.toRadians((control.moveDirection + getHorAngle())));}
-	}
-n and orientation of the enemy
+	 * 
 	 * @param deltaTime The time in milliseconds since the last update.
 	 */
 	public void update(int deltaTime) {

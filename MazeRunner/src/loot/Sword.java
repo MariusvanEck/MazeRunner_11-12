@@ -19,8 +19,8 @@ public class Sword extends Weapon{
 	
 	private int downTime = 1000;							// the weapon down time in ms
 	private Long timeDoneLastDamage;						// last time the stick was swung
-	private int damage = 50;								// the sticks damage output
-	private double range = .5;								// the damage range for the stick in units of SQUARE_SIZE
+	private int damage = 10;								// the sticks damage output
+	private double range = .6;								// the damage range for the stick in units of SQUARE_SIZE
 	private int counter = 0;									// counter counts time since sword was swung in ms
 	private boolean animating = false;						// boolean check for in animation			
 	
@@ -65,7 +65,7 @@ public class Sword extends Weapon{
 					weaponAngleX -= 30*Math.sin(((counter-weaponspeed/raise)/((raise-1)*weaponspeed/raise))*Math.PI);
 				}
 				weaponAngleZ = 45;
-				counter += deltaTime;
+				counter += deltaTime*5;
 			}
 			else {
 				animating = false;
@@ -117,7 +117,7 @@ public class Sword extends Weapon{
 						Math.atan2(getCreature().getLocationX() - enemy.getLocationX(), 
 								getCreature().getLocationZ() - enemy.getLocationZ());
 
-				boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(getCreature().getHorAngle())) < 45;
+				boolean incone = Math.abs(enemyAngle - GameObject.normaliseAngle(getCreature().getHorAngle())) < 75;
 				if (enemy.near(getCreature(), range) && incone) {
 					doDamage(enemy);
 					return true;

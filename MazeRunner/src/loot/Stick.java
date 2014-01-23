@@ -20,7 +20,7 @@ public class Stick extends Weapon{
 	private int downTime = 1000;							// the weapon down time in ms
 	private Long timeDoneLastDamage;						// last time the stick was swung
 	private int damage = 10;								// the sticks damage output
-	private double range = .5;								// the damage range for the stick in units of SQUARE_SIZE
+	private double range = .6;								// the damage range for the stick in units of SQUARE_SIZE
 	
 	/**
 	 * Constructor for stick without location (associated with a creature)
