@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="mazerunner.PlayerTest" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/PlayerTest.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="274" width="194" x="64" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="mazerunner.MazeRunner" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/MazeRunner.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="274" width="197" x="600" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="mazerunner.Stair" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Stair.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="133" x="1169" y="1357"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="mazerunner.Control" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Control.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="90" x="196" y="1357"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="mazerunner.InvalidSpawnLocationException" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/InvalidSpawnLocationException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="215" x="321" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="mazerunner.Enemy" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Enemy.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="400" width="198" x="123" y="1805"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="mazerunner.Location" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Location.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="142" x="779" y="1805"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="mazerunner.EnemyControl" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/EnemyControl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="256" width="209" x="123" y="1509"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="mazerunner.Maze" project="MazeRunner" file="/MazeRunner/src/mazerunner/Maze.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="526" width="282" x="984" y="791"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="mazerunner.Wall" project="MazeRunner" file="/MazeRunner/src/mazerunner/Wall.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="105" x="1024" y="1357"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="mazerunner.EnemyAI" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/EnemyAI.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="220" width="291" x="41" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="mazerunner.Player" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Player.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="274" width="310" x="269" y="791"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="mazerunner.GameObject" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/GameObject.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="292" width="195" x="1321" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="mazerunner.Roof" project="MazeRunner" file="/MazeRunner/src/mazerunner/Roof.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="105" x="1342" y="1357"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="mazerunner.Floor" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Floor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="94" width="105" x="1003" y="1805"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="mazerunner.Creature" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Creature.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="274" width="314" x="923" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="mazerunner.End" project="MazeRunner" file="/MazeRunner/src/mazerunner/End.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="112" width="119" x="1487" y="1357"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="mazerunner.Camera" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/Camera.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="382" width="243" x="640" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="mazerunner.SlidingWall" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/SlidingWall.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="130" width="134" x="1003" y="1509"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="20" language="java" name="mazerunner.VisibleObject" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/VisibleObject.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="76" width="105" x="1003" y="2245"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="21" language="java" name="mazerunner.HeadsUpDisplay" project="MazeRunner" 
+    file="/MazeRunner/src/mazerunner/HeadsUpDisplay.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="202" width="186" x="372" y="369"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="22">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="23" name="enemy">        
+        <position height="18" width="40" x="228" y="1766"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="1">        
+        <position height="16" width="23" x="234" y="1788"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="25">    
+    <bendpoint x="930" y="1509"/>    
+    <bendpoint x="930" y="1357"/>    
+    <bendpoint x="953" y="791"/>    
+    <bendpoint x="1288" y="369"/>    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <realization id="26">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="27">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="28" name="end"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <realization id="31">    
+    <bendpoint x="50" y="791"/>    
+    <bendpoint x="50" y="1357"/>    
+    <bendpoint x="50" y="1509"/>    
+    <bendpoint x="50" y="1805"/>    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="32">    
+    <bendpoint x="113" y="791"/>    
+    <bendpoint x="113" y="1357"/>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="33" name="control"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="36" name="player">        
+        <position height="18" width="38" x="392" y="748"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="16" width="23" x="411" y="764"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="39" name="headsUpDisplay"/>      
+      <multiplicity id="40" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="41">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="42" name="enemyAI"/>      
+      <multiplicity id="43" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="45" name="camera"/>      
+      <multiplicity id="46" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="47">    
+    <bendpoint x="993" y="1357"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="48" name="slidingWalls"/>      
+      <multiplicity id="49" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="50">    
+    <bendpoint x="1496" y="1509"/>    
+    <bendpoint x="1496" y="1805"/>    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <generalization id="51">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <association id="52">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="53" name="player"/>      
+      <multiplicity id="54" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="55">    
+    <bendpoint x="972" y="1357"/>    
+    <bendpoint x="972" y="1509"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="56" name="floors">        
+        <position height="18" width="36" x="999" y="1771"/>      
+      </attribute>      
+      <multiplicity id="57" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="1015" y="1786"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="58">    
+    <bendpoint x="92" y="791"/>    
+    <bendpoint x="92" y="1357"/>    
+    <bendpoint x="92" y="1509"/>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="59" name="enemies">        
+        <position height="18" width="48" x="91" y="1767"/>      
+      </attribute>      
+      <multiplicity id="60" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="139" y="1771"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="61">    
+    <bendpoint x="1351" y="791"/>    
+    <bendpoint x="1351" y="369"/>    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="62">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="16"/>  
+  </generalization>  
+  <association id="63">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="64" name="maze"/>      
+      <multiplicity id="65" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="66">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="67" name="walls"/>      
+      <multiplicity id="68" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="69">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <association id="70">    
+    <bendpoint x="71" y="791"/>    
+    <bendpoint x="71" y="1357"/>    
+    <bendpoint x="71" y="1509"/>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="71" name="enemy">        
+        <position height="18" width="40" x="87" y="1785"/>      
+      </attribute>      
+      <multiplicity id="72" minimum="0" maximum="1">        
+        <position height="16" width="23" x="133" y="1788"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="73">    
+    <bendpoint x="1454" y="1509"/>    
+    <bendpoint x="1636" y="1357"/>    
+    <bendpoint x="1636" y="791"/>    
+    <bendpoint x="1636" y="369"/>    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="74">    
+    <bendpoint x="1413" y="791"/>    
+    <bendpoint x="1413" y="369"/>    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <association id="75">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="76" name="targets"/>      
+      <multiplicity id="77" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="78">    
+    <bendpoint x="951" y="1357"/>    
+    <bendpoint x="951" y="1509"/>    
+    <bendpoint x="951" y="1805"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="79">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="80" name="control"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="82">    
+    <bendpoint x="1167" y="1509"/>    
+    <bendpoint x="1167" y="1805"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <generalization id="83">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="84">    
+    <bendpoint x="1267" y="369"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="85" name="maze"/>      
+      <multiplicity id="86" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="87">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="88" name="roofs"/>      
+      <multiplicity id="89" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="90">    
+    <bendpoint x="1188" y="1509"/>    
+    <bendpoint x="1188" y="1805"/>    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <realization id="91">    
+    <bendpoint x="1475" y="1509"/>    
+    <bendpoint x="1475" y="1805"/>    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <association id="92">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="93" name="stairs"/>      
+      <multiplicity id="94" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="95">    
+    <bendpoint x="1330" y="791"/>    
+    <bendpoint x="1330" y="369"/>    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <association id="96">    
+    <bendpoint x="588" y="369"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="97" name="player">        
+        <position height="18" width="38" x="479" y="749"/>      
+      </attribute>      
+      <multiplicity id="98" minimum="0" maximum="1">        
+        <position height="16" width="23" x="477" y="766"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="99">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="100" name="control">        
+        <position height="18" width="41" x="177" y="1786"/>      
+      </attribute>      
+      <multiplicity id="101" minimum="0" maximum="1">        
+        <position height="16" width="23" x="200" y="1768"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="102">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="103" name="floor">        
+        <position height="18" width="30" x="1068" y="1766"/>      
+      </attribute>      
+      <multiplicity id="104" minimum="0" maximum="1">        
+        <position height="16" width="23" x="1068" y="1783"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="105">    
+    <bendpoint x="600" y="1509"/>    
+    <bendpoint x="630" y="1357"/>    
+    <bendpoint x="630" y="791"/>    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="16"/>  
+  </generalization>  
+  <association id="106">    
+    <bendpoint x="609" y="369"/>    
+    <bendpoint x="609" y="791"/>    
+    <bendpoint x="609" y="1357"/>    
+    <bendpoint x="621" y="1509"/>    
+    <bendpoint x="621" y="1805"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="107" name="visibleObjects"/>      
+      <multiplicity id="108" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="109">    
+    <bendpoint x="1309" y="791"/>    
+    <bendpoint x="1309" y="369"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <realization id="110">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="20"/>  
+  </realization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
