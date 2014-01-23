@@ -1,3 +1,8 @@
+/*
+ * This is based on tutorials from Oscar Veerhoek.
+ * The tutorials were written in LWJGL so needed to be converted
+ * to JOGL. 
+ */
 package model;
 
 import java.io.BufferedReader;
