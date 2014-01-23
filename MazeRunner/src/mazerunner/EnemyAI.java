@@ -256,7 +256,7 @@ public class EnemyAI implements VisibleObject{
 	/**
 	 * Get the ArrayList with all the enemies associated with this AI
 	 */ 
-	public ArrayList<Enemy> getEnemies() {
+	public static ArrayList<Enemy> getEnemies() {
 		return enemies;
 	}
 	

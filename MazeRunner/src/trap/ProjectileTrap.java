@@ -42,8 +42,9 @@ public class ProjectileTrap extends GameObject implements Trap{
 		super(	x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2,
 				Maze.SQUARE_SIZE/4, 
 				z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2);
-		
-		this.model = new TexturedModel(gl, new Model(modelFileLocation, 0.05f), textureFileLocation);
+		if (gl != null) {
+			this.model = new TexturedModel(gl, new Model(modelFileLocation, 0.05f), textureFileLocation);
+		}
 		this.maze = maze;
 		this.direction = direction;
 		

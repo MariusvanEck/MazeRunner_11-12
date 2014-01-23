@@ -17,7 +17,9 @@ public class Stair extends GameObject implements VisibleObject {
 	public Stair(GL gl,int x, int z, double orientation) {
 		super(x*Maze.SQUARE_SIZE, 0, z*Maze.SQUARE_SIZE);
 		this.orientation = orientation;
-		texturedModel = new TexturedModel(gl, new Model(modelFileLocation, 1f),textureFileLocation);
+		if (gl != null) {
+			texturedModel = new TexturedModel(gl, new Model(modelFileLocation, 1f),textureFileLocation);
+		}
 	}
 		
 	/**

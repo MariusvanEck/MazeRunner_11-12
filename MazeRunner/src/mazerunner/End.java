@@ -17,7 +17,9 @@ public class End extends GameObject implements VisibleObject {
 	public End(GL gl, int x, int z) {
 		super(x*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2, 0, z*Maze.SQUARE_SIZE + Maze.SQUARE_SIZE/2);
 		this.orientation = -90;
-		texturedModel = new TexturedModel(gl, new Model(modelFileLocation, 1f), textureFileLocation);
+		if (gl != null) {
+			texturedModel = new TexturedModel(gl, new Model(modelFileLocation, 1f), textureFileLocation);
+		}
 	}
 	
 	/**

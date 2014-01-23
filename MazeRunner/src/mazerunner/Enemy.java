@@ -63,7 +63,7 @@ public class Enemy extends Creature implements VisibleObject{
 		((EnemyControl)getControl()).setEnemy(this);
 		
 		// set the hit model
-		if(modelFileLocation != null) // if Creature has no model the string will be null
+		if(modelFileLocation != null && gl != null) // if Creature has no model the string will be null
 					hitModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f), hitTextureFileLocation);
 		
 		// initialise the memory

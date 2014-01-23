@@ -39,7 +39,7 @@ public abstract class Creature extends GameObject {
 			weapon.setCreature(this);
 		
 		// set the model
-		if(modelFileLocation != null) // if Creature has no model the string will be null
+		if(modelFileLocation != null && gl != null) // if Creature has no model the string will be null
 			texturedModel = new TexturedModel(gl,new Model(modelFileLocation,0.75f),textureFileLocation);
 	}
 	

@@ -358,18 +358,7 @@ public class Maze implements VisibleObject {
 	 * *				 miscelanous				*
 	 * **********************************************
 	 */
-	
-	/**
-	 * Sets the specified location to wall or no wall
-	 * 
-	 * @param x			x-coordinate
-	 * @param z			z-coordinate
-	 * @param isWall 	true for wall, false for no wall
-	 */
-	public synchronized void editMaze(int x, int y,int z, boolean isWall) {
-		currentLevel[x][z] = isWall? 1 : 0;
-	}
-	
+
 	/**
 	 * load a new level of the maze
 	 */
@@ -414,6 +403,7 @@ public class Maze implements VisibleObject {
 		}
 		return false;
 	}
+	
 	
 	/*
 	 * **********************************************
@@ -526,13 +516,28 @@ public class Maze implements VisibleObject {
 	public void lvlToString(){
 		System.out.println("Maze: ");
 		for(int[][] level:levels){
-			for(int i = 0; i < numLevels; i++){
-				for(int j = 0; j < numLevels; j++){
+			for(int i = 0; i < mazeSize; i++){
+				for(int j = 0; j < mazeSize; j++){
 					System.out.print(level[j][i]);
 					System.out.print(' ');
 				}
 				System.out.print('\n');
 			}
 		}
+	}
+
+	/**
+	 * Get all the maze objects
+	 */
+	public ArrayList<Object> getAllMazeObjects(){
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.add(stairs);
+		objects.add(floors);
+		objects.add(roofs);
+		objects.add(walls);
+		objects.add(slidingWalls);
+		objects.add(end);
+		
+		return objects;
 	}
 }

@@ -33,7 +33,7 @@ public class LootController implements VisibleObject {
 	/**
 	 * get the loot list
 	 */
-	public ArrayList<Loot> getLootList(){
+	public static ArrayList<Loot> getLootList(){
 		return lootList;
 	}
 	

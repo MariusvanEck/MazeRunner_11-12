@@ -30,7 +30,9 @@ public class Projectile extends GameObject{
 		else
 			this.direction = 0;
 		this.speed = speed;
-		this.model = new TexturedModel(gl,new Model(modelFileLocation,0.025f),textureFileLocation);
+		if (gl != null) {
+			this.model = new TexturedModel(gl,new Model(modelFileLocation,0.025f),textureFileLocation);
+		}
 		this.angle = 0;
 	}
 	

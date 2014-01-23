@@ -32,9 +32,11 @@ import com.sun.opengl.util.Animator;
  * 
  * gameStates
  * 
- * MENU:	the game is in the menu
- * INGAME: 	the game is running
- * PAUSE: 	the game is paused (INGAME displaying is frozen)
+ * MENU:		the game is in the menu
+ * INGAME: 		the game is running
+ * PAUSE: 		the game is paused (INGAME displaying is frozen)
+ * HIGHSCORE:	the game is finished, highscore is displayed
+ * EDITOR:		the game is in the editor
  * 
  */
 public class GameStateManager extends Frame implements GLEventListener{
@@ -379,10 +381,16 @@ public class GameStateManager extends Frame implements GLEventListener{
 		input.setScreenCenter(screenCenter);
 	}
 	
+	/**
+	 * Set the highscore
+	 */
 	public static void setHighScore(HighScore score){
 		highScore = score;
 	}
 	
+	/**
+	 * Check if a mazeRunner game is started
+	 */
 	public static boolean isMazeRunnerStarted() {
 		return mazeRunner != null;
 	}
