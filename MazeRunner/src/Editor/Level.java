@@ -1,3 +1,6 @@
+/**
+ * The Editor allows a user to create maps with various levels- and map-sizes.
+ */
 package Editor;
 
 import java.awt.GraphicsDevice;
@@ -18,23 +21,15 @@ public class Level {
 	protected float buttonSize;
 	protected int lineWidth = 2;
 	private static Texture[] textureMaze;
-	private int nTiles = 198; //this is the number of different tiles currently present in the maze
-	
-
-
+	private int nTiles = 198; 					//this is the number of different tiles currently present in the maze
 	private static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	private static int screenHeight =  gd.getDisplayMode().getHeight();
 	private static int screenWidth =  gd.getDisplayMode().getWidth();
 	private static float mazeL = ((screenWidth-screenHeight)/3*2);					//Left bound of mazeDrawingWindow
 	private static int mazeX = 20;
-	
 	private float alpha = 1;
-	
     static int primeNumbers[] = new int[100];
-    // private int aantalobjecten = 100;
 	
-    
-    
    /**
     * creates a level with borders at the edges of the matrix
     * @param x		the x coordinate of the level size
@@ -52,23 +47,6 @@ public class Level {
 				}
 			}
 		}
-
-		
-		try {
-			//textureMaze[0] = TextureIO.newTexture(new File("img\\Floor.png"), false); // do not use (yet) because of transparency issues
-			//only implement if there is time: putting textures over the floor texture
-			
-			// TODO: FIX it opgenGL current error iets ding Fix it Kevin!
-			
-
-			
-			
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		
 	}
 		
 	/**
@@ -90,8 +68,7 @@ public class Level {
 				//Drawing the floor color
 				//Also be sure to maintain the background color of the floor for specific textures, making it not white
 				if ((check(i,j,0) && textureMaze[0] == null) || check(i,j,2) || check(i,j,3) || check(i,j,5)
-						|| check(i,j,7) || check(i,j,97)){
-					
+						|| check(i,j,7) || check(i,j,97)){		
 					gl.glColor4f(150/255f, 73/255f, 37/255f, 1);
 				}
 				
@@ -102,13 +79,11 @@ public class Level {
 				gl.glVertex2f(startx+((width-x*buttonSize)/2)+(i+1)*buttonSize, (j)*buttonSize);
 				gl.glVertex2f(startx+((width-x*buttonSize)/2)+i*buttonSize, (j)*buttonSize);
  				gl.glEnd();
-
-				
+		
 				//Drawing the wall color
 				if(check(i,j,1) && textureMaze[1] == null){
 					gl.glColor4f(87/255f, 84/255f, 83/255f, 1);
 				}
-				//^is sneller dan textures^
 				
 				//Drawing the voids, setting tile to black
 				if(check(i,j,17)){
@@ -130,7 +105,6 @@ public class Level {
 							gl.glColor4f(255/255f, 255/255f, 255/255f,alpha);
 							prime = true;
 						}
-						
 
 						int[] a = new int[2];	a[0] = 0; a[1] = 0;
 						int[] b = new int[2];	b[0] = 1; b[1] = 0;
@@ -194,10 +168,8 @@ public class Level {
 				}
 			}
 		}
-	
-	
 		
-		//That yellow square, work in progress
+		//The active grid cursor
 		PointerInfo a = MouseInfo.getPointerInfo();
 		Point b = a.getLocation();
 		int xm = (int) b.getX();
@@ -214,10 +186,8 @@ public class Level {
 			gl.glVertex2f(startx+((width-x*buttonSize)/2)+squareX*buttonSize, (squareY)*buttonSize);
 			gl.glEnd();
 		}
-		
-		
-		//Drawing the GRID on top of everything!
-		//set the LineWidth and the line color
+
+		//set the LineWidth and the line color of the grid
 		gl.glLineWidth(lineWidth);
 		gl.glColor3f(255/255f, 255/255f, 255/255f);
 		
@@ -236,7 +206,6 @@ public class Level {
 			gl.glVertex2f(startx+width-((width-x*buttonSize)/2), i*buttonSize);
 			gl.glEnd();
 		}
-		//End of drawing the grid
 	}
 	
 	/**
@@ -319,8 +288,6 @@ public class Level {
 	public void primes(){
 		// Initialize array of the first 100 prime numbers
         int index = 0;
-        //int product = 1;
-        //index<VALUE change value for larger thingy
         while(index<100){
             for (int i = 2; i < 100*10; i++){
                 boolean primeNum = true;
@@ -339,6 +306,7 @@ public class Level {
             }
         }
 	}
+	
 	/**
 	 * Checks if the given value is present on i an j in the level matrix
 	 * @param i			i location
@@ -363,7 +331,6 @@ public class Level {
         	objects[0] = 0;
         }
         // Find all prime factors of input
-        // p<VALUE VALUE is primeNumber array size, also change in primes()
         else for (int p = 0; p < 100; p++) {
         	
             if (number % primeNumbers[p] == 0) {
@@ -382,8 +349,7 @@ public class Level {
             System.err.println("Error: Not all prime factors are given, primeNumbers array too small.");
             objects[0] = -1;
             return false;
-        }		
-		
+        }			
 		for(int l = 0;l<objects.length;l++){
 			if(objects[l] == value){
 				return true;

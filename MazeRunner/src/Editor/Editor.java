@@ -56,12 +56,6 @@ import database.DataBase;
  * 97 - Player
  */
 
-/*
- * TODO
- * - void draw eruit slopen
- * - alle functies beschrijven
- * - automatisch player spawn aanmaken, linksonder oid
- */
 public class Editor extends JFrame implements GLEventListener, MouseListener, MouseMotionListener, ActionListener {
 
 	/**
@@ -342,6 +336,8 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
 	   	for (int k = 0; k < nlevels; k++){
 	   		levels[k] = new Level(mazeX,mazeX);
 	   	}
+	   	levels[0].set(1, 1, 97); 						// default spawn location of player
+	   	levels[nlevels-1].set(mazeX-2, mazeX-2, 59); 	// default end location
 	   	level = levels[0];
 	   	//set level button default to level 1
 	   	btnr[3].setSelected(true);
@@ -824,7 +820,9 @@ public class Editor extends JFrame implements GLEventListener, MouseListener, Mo
            for (int i = 4; i < 9; i++){
                btnr[i].setSelected(false);
            }
-        
+           
+   	       levels[0].set(1, 1, 97); 						// default spawn location of player
+   	   	   levels[nlevels-1].set(mazeX-2, mazeX-2, 59); 	// default end location
            frame.dispose();
 
 
